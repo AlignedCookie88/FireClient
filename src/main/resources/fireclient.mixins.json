@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.alignedcookie88.fireclient.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [],
+  "client": [
+    "CameraAccessor",
+    "ChatScreenMixin",
+    "ClientConnectionMixin",
+    "ClientPlayerEntityMixin",
+    "EntityMixin",
+    "EntityRendererMixin",
+    "GameRendererMixin",
+    "PlayerListHudMixin",
+    "SignBlockEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

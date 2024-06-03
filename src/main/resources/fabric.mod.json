@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "fireclient",
+  "version": "${version}",
+  "name": "FireClient",
+  "description": "",
+  "authors": ["AlignedCookie88"],
+  "contact": {
+    "repo": "https://github.com/AlignedCookie88/FireClient"
+  },
+  "license": "MIT",
+  "icon": "assets/fireclient/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.alignedcookie88.fireclient.client.FireClientClient"
+    ],
+    "main": [
+      "com.alignedcookie88.fireclient.FireClient"
+    ],
+    "modmenu": [
+      "com.alignedcookie88.fireclient.integration.ModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "fireclient.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}",
+    "cloth-config": ">=13.0.121",
+    "fabric-key-binding-api-v1": "*"
+  },
+  "accessWidener" : "fireclient.accesswidener",
+  "suggests": {
+    "codeclient": "*"
+  }
+}
