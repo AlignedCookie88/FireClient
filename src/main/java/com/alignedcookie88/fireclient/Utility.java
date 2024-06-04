@@ -10,6 +10,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.text.Text;
+import org.python.antlr.ast.Str;
 
 public class Utility {
     /**
@@ -90,5 +91,59 @@ public class Utility {
             return Component.empty();
         JsonElement elem = new Text.Serializer().serialize(text, null, null);
         return JSONComponentSerializer.json().deserialize(elem.toString());
+    }
+
+    /**
+     * Remove legacy formatting codes from miniMessage, replacing them with their appropriate miniMessage equivalent
+     * @param miniMessage The miniMessage to sanitise
+     * @return The sanitised miniMessage
+     */
+    public static String sanitiseMiniMessage(String miniMessage) {
+        miniMessage = sanitiseMiniMessage(miniMessage, "§");
+        miniMessage = sanitiseMiniMessage(miniMessage, "&");
+        return miniMessage;
+    }
+
+    /**
+     * Remove legacy formatting codes from miniMessage, with the provided code start (usually § or &), replacing them with their appropriate miniMessage equivalent
+     * @param miniMessage The miniMessage to sanitise
+     * @return The sanitised miniMessage
+     */
+    private static String sanitiseMiniMessage(String miniMessage, String code_start) {
+        miniMessage = miniMessage.replace(code_start+"0", "<black>");
+        miniMessage = miniMessage.replace(code_start+"1", "<dark_blue>");
+        miniMessage = miniMessage.replace(code_start+"2", "<dark_green>");
+        miniMessage = miniMessage.replace(code_start+"3", "<dark_aqua>");
+        miniMessage = miniMessage.replace(code_start+"4", "<dark_red>");
+        miniMessage = miniMessage.replace(code_start+"5", "<dark_purple>");
+        miniMessage = miniMessage.replace(code_start+"6", "<gold>");
+        miniMessage = miniMessage.replace(code_start+"7", "<grey>");
+        miniMessage = miniMessage.replace(code_start+"8", "<dark_grey>");
+        miniMessage = miniMessage.replace(code_start+"9", "<blue>");
+        miniMessage = miniMessage.replace(code_start+"a", "<green>");
+        miniMessage = miniMessage.replace(code_start+"b", "<aqua>");
+        miniMessage = miniMessage.replace(code_start+"c", "<red>");
+        miniMessage = miniMessage.replace(code_start+"d", "<light_purple>");
+        miniMessage = miniMessage.replace(code_start+"e", "<yellow>");
+        miniMessage = miniMessage.replace(code_start+"f", "<white>");
+        miniMessage = miniMessage.replace(code_start+"k", "<obfuscated>");
+        miniMessage = miniMessage.replace(code_start+"l", "<bold>");
+        miniMessage = miniMessage.replace(code_start+"m", "<strikethrough>");
+        miniMessage = miniMessage.replace(code_start+"n", "<underlined>");
+        miniMessage = miniMessage.replace(code_start+"o", "<italic>");
+        miniMessage = miniMessage.replace(code_start+"r", "<reset>");
+        miniMessage = miniMessage.replace(code_start+"A", "<green>");
+        miniMessage = miniMessage.replace(code_start+"B", "<aqua>");
+        miniMessage = miniMessage.replace(code_start+"C", "<red>");
+        miniMessage = miniMessage.replace(code_start+"D", "<light_purple>");
+        miniMessage = miniMessage.replace(code_start+"E", "<yellow>");
+        miniMessage = miniMessage.replace(code_start+"F", "<white>");
+        miniMessage = miniMessage.replace(code_start+"K", "<obfuscated>");
+        miniMessage = miniMessage.replace(code_start+"L", "<bold>");
+        miniMessage = miniMessage.replace(code_start+"M", "<strikethrough>");
+        miniMessage = miniMessage.replace(code_start+"N", "<underlined>");
+        miniMessage = miniMessage.replace(code_start+"O", "<italic>");
+        miniMessage = miniMessage.replace(code_start+"R", "<reset>");
+        return miniMessage;
     }
 }

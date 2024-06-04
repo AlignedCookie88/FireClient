@@ -167,7 +167,7 @@ public class FireClient implements ModInitializer {
         }
 
 
-        Text modified = Utility.componentToText(MiniMessage.miniMessage().deserialize(miniMessage));
+        Text modified = Utility.componentToText(MiniMessage.miniMessage().deserialize(Utility.sanitiseMiniMessage(miniMessage)));
         return modified;
     }
 
