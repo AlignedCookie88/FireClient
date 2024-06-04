@@ -42,7 +42,7 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "auto_${{ github.run_number }}"
           prerelease: true
-          title: "Commit ${{ github.sha }"
+          title: "Commit ${{ github.sha }}"
           files: |
               ./build/libs/
       
