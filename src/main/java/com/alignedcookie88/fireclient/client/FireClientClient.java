@@ -1,6 +1,7 @@
 package com.alignedcookie88.fireclient.client;
 
 import com.alignedcookie88.fireclient.*;
+import com.alignedcookie88.fireclient.screen_editor.ScreenEditor;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.Dynamic3CommandExceptionType;
@@ -65,6 +66,10 @@ public class FireClientClient implements ClientModInitializer {
                             Utility.sendStyledMessage("`/fireclient config` to access the config");
                             Utility.sendStyledMessage("`/fireclient get_function <function>` to get a template for a client function");
                             Utility.sendStyledMessage("`/fireclient help` to show this message");
+                            return 1;
+                        }))
+                        .then(ClientCommandManager.literal("screen_editor").executes(context -> {
+                            FireClient.openOnNextTick = new ScreenEditor();
                             return 1;
                         }))
                 )

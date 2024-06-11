@@ -1,4 +1,5 @@
-package com.alignedcookie88.fireclient;
+package com.alignedcookie88.fireclient.integration;
+import com.alignedcookie88.fireclient.State;
 import dev.dfonline.codeclient.CodeClient;
 
 public class CodeClientIntegration {

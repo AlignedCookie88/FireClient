@@ -13,7 +13,8 @@
     "EntityRendererMixin",
     "GameRendererMixin",
     "PlayerListHudMixin",
-    "SignBlockEntityMixin"
+    "SignBlockEntityMixin",
+    "TitleScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

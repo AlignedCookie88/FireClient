@@ -9,7 +9,7 @@
     "repo": "https://github.com/AlignedCookie88/FireClient"
   },
   "license": "MIT",
-  "icon": "assets/fireclient/icon.png",
+  "icon": "assets/fireclient/textures/icon.png",
   "environment": "client",
   "entrypoints": {
     "client": [

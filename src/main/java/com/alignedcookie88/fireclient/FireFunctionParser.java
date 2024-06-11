@@ -8,7 +8,12 @@ public class FireFunctionParser {
     public void parseAndExecute(FireFunction function, String rawArgs) {
         List<String> stringArgs = parseStringArgs(rawArgs);
         List<Object> objectArgs = parseObjectArgs(stringArgs, function);
-        function.execute(objectArgs.toArray());
+        try {
+            function.execute(objectArgs.toArray());
+        } catch (RuntimeException e) {
+            Utility.sendStyledMessage("There was an error running a command from the plot. Check the log for more details.");
+            FireClient.LOGGER.error("Error running command.", e);
+        }
     }
 
     private List<String> parseStringArgs(String rawArgs) {

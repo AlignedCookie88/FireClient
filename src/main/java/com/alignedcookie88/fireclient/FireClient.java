@@ -1,6 +1,7 @@
 package com.alignedcookie88.fireclient;
 
 import com.alignedcookie88.fireclient.functions.*;
+import com.alignedcookie88.fireclient.integration.CodeClientIntegration;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.loader.api.FabricLoader;
