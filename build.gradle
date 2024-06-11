@@ -23,6 +23,10 @@ repositories {
         name = "Modrinth"
         url = "https://api.modrinth.com/maven"
     }
+    maven {
+        name = "AlignedCookie88"
+        url = "https://repo.alignedcookie88.com/repository/maven-public/"
+    }
 }
 
 dependencies {
@@ -56,7 +60,8 @@ dependencies {
     modCompileOnly "maven.modrinth:codeclient:1.6.5"
 
     // imgui-mc
-    modImplementation files("libs/imguimc-${project.imguimc_version}.jar")
+//    modImplementation files("libs/imguimc-${project.imguimc_version}.jar")
+    modImplementation "xyz.breadloaf.imguimc:imguimc:${project.imguimc_version}"
 }
 
 processResources {
