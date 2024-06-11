@@ -19,9 +19,10 @@ Dev usage can be found with `/fireclient help`. The config can be accessed with 
 
 ## Required mods
 
-- Fabric API
-- Cloth config
+- [Fabric API](https://modrinth.com/mod/fabric-api)
+- [Cloth config](https://modrinth.com/mod/cloth-config)
+- [imgui-mc](https://modrinth.com/mod/imgui-mc)
 
 ## Optional mods
 
-- CodeClient - Better location tracking (aka some things don't break when you run /dev or /build or get kicked from a plot).
+- [CodeClient](https://modrinth.com/mod/codeclient) - Better location tracking (aka some things don't break when you run /dev or /build or get kicked from a plot).
