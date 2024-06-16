@@ -2,7 +2,7 @@ package com.alignedcookie88.fireclient;
 
 public class ConfigState {
 
-    public boolean alwaysBlockPython = false;
+    public boolean alwaysBlockPython = true;
 
     public boolean oldRankTags = false;
 
