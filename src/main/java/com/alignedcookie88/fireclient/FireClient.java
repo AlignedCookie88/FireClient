@@ -1,5 +1,7 @@
 package com.alignedcookie88.fireclient;
 
+import com.alignedcookie88.fireclient.commandrunner.CommandRunnerResponse;
+import com.alignedcookie88.fireclient.commandrunner.CommandRunners;
 import com.alignedcookie88.fireclient.functions.*;
 import com.alignedcookie88.fireclient.integration.CodeClientIntegration;
 import net.fabricmc.api.ModInitializer;
@@ -10,7 +12,9 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.network.listener.PacketListener;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.s2c.play.ChatMessageS2CPacket;
 import net.minecraft.network.packet.s2c.play.OverlayMessageS2CPacket;
+import net.minecraft.network.packet.s2c.play.ProfilelessChatMessageS2CPacket;
 import net.minecraft.registry.*;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -20,6 +24,8 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class FireClient implements ModInitializer {
 
@@ -36,6 +42,8 @@ public class FireClient implements ModInitializer {
     public static Screen openOnNextTick = null;
 
     private static boolean codeClientIntegration = false;
+
+    private static List<CommandRunnerResponse> commandRunnerResponses = new ArrayList<>();
 
 
     public static Registry<FireFunction> functionRegistry = FabricRegistryBuilder.createSimple(FireFunction.class, functionRegistryIdentifier).buildAndRegister();
@@ -224,5 +232,37 @@ public class FireClient implements ModInitializer {
         if (codeClientIntegration) {
             CodeClientIntegration.tick();
         }
+
+        CommandRunners.LOCATE.tick();
+    }
+
+    public static void addCommandRunnerResponse(CommandRunnerResponse response) {
+        commandRunnerResponses.add(response);
+    }
+
+    public static boolean handleChatPacket(String text) {
+
+        if (text.startsWith("[FireClient]"))
+            return false;
+
+        for (CommandRunnerResponse response : commandRunnerResponses) {
+            for (String expr : response.getExpr()) {
+                Pattern pattern = Pattern.compile(expr);
+                Matcher matcher = pattern.matcher(text);
+
+                if (matcher.find()) {
+                    int groupCount = matcher.groupCount();
+                    String[] groups = new String[groupCount];
+                    for (int i = 0; i < groupCount; ++i) {
+                        groups[i] = matcher.group(i+1);
+                    }
+                    LOGGER.info("Found regex! Chat: {}, Data: {}", text, groups);
+                    response.execute(groups);
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

@@ -101,5 +101,11 @@ public class Config {
                 .setTooltip(Text.literal("Hide the VIP tags from chat and /whois."))
                 .setSaveConsumer(newValue -> state.hideVIPTags = newValue)
                 .build());
+
+        visual.addEntry(entryBuilder.startBooleanToggle(Text.literal("Show plot IDs in tab"), state.showPlotIDsInTab)
+                .setDefaultValue(ConfigState.getDefault().showPlotIDsInTab)
+                .setTooltip(Text.literal("If FireClient should show plot IDs in tab."))
+                .setSaveConsumer(newValue -> state.showPlotIDsInTab = newValue)
+                .build());
     }
 }

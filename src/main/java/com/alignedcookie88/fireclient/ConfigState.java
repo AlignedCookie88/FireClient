@@ -8,6 +8,8 @@ public class ConfigState {
 
     public boolean hideVIPTags = false;
 
+    public boolean showPlotIDsInTab = true;
+
 
 
     public static ConfigState getDefault() {

@@ -6,6 +6,7 @@
   "mixins": [],
   "client": [
     "CameraAccessor",
+    "ChatHudMixin",
     "ChatScreenMixin",
     "ClientConnectionMixin",
     "ClientPlayerEntityMixin",
