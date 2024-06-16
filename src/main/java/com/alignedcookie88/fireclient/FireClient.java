@@ -245,6 +245,9 @@ public class FireClient implements ModInitializer {
         if (text.startsWith("[FireClient]"))
             return false;
 
+        int foundIndex = -1;
+
+        int i = 0;
         for (CommandRunnerResponse response : commandRunnerResponses) {
             for (String expr : response.getExpr()) {
                 Pattern pattern = Pattern.compile(expr);
@@ -253,14 +256,23 @@ public class FireClient implements ModInitializer {
                 if (matcher.find()) {
                     int groupCount = matcher.groupCount();
                     String[] groups = new String[groupCount];
-                    for (int i = 0; i < groupCount; ++i) {
-                        groups[i] = matcher.group(i+1);
+                    for (int gi = 0; gi < groupCount; ++gi) {
+                        groups[gi] = matcher.group(gi+1);
                     }
                     LOGGER.info("Found regex! Chat: {}, Data: {}", text, groups);
                     response.execute(groups);
-                    return true;
+                    foundIndex = i;
+                    break;
                 }
             }
+            if (foundIndex > -1) {
+                break;
+            }
+        }
+
+        if (foundIndex > -1) {
+            commandRunnerResponses.remove(foundIndex);
+            return true;
         }
 
         return false;
