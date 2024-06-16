@@ -265,4 +265,8 @@ public class FireClient implements ModInitializer {
 
         return false;
     }
+
+    public static void changedWorld() {
+        commandRunnerResponses.clear();
+    }
 }

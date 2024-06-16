@@ -15,6 +15,7 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.RegistryEntryArgumentType;
 import net.minecraft.item.ItemStack;
@@ -35,6 +36,9 @@ public class FireClientClient implements ClientModInitializer {
     private static KeyBinding customAbility1;
     private static KeyBinding customAbility2;
     private static KeyBinding customAbility3;
+
+    private ClientWorld lastWorld;
+
     @Override
     public void onInitializeClient() {
 
@@ -87,6 +91,12 @@ public class FireClientClient implements ClientModInitializer {
 
         ClientTickEvents.START_WORLD_TICK.register(world -> {
             CommandQueue.tick(); // For some reason CommandQueue must tick here
+            if (lastWorld != MinecraftClient.getInstance().world) {
+                FireClient.LOGGER.info("World load");
+                CommandRunners.LOCATE.changedWorld();
+                FireClient.changedWorld();
+                lastWorld = MinecraftClient.getInstance().world;
+            }
         });
 
 

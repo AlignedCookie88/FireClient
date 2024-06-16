@@ -92,4 +92,9 @@ public class LocateCommandRunner extends CommandRunner {
             ticksUntilReset = 500;
         }
     }
+
+    public void changedWorld() {
+        ticksUntilReset = 500;
+        waitingPlayers.clear();
+    }
 }
