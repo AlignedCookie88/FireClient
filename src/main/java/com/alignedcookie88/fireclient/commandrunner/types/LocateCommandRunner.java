@@ -26,7 +26,7 @@ public class LocateCommandRunner extends CommandRunner {
 
     public LocateCommandRunner() {
         super(new String[] {
-                " *\\n([a-zA-Z0-9_]*) (is|are) currently (playing|coding|building) on:\\n\\n→ (.*) \\[([0-9]*)\\](\\n.*)?\\n→ Owner: ([a-zA-Z0-9_]*) (\\[Whitelisted\\])?\\n→ Server: Node .*\\n *", // Plot
+                " *\\n([a-zA-Z0-9_]*) (is|are) currently (playing|coding|building|existing) on:\\n\\n→ (.*) \\[([0-9]*)\\](\\n.*)?\\n→ Owner: ([a-zA-Z0-9_]*) (\\[Whitelisted\\])?\\n→ Server: Node .*\\n *", // Plot
                 " *\\n([a-zA-Z0-9_]*) (is|are) currently at spawn\\n→ Server: Node .*\\n *" // Spawn
         }, "locate");
     }
