@@ -15,7 +15,7 @@ Dev usage can be found with `/fireclient help`. The config can be accessed with 
 - Freezing the camera
 - Custom GUIs
 - Three custom keybinds that can be bound to plot commands
-- Running python on the client (required permission from players, option to automatically deny)
+- (**DISABLED BY DEFAULT**) Running python on the client (required permission from players)
 
 ## Required mods
 
