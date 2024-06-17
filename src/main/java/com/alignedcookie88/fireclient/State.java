@@ -16,6 +16,8 @@ public class State {
     public static String ability3Fn = null;
 
     public static void reset() {
+        CommandQueue.clearPlotCommands();
+
         canMove = true;
         screen = null;
         pythonExecution = null;

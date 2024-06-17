@@ -77,8 +77,7 @@ public class Utility {
     }
 
     public static void runPlotCommand(String command) {
-        FireClient.LOGGER.info("Running plot command @{}", command);
-        MinecraftClient.getInstance().getNetworkHandler().sendChatMessage("@"+command);
+        CommandQueue.queuePlotCommand(command);
     }
 
     public static Text componentToText(Component component) {
