@@ -107,5 +107,11 @@ public class Config {
                 .setTooltip(Text.literal("If FireClient should show plot IDs in tab."))
                 .setSaveConsumer(newValue -> state.showPlotIDsInTab = newValue)
                 .build());
+
+        visual.addEntry(entryBuilder.startBooleanToggle(Text.literal("Show plot names in tab"), state.showPlotNamesInTab)
+                .setDefaultValue(ConfigState.getDefault().showPlotNamesInTab)
+                .setTooltip(Text.literal("If FireClient should show plot names in tab."))
+                .setSaveConsumer(newValue -> state.showPlotNamesInTab = newValue)
+                .build());
     }
 }

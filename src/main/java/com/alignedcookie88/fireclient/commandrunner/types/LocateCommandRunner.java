@@ -14,6 +14,8 @@ public class LocateCommandRunner extends CommandRunner {
 
     private final Map<String, Integer> plotIDMap = new HashMap<>();
 
+    private final Map<String, String> plotNameMap = new HashMap<>();
+
     private final Map<Integer, Integer> plotColourMap = new HashMap<>();
 
     private final List<String> waitingPlayers = new ArrayList<>();
@@ -35,12 +37,13 @@ public class LocateCommandRunner extends CommandRunner {
     protected void execute(String[] groups) {
 //        Utility.sendStyledMessage("Locate response received: "+ Arrays.toString(groups));
         String username = groups[0];
-        if (username == "You") {
+        if (username.equals("You")) {
             username = MinecraftClient.getInstance().player.getGameProfile().getName();
         }
         if (groups.length > 5) {
             Integer id = Integer.valueOf(groups[4]);
             plotIDMap.put(username, id);
+            plotNameMap.put(username, groups[3]);
         } else {
             plotIDMap.put(username, -1);
         }
@@ -75,14 +78,19 @@ public class LocateCommandRunner extends CommandRunner {
         return Color.HSBtoRGB((float) hue / 360, (float) saturation /100, (float) value /100);
     }
 
-    public int getPlotIDColour(int id) {
+    public int getPlotIDColour(int id, boolean vibrant) {
+        int col;
         if (plotColourMap.containsKey(id)) {
-            return plotColourMap.get(id);
+            col = plotColourMap.get(id);
         } else {
             int colour = generatePastelColour();
             plotColourMap.put(id, colour);
-            return colour;
+            col = colour;
         }
+
+        if (vibrant)
+            return col * 2;
+        return col;
     }
 
     public void tick() {
@@ -96,5 +104,38 @@ public class LocateCommandRunner extends CommandRunner {
     public void changedWorld() {
         ticksUntilReset = 500;
         waitingPlayers.clear();
+    }
+
+    public String getPlotName(String username) {
+        return plotNameMap.getOrDefault(username, null);
+    }
+
+    public String getShortenedPlotName(String username) {
+        String plotName = getPlotName(username);
+        if (plotName == null)
+            return null;
+        String allowedChars = "ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘꞯʀꜱᴛᴜᴠᴡxʏᴢABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz 1234567890";
+        StringBuilder done = new StringBuilder();
+        char prev = ' ';
+
+        int i = 0;
+        int fi = 0;
+        for (char chara : plotName.toCharArray()) {
+            if (allowedChars.contains(String.valueOf(chara))) {
+                if (prev == ' ' && chara == ' ')
+                    continue;
+                prev = chara;
+                done.append(chara);
+                if (i == 15 && fi != plotName.length()-1) {
+                    done = new StringBuilder().append(done.toString().stripTrailing()); // hack to strip trailing whitespace
+                    done.append("...");
+                    break;
+                }
+                i++;
+            }
+            fi++;
+        }
+
+        return done.toString().stripTrailing();
     }
 }

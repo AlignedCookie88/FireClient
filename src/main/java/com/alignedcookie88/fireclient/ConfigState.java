@@ -10,6 +10,8 @@ public class ConfigState {
 
     public boolean showPlotIDsInTab = true;
 
+    public boolean showPlotNamesInTab = true;
+
 
 
     public static ConfigState getDefault() {
