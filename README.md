@@ -10,12 +10,12 @@ Dev usage can be found with `/fireclient help`. The config can be accessed with 
 ### General features
 - Reverting chat tags to the old style
 - Removing VIP tags from messages and `/whois`
+- Showing plot IDs and names in the tab list (separately toggleable)
 
 ### Plot actions
 - Freezing the camera
 - Custom GUIs
 - Three custom keybinds that can be bound to plot commands
-- Showing plot IDs and names in the tab list (separately toggleable)
 - (**DISABLED BY DEFAULT**) Running python on the client (required permission from players)
 
 ## Required mods
