@@ -74,10 +74,10 @@ public class FireClientClient implements ClientModInitializer {
                             Utility.sendStyledMessage("`/fireclient help` to show this message");
                             return 1;
                         }))
-                        .then(ClientCommandManager.literal("screen_editor").executes(context -> {
-                            FireClient.openOnNextTick = new ScreenEditor();
-                            return 1;
-                        }))
+//                        .then(ClientCommandManager.literal("screen_editor").executes(context -> {
+//                            FireClient.openOnNextTick = new ScreenEditor();
+//                            return 1;
+//                        }))
                 )
         );
 

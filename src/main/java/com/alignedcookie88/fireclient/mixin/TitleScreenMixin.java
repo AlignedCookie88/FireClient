@@ -21,13 +21,13 @@ public class TitleScreenMixin extends Screen {
 
     @Inject(method = "init", at = @At("RETURN"))
     public void init(CallbackInfo ci) {
-        this.addDrawableChild(ButtonWidget.builder(Text.literal("Screen Editor"), (button) -> {
-            this.client.setScreen(new ScreenEditor());
-        }).dimensions(3, 3, 100, 20).build());
+//        this.addDrawableChild(ButtonWidget.builder(Text.literal("Screen Editor"), (button) -> {
+//            this.client.setScreen(new ScreenEditor());
+//        }).dimensions(3, 3, 100, 20).build());
 
         this.addDrawableChild(ButtonWidget.builder(Text.literal("FireClient Options"), (button) -> {
             this.client.setScreen(Config.getConfig(this));
-        }).dimensions(3, 26, 100, 20).build());
+        }).dimensions(3, /*26*/3, 100, 20).build());
     }
 
 }

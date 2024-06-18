@@ -3,10 +3,11 @@
   "id": "fireclient",
   "version": "${version}",
   "name": "FireClient",
-  "description": "",
+  "description": "A client-side mod for the DiamondFire server that adds custom play-mode behaviour.",
   "authors": ["AlignedCookie88"],
   "contact": {
-    "repo": "https://github.com/AlignedCookie88/FireClient"
+    "repo": "https://github.com/AlignedCookie88/FireClient",
+    "issues": "https://github.com/AlignedCookie88/FireClient"
   },
   "license": "MIT",
   "icon": "assets/fireclient/textures/icon.png",
@@ -30,7 +31,8 @@
     "fabric": "*",
     "minecraft": "${minecraft_version}",
     "cloth-config": ">=13.0.121",
-    "fabric-key-binding-api-v1": "*"
+    "fabric-key-binding-api-v1": "*",
+    "imguimc": "*"
   },
   "accessWidener" : "fireclient.accesswidener",
   "suggests": {
