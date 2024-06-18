@@ -14,6 +14,8 @@ public class ConfigState {
 
     public boolean showPlotWhitelistedInTab = true;
 
+    public boolean showModeInTab = true;
+
 
 
     public static ConfigState getDefault() {

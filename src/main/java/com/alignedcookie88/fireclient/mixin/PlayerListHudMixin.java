@@ -3,14 +3,18 @@ package com.alignedcookie88.fireclient.mixin;
 import com.alignedcookie88.fireclient.Config;
 import com.alignedcookie88.fireclient.FireClient;
 import com.alignedcookie88.fireclient.commandrunner.CommandRunners;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.PlayerListHud;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerListHud.class)
@@ -61,7 +65,26 @@ public class PlayerListHudMixin {
                 }
             }
 
+            if (Config.state.showModeInTab)
+                modified.append("   "); // Make room for the mode indicator
+
             cir.setReturnValue(modified);
+        }
+    }
+
+    @Inject(method = "renderLatencyIcon", at = @At("TAIL"))
+    public void renderLatencyIcon(DrawContext context, int width, int x, int y, PlayerListEntry entry, CallbackInfo ci) {
+        if (Config.state.showModeInTab)
+            renderModeIcon(context, width, x, y, entry);
+    }
+
+
+
+    @Unique
+    private void renderModeIcon(DrawContext context, int width, int x, int y, PlayerListEntry entry) {
+        Identifier modeIcon = CommandRunners.LOCATE.getPlayerModeIcon(entry.getProfile().getName());
+        if (modeIcon != null) {
+            context.drawTexture(modeIcon, x + width - 22, y, 0, 0, 10, 8, 10, 8);
         }
     }
 

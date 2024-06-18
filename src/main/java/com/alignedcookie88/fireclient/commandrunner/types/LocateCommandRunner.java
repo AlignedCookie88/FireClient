@@ -5,6 +5,7 @@ import com.alignedcookie88.fireclient.Utility;
 import com.alignedcookie88.fireclient.commandrunner.CommandRunner;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.util.Identifier;
 
 import java.awt.*;
 import java.util.*;
@@ -17,6 +18,8 @@ public class LocateCommandRunner extends CommandRunner {
     private final Map<String, String> plotNameMap = new HashMap<>();
 
     private final Map<String, Boolean> whitelistedMap = new HashMap<>();
+
+    private final Map<String, String> modeMap = new HashMap<>();
 
     private final Map<Integer, Integer> plotColourMap = new HashMap<>();
 
@@ -51,9 +54,11 @@ public class LocateCommandRunner extends CommandRunner {
             } else {
                 whitelistedMap.put(username, true);
             }
+            modeMap.put(username, groups[2]);
         } else {
             plotIDMap.put(username, -1);
             whitelistedMap.put(username, false);
+            modeMap.put(username, null);
         }
         waitingPlayers.remove(username);
         donePlayers.add(username);
@@ -149,5 +154,16 @@ public class LocateCommandRunner extends CommandRunner {
 
     public boolean isPlayerOnWhitelistedPlot(String username) {
         return whitelistedMap.getOrDefault(username, false);
+    }
+
+    public String getPlayerMode(String username) {
+        return modeMap.getOrDefault(username, null);
+    }
+
+    public Identifier getPlayerModeIcon(String username) {
+        String mode = getPlayerMode(username);
+        if (mode == null) return null;
+
+        return new Identifier("fireclient", "textures/mode/"+mode+".png");
     }
 }

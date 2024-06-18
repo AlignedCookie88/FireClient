@@ -119,5 +119,11 @@ public class Config {
                 .setTooltip(Text.literal("If FireClient should show whether the player is on a whitelisted plot in tab."))
                 .setSaveConsumer(newValue -> state.showPlotWhitelistedInTab = newValue)
                 .build());
+
+        visual.addEntry(entryBuilder.startBooleanToggle(Text.literal("Show player's mode in tab"), state.showModeInTab)
+                .setDefaultValue(ConfigState.getDefault().showModeInTab)
+                .setTooltip(Text.literal("If FireClient should show player modes in tab."))
+                .setSaveConsumer(newValue -> state.showModeInTab = newValue)
+                .build());
     }
 }
