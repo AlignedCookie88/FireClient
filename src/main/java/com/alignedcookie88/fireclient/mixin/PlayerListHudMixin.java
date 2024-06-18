@@ -49,6 +49,18 @@ public class PlayerListHudMixin {
                 }
             }
 
+            // add whitelisted tag to end
+            if (Config.state.showPlotWhitelistedInTab) {
+                boolean whitelisted = CommandRunners.LOCATE.isPlayerOnWhitelistedPlot(entry.getProfile().getName());
+                if (whitelisted) {
+                    modified.append(
+                            Text.literal(" [").formatted(Formatting.DARK_GRAY)
+                                    .append(Text.literal("W").formatted(Formatting.GRAY))
+                                    .append(Text.literal("]").formatted(Formatting.DARK_GRAY))
+                    );
+                }
+            }
+
             cir.setReturnValue(modified);
         }
     }

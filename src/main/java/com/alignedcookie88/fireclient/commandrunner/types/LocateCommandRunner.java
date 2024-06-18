@@ -16,6 +16,8 @@ public class LocateCommandRunner extends CommandRunner {
 
     private final Map<String, String> plotNameMap = new HashMap<>();
 
+    private final Map<String, Boolean> whitelistedMap = new HashMap<>();
+
     private final Map<Integer, Integer> plotColourMap = new HashMap<>();
 
     private final List<String> waitingPlayers = new ArrayList<>();
@@ -44,8 +46,14 @@ public class LocateCommandRunner extends CommandRunner {
             Integer id = Integer.valueOf(groups[4]);
             plotIDMap.put(username, id);
             plotNameMap.put(username, groups[3]);
+            if (groups[7] == null) {
+                whitelistedMap.put(username, false);
+            } else {
+                whitelistedMap.put(username, true);
+            }
         } else {
             plotIDMap.put(username, -1);
+            whitelistedMap.put(username, false);
         }
         waitingPlayers.remove(username);
         donePlayers.add(username);
@@ -114,7 +122,7 @@ public class LocateCommandRunner extends CommandRunner {
         String plotName = getPlotName(username);
         if (plotName == null)
             return null;
-        String allowedChars = "ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘꞯʀꜱᴛᴜᴠᴡxʏᴢABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz 1234567890";
+        String allowedChars = "ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘꞯʀꜱᴛᴜᴠᴡxʏᴢABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz 1234567890ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ'";
         StringBuilder done = new StringBuilder();
         char prev = ' ';
 
@@ -137,5 +145,9 @@ public class LocateCommandRunner extends CommandRunner {
         }
 
         return done.toString().stripTrailing();
+    }
+
+    public boolean isPlayerOnWhitelistedPlot(String username) {
+        return whitelistedMap.getOrDefault(username, false);
     }
 }

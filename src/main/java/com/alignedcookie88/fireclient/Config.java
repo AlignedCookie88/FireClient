@@ -113,5 +113,11 @@ public class Config {
                 .setTooltip(Text.literal("If FireClient should show plot names in tab."))
                 .setSaveConsumer(newValue -> state.showPlotNamesInTab = newValue)
                 .build());
+
+        visual.addEntry(entryBuilder.startBooleanToggle(Text.literal("Show player's current plot whitelisted state in tab"), state.showPlotWhitelistedInTab)
+                .setDefaultValue(ConfigState.getDefault().showPlotWhitelistedInTab)
+                .setTooltip(Text.literal("If FireClient should show whether the player is on a whitelisted plot in tab."))
+                .setSaveConsumer(newValue -> state.showPlotWhitelistedInTab = newValue)
+                .build());
     }
 }
