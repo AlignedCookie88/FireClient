@@ -83,7 +83,7 @@ public class FireClient implements ModInitializer {
             LOGGER.error("Error during general packet modification.", e);
         }
 
-        if (name.equals("OverlayMessageS2CPacket")) {
+        if (packet instanceof OverlayMessageS2CPacket) {
             return handleActionBarUpdate((OverlayMessageS2CPacket) packet);
         }
 
