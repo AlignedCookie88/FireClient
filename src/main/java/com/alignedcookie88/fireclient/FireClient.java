@@ -35,7 +35,7 @@ public class FireClient implements ModInitializer {
 
     public static Logger LOGGER = LoggerFactory.getLogger("FireClient");
 
-    public static String version = "1.0.0";
+    public static String version = FabricLoader.getInstance().getModContainer("fireclient").get().getMetadata().getVersion().getFriendlyString();
 
     public static Identifier functionRegistryIdentifier = new Identifier("fireclient", "functions");
 
