@@ -84,6 +84,12 @@ public class Config {
                 .setTooltip(Text.literal("Enabling this option will automatically block plots from running client-side Python code, instead of asking for your consent every time."))
                 .setSaveConsumer(newValue -> state.alwaysBlockPython = newValue)
                 .build());
+
+        general.addEntry(entryBuilder.startBooleanToggle(Text.literal("Log function calls"), state.logFunctionCalls)
+                .setDefaultValue(ConfigState.getDefault().logFunctionCalls)
+                .setTooltip(Text.literal("May cause alot of log spam with some plots, mainly for debug use."))
+                .setSaveConsumer(newValue -> state.logFunctionCalls = newValue)
+                .build());
     }
 
     private static void createVisualCategory(ConfigBuilder builder) {

@@ -17,6 +17,9 @@ public class ConfigState {
     public boolean showModeInTab = true;
 
 
+    public boolean logFunctionCalls = false;
+
+
 
     public static ConfigState getDefault() {
         return new ConfigState();

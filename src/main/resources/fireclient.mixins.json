@@ -13,6 +13,7 @@
     "EntityMixin",
     "EntityRendererMixin",
     "GameRendererMixin",
+    "InGameHudMixin",
     "PlayerListHudMixin",
     "SignBlockEntityMixin",
     "TitleScreenMixin"

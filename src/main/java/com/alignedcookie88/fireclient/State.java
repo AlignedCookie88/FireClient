@@ -1,6 +1,11 @@
 package com.alignedcookie88.fireclient;
 
 
+import com.alignedcookie88.fireclient.hud.HudElement;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class State {
 
     public static boolean canMove = true;
@@ -15,6 +20,8 @@ public class State {
 
     public static String ability3Fn = null;
 
+    public static List<HudElement> hud = new ArrayList<>();
+
     public static void reset() {
         CommandQueue.clearPlotCommands();
 
@@ -24,6 +31,8 @@ public class State {
         ability1Fn = null;
         ability2Fn = null;
         ability3Fn = null;
+
+        hud = new ArrayList<>();
 
         if (Config.state.alwaysBlockPython)
             pythonExecution = false;
