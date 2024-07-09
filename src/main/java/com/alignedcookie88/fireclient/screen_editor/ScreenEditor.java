@@ -1,6 +1,7 @@
 package com.alignedcookie88.fireclient.screen_editor;
 
 import com.alignedcookie88.fireclient.State;
+import com.alignedcookie88.fireclient.UIUtility;
 import com.alignedcookie88.fireclient.Utility;
 import imgui.ImGui;
 import imgui.type.ImInt;
@@ -134,7 +135,7 @@ public class ScreenEditor extends ImGuiScreen {
 
         this.renderBackground(context, mouseX, mouseY, delta);
 
-        drawNineSlicedTexture(context, screenBg, (width/2) - (swidth/2), (height/2) - (sheight/2), (width/2) + (swidth/2), (height/2) + (sheight/2));
+        UIUtility.drawNineSlicedTexture(context, screenBg, (width/2) - (swidth/2), (height/2) - (sheight/2), (width/2) + (swidth/2), (height/2) + (sheight/2));
 
         Iterator var5 = this.drawables.iterator();
 
@@ -142,21 +143,6 @@ public class ScreenEditor extends ImGuiScreen {
             Drawable drawable = (Drawable)var5.next();
             drawable.render(context, mouseX, mouseY, delta);
         }
-    }
-
-    private void drawNineSlicedTexture(DrawContext context, Identifier texture, int x1, int y1, int x2, int y2) {
-        // Corners
-        context.drawTexture(texture, x1, y1, 0, 0, 4, 4, 32, 32);
-        context.drawTexture(texture, x2-4, y1, 28, 0, 4, 4, 32, 32);
-        context.drawTexture(texture, x2-4, y2-4, 28, 28, 4, 4, 32, 32);
-        context.drawTexture(texture, x1, y2-4, 0, 28, 4, 4, 32, 32);
-        // Edges
-        context.drawTexture(texture, x1+4, y1, x2-x1-8, 4, 4, 0, 24, 4, 32, 32);
-        context.drawTexture(texture, x1+4, y2-4, x2-x1-8, 4, 4, 28, 24, 4, 32, 32);
-        context.drawTexture(texture, x1, y1+4, 4, y2-y1-8, 0, 4, 4, 24, 32, 32);
-        context.drawTexture(texture, x2-4, y1+4, 4, y2-y1-8, 28, 4, 4, 24, 32, 32);
-        // Center
-        context.drawTexture(texture, x1+4, y1+4, x2-x1-8, y2-y1-8, 4, 4, 24, 24, 32, 32);
     }
 
     protected <T extends Element & Drawable & Selectable> T addDrawableChild(T drawableElement) {
