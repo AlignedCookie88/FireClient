@@ -6,6 +6,8 @@ import com.alignedcookie88.fireclient.serialisation.DFBlock;
 import com.alignedcookie88.fireclient.serialisation.blocks.SetVariableBlock;
 import com.alignedcookie88.fireclient.serialisation.variables.Variable;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,5 +47,10 @@ public class MiniMessageArgument implements FireArgument {
         );
         blocks.add(setVariableBlock);
         return blocks;
+    }
+
+    @Override
+    public Text getName() {
+        return Text.literal("Text").formatted(Formatting.DARK_GREEN);
     }
 }

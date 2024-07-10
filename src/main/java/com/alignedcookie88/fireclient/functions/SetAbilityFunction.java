@@ -41,4 +41,9 @@ public class SetAbilityFunction implements FireFunction {
             State.ability3Fn = functionToCall;
         else Utility.sendStyledMessage(String.format("The plot tried to register ability %d. Only abilities 1, 2 and 3 are valid.", abilityId));
     }
+
+    @Override
+    public String getDescription() {
+        return "Binds a command to an ability key.";
+    }
 }

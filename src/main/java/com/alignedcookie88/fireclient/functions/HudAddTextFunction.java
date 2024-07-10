@@ -22,7 +22,7 @@ public class HudAddTextFunction implements FireFunction {
 
     @Override
     public String getName() {
-        return "HUDAddText";
+        return "HUD Add Text";
     }
 
     @Override
@@ -49,5 +49,10 @@ public class HudAddTextFunction implements FireFunction {
         State.hud.add(
                 new TextHudElement(id, x, y, x_offset, y_offset, text)
         );
+    }
+
+    @Override
+    public String getDescription() {
+        return "Adds text to the player's HUD. x,y are 0-1";
     }
 }

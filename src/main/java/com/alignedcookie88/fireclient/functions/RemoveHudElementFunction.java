@@ -17,7 +17,7 @@ public class RemoveHudElementFunction implements FireFunction {
 
     @Override
     public String getName() {
-        return "RemoveHudElement";
+        return "Remove HUD Element";
     }
 
     @Override
@@ -42,5 +42,10 @@ public class RemoveHudElementFunction implements FireFunction {
         if (to_remove == -1)
             return;
         State.hud.remove(i);
+    }
+
+    @Override
+    public String getDescription() {
+        return "Removes a HUD element previously added.";
     }
 }

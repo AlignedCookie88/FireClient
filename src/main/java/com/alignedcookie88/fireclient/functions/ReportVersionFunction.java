@@ -32,4 +32,9 @@ public class ReportVersionFunction implements FireFunction {
         Integer secret = (Integer) providedArguments[0];
         Utility.runPlotCommand(String.format("fireclient %d %s", secret, FireClient.version));
     }
+
+    @Override
+    public String getDescription() {
+        return "Runs @fireclient <secret> <version>";
+    }
 }

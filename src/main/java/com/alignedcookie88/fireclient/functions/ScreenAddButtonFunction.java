@@ -46,4 +46,9 @@ public class ScreenAddButtonFunction implements FireFunction {
             State.screen.addButton(button_text, x, y, width, height, click_command);
         }
     }
+
+    @Override
+    public String getDescription() {
+        return "Adds a button to a custom screen.";
+    }
 }

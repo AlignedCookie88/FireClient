@@ -1,5 +1,6 @@
 package com.alignedcookie88.fireclient.functions;
 
+import com.alignedcookie88.fireclient.Config;
 import com.alignedcookie88.fireclient.FireArgument;
 import com.alignedcookie88.fireclient.FireFunction;
 import com.alignedcookie88.fireclient.State;
@@ -46,5 +47,15 @@ public class ExecutePythonFunction implements FireFunction {
             PythonInterpreter interpreter = new PythonInterpreter();
             interpreter.exec(code);
         }
+    }
+
+    @Override
+    public String getDescription() {
+        return "Executes python on the client.";
+    }
+
+    @Override
+    public boolean hidden() {
+        return Config.state.alwaysBlockPython;
     }
 }

@@ -2,6 +2,7 @@ package com.alignedcookie88.fireclient;
 
 import com.alignedcookie88.fireclient.serialisation.DFBlock;
 import com.alignedcookie88.fireclient.serialisation.variables.Variable;
+import net.minecraft.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,4 +17,6 @@ public interface FireArgument {
     public default List<DFBlock> getFormattingBlocks(Variable var) {
         return new ArrayList<>();
     }
+
+    Text getName();
 }

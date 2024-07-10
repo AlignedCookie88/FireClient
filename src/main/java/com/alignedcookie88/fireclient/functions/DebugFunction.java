@@ -33,4 +33,9 @@ public class DebugFunction implements FireFunction {
         Component value = (Component) providedArguments[0];
         Utility.sendMessage(Text.literal("DEBUG: ").append(Utility.componentToText(value)));
     }
+
+    @Override
+    public boolean hidden() {
+        return true;
+    }
 }

@@ -27,4 +27,9 @@ public class EnableMovementFunction implements FireFunction {
     public void execute(Object[] providedArguments) {
         State.canMove = true;
     }
+
+    @Override
+    public String getDescription() {
+        return "Enable the player's character controls.";
+    }
 }

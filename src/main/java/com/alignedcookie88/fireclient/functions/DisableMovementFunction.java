@@ -27,4 +27,9 @@ public class DisableMovementFunction implements FireFunction {
     public void execute(Object[] providedArguments) {
         State.canMove = false;
     }
+
+    @Override
+    public String getDescription() {
+        return "Disables the player's character controls.";
+    }
 }

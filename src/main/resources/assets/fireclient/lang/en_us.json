@@ -2,5 +2,6 @@
   "category.fireclient.keys": "FireClient",
   "key.fireclient.custom1": "Ability 1",
   "key.fireclient.custom2": "Ability 2",
-  "key.fireclient.custom3": "Ability 3"
+  "key.fireclient.custom3": "Ability 3",
+  "key.fireclient.open_functions": "Open Functions Screen"
 }

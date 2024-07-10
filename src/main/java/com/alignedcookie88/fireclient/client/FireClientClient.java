@@ -2,7 +2,7 @@ package com.alignedcookie88.fireclient.client;
 
 import com.alignedcookie88.fireclient.*;
 import com.alignedcookie88.fireclient.commandrunner.CommandRunners;
-import com.alignedcookie88.fireclient.screen_editor.ScreenEditor;
+import com.alignedcookie88.fireclient.functions_screen.FunctionsScreen;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.Dynamic3CommandExceptionType;
@@ -36,6 +36,7 @@ public class FireClientClient implements ClientModInitializer {
     private static KeyBinding customAbility1;
     private static KeyBinding customAbility2;
     private static KeyBinding customAbility3;
+    private static KeyBinding openFunctionsScreen;
 
     private ClientWorld lastWorld;
 
@@ -74,6 +75,10 @@ public class FireClientClient implements ClientModInitializer {
                             Utility.sendStyledMessage("`/fireclient help` to show this message");
                             return 1;
                         }))
+                                .then(ClientCommandManager.literal("functions").executes(context -> {
+                                    FireClient.openOnNextTick = new FunctionsScreen();
+                                    return 1;
+                                }))
 //                        .then(ClientCommandManager.literal("screen_editor").executes(context -> {
 //                            FireClient.openOnNextTick = new ScreenEditor();
 //                            return 1;
@@ -122,6 +127,14 @@ public class FireClientClient implements ClientModInitializer {
                 GLFW.GLFW_MOUSE_BUTTON_5, // The keycode of the key
                 "category.fireclient.keys" // The translation key of the keybinding's category.
         ));
+
+
+        openFunctionsScreen = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                "key.fireclient.open_functions", // The translation key of the keybinding's name
+                InputUtil.Type.KEYSYM, // The type of the keybinding, KEYSYM for keyboard, MOUSE for mouse.
+                GLFW.GLFW_KEY_HOME, // The keycode of the key
+                "category.fireclient.keys" // The translation key of the keybinding's category.
+        ));
     }
 
     public static <T> RegistryEntry.Reference<T> getRegistryEntry(CommandContext<FabricClientCommandSource> context, String name, RegistryKey<Registry<T>> registryRef) throws CommandSyntaxException {
@@ -149,6 +162,9 @@ public class FireClientClient implements ClientModInitializer {
             if (State.ability3Fn != null) {
                 Utility.runPlotCommand(State.ability3Fn);
             }
+        }
+        while (openFunctionsScreen.wasPressed()) {
+            MinecraftClient.getInstance().setScreen(new FunctionsScreen());
         }
     }
 }

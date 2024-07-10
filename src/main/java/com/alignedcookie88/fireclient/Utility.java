@@ -145,4 +145,9 @@ public class Utility {
         miniMessage = miniMessage.replace(code_start+"R", "<reset>");
         return miniMessage;
     }
+
+    public static boolean isCreative() {
+        ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        return player != null && player.isCreative();
+    }
 }
