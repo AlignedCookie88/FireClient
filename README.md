@@ -3,7 +3,8 @@
 A client-side mod for the DiamondFire server that adds custom play-mode behaviour.
 
 ## Usage
-Dev usage can be found with `/fireclient help`. The config can be accessed with `/fireclient config` or with Mod Menu.
+Press `HOME` to open the function list.
+The config can be accessed with `/fireclient config` or Mod Menu.
 
 ## Features
 
