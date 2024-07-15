@@ -24,11 +24,11 @@ public abstract class PositionalHudElement implements HudElement {
     }
 
     protected int getX(int screen_width, int element_width) {
-        return (int) ((x * screen_width) + xo + (x * element_width));
+        return (int) ((x * screen_width) + xo - (x * element_width));
     }
 
     protected int getY(int screen_height, int element_height) {
-        return (int) ((y * screen_height) + yo + (y * element_height));
+        return (int) ((y * screen_height) + yo - (y * element_height));
     }
 
     @Override
