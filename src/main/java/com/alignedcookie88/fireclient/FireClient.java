@@ -73,6 +73,8 @@ public class FireClient implements ModInitializer {
         Registry.register(functionRegistry, new Identifier("fireclient", "set_ability"), new SetAbilityFunction());
         Registry.register(functionRegistry, new Identifier("fireclient", "hud_add_text"), new HudAddTextFunction());
         Registry.register(functionRegistry, new Identifier("fireclient", "remove_hud_element"), new RemoveHudElementFunction());
+        Registry.register(functionRegistry, new Identifier("fireclient", "hud_add_bar"), new HudAddBarFunction());
+        Registry.register(functionRegistry, new Identifier("fireclient", "hud_set_bar_progress"), new HudSetBarProgressFunction());
 
     }
 
@@ -214,7 +216,7 @@ public class FireClient implements ModInitializer {
     public static void tick() {
         isProcessingCommands = true;
         for (String command : commandQueue) {
-            if (ConfigState.getDefault().logFunctionCalls)
+            if (Config.state.logFunctionCalls)
                 LOGGER.info("Handling command {}", command);
             try {
                 handleCommand(command);
