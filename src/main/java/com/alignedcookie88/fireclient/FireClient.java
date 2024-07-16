@@ -63,19 +63,23 @@ public class FireClient implements ModInitializer {
         State.reset();
 
         // Register functions
-        Registry.register(functionRegistry, new Identifier("fireclient", "debug"), new DebugFunction());
-        Registry.register(functionRegistry, new Identifier("fireclient", "disable_movement"), new DisableMovementFunction());
-        Registry.register(functionRegistry, new Identifier("fireclient", "enable_movement"), new EnableMovementFunction());
-        Registry.register(functionRegistry, new Identifier("fireclient", "open_screen"), new OpenScreenFunction());
-        Registry.register(functionRegistry, new Identifier("fireclient", "screen_add_button"), new ScreenAddButtonFunction());
-        Registry.register(functionRegistry, new Identifier("fireclient", "report_version"), new ReportVersionFunction());
-        Registry.register(functionRegistry, new Identifier("fireclient", "execute_python"), new ExecutePythonFunction());
-        Registry.register(functionRegistry, new Identifier("fireclient", "set_ability"), new SetAbilityFunction());
-        Registry.register(functionRegistry, new Identifier("fireclient", "hud_add_text"), new HudAddTextFunction());
-        Registry.register(functionRegistry, new Identifier("fireclient", "remove_hud_element"), new RemoveHudElementFunction());
-        Registry.register(functionRegistry, new Identifier("fireclient", "hud_add_bar"), new HudAddBarFunction());
-        Registry.register(functionRegistry, new Identifier("fireclient", "hud_set_bar_progress"), new HudSetBarProgressFunction());
+        registerFunction(new DebugFunction());
+        registerFunction(new DisableMovementFunction());
+        registerFunction(new EnableMovementFunction());
+        registerFunction(new OpenScreenFunction());
+        registerFunction(new ScreenAddButtonFunction());
+        registerFunction(new ReportVersionFunction());
+        registerFunction(new ExecutePythonFunction());
+        registerFunction(new SetAbilityFunction());
+        registerFunction(new HudAddTextFunction());
+        registerFunction(new RemoveHudElementFunction());
+        registerFunction(new HudAddBarFunction());
+        registerFunction(new HudSetBarProgressFunction());
 
+    }
+
+    private static void registerFunction(FireFunction function) {
+        Registry.register(functionRegistry, new Identifier("fireclient", function.getID()), function);
     }
 
     public static <T extends PacketListener> boolean handlePacket(Packet<T> packet) {
