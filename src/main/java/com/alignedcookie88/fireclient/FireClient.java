@@ -290,4 +290,8 @@ public class FireClient implements ModInitializer {
     public static void changedWorld() {
         commandRunnerResponses.clear();
     }
+
+    public static boolean isCodeClientIntegrationEnabled() {
+        return codeClientIntegration;
+    }
 }

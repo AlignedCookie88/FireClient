@@ -10,4 +10,8 @@ public class CodeClientIntegration {
         }
     }
 
+    public static boolean onPlot() {
+        return CodeClient.location.name() != "spawn";
+    }
+
 }

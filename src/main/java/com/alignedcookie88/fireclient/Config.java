@@ -90,6 +90,13 @@ public class Config {
                 .setTooltip(Text.literal("May cause alot of log spam with some plots, mainly for debug use."))
                 .setSaveConsumer(newValue -> state.logFunctionCalls = newValue)
                 .build());
+
+        general.addEntry(entryBuilder.startBooleanToggle(Text.literal("Leave Plot button in game menu"), state.showLeavePlotInGameMenu)
+                .setDefaultValue(ConfigState.getDefault().showLeavePlotInGameMenu)
+                .setTooltip(Text.literal("Adds a Leave Plot button to the game menu. Requires CodeClient to be installed."))
+                .setSaveConsumer(newValue -> state.showLeavePlotInGameMenu = newValue)
+                .setDisplayRequirement(FireClient::isCodeClientIntegrationEnabled)
+                .build());
     }
 
     private static void createVisualCategory(ConfigBuilder builder) {

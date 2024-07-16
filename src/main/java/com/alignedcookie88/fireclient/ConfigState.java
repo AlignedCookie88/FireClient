@@ -19,6 +19,8 @@ public class ConfigState {
 
     public boolean logFunctionCalls = false;
 
+    public boolean showLeavePlotInGameMenu = true;
+
 
 
     public static ConfigState getDefault() {

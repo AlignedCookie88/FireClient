@@ -12,6 +12,7 @@
     "ClientPlayerEntityMixin",
     "EntityMixin",
     "EntityRendererMixin",
+    "GameMenuScreenMixin",
     "GameRendererMixin",
     "InGameHudMixin",
     "PlayerListHudMixin",
