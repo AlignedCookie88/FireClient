@@ -15,9 +15,9 @@
     "GameMenuScreenMixin",
     "GameRendererMixin",
     "InGameHudMixin",
+    "OptionsScreenMixin",
     "PlayerListHudMixin",
-    "SignBlockEntityMixin",
-    "TitleScreenMixin"
+    "SignBlockEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
