@@ -97,6 +97,14 @@ public class Config {
                 .setSaveConsumer(newValue -> state.showLeavePlotInGameMenu = newValue)
                 .setDisplayRequirement(FireClient::isCodeClientIntegrationEnabled)
                 .build());
+
+        general.addEntry(entryBuilder.startFloatField(Text.literal("Screen safe area (%)"), state.screenSafeArea * 100)
+                .setDefaultValue(ConfigState.getDefault().screenSafeArea * 100)
+                .setTooltip(Text.literal("Sets the area where custom HUD will be shown."))
+                .setSaveConsumer(newValue -> state.screenSafeArea = newValue / 100)
+                .setMin(75.0F)
+                .setMax(100.0F)
+                .build());
     }
 
     private static void createVisualCategory(ConfigBuilder builder) {

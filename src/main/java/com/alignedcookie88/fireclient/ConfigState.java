@@ -21,6 +21,8 @@ public class ConfigState {
 
     public boolean showLeavePlotInGameMenu = true;
 
+    public float screenSafeArea = 1.0F;
+
 
 
     public static ConfigState getDefault() {
