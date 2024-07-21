@@ -7,6 +7,7 @@ import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.TextWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.apache.commons.compress.utils.Lists;
@@ -109,5 +110,13 @@ public class CustomScreen extends Screen {
         this.addDrawableChild(ButtonWidget.builder(Utility.componentToText(text), (button) -> {
             Utility.runPlotCommand(click_command);
         }).dimensions(lx, ly, bwidth, bheight).build());
+    }
+
+    public void addText(Component text, int x, int y) {
+        int lx = localifyX(x);
+        int ly = localifyY(y);
+        Text text1 = Utility.componentToText(text);
+        int width = this.textRenderer.getWidth(text1);
+        this.addDrawableChild(new TextWidget(lx, ly, width, 10, text1, this.textRenderer));
     }
 }
