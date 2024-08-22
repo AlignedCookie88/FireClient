@@ -76,6 +76,7 @@ public class FireClient implements ModInitializer {
         registerFunction(new HudAddBarFunction());
         registerFunction(new HudSetBarProgressFunction());
         registerFunction(new ScreenAddTextFunction());
+        registerFunction(new UsePlotCommandsForChatFunction());
 
     }
 

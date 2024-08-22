@@ -2,6 +2,7 @@ package com.alignedcookie88.fireclient.mixin;
 
 import com.alignedcookie88.fireclient.CommandQueue;
 import com.alignedcookie88.fireclient.State;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.Screen;
@@ -29,8 +30,15 @@ public class ChatScreenMixin extends Screen {
         }
     }
 
-    @Inject(method = "sendMessage", at = @At("HEAD"))
+    @Inject(method = "sendMessage", at = @At("HEAD"), cancellable = true)
     public void sendMessage(String chatText, boolean addToHistory, CallbackInfoReturnable<Boolean> cir) {
+        if (State.plotCommandsForChat && !(chatText.startsWith("/") || chatText.startsWith("@"))) {
+            CommandQueue.queuePlotCommand(chatText);
+            MinecraftClient.getInstance().setScreen(null);
+            cir.cancel();
+            return;
+        }
+
         String[] reset_messages = new String[] {"/spawn", "/s", "/leave"};
         if (Arrays.stream(reset_messages).anyMatch(chatText::equalsIgnoreCase)) {
             State.reset();

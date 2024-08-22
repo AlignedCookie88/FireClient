@@ -22,6 +22,8 @@ public class State {
 
     public static List<HudElement> hud = new ArrayList<>();
 
+    public static boolean plotCommandsForChat = false;
+
     public static void reset() {
         CommandQueue.clearPlotCommands();
 
@@ -31,6 +33,7 @@ public class State {
         ability1Fn = null;
         ability2Fn = null;
         ability3Fn = null;
+        plotCommandsForChat = false;
 
         hud = new ArrayList<>();
 
