@@ -3,6 +3,9 @@ package com.alignedcookie88.fireclient.client;
 import com.alignedcookie88.fireclient.*;
 import com.alignedcookie88.fireclient.commandrunner.CommandRunners;
 import com.alignedcookie88.fireclient.functions_screen.FunctionsScreen;
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.Dynamic3CommandExceptionType;
@@ -13,6 +16,7 @@ import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientCommandSource;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.world.ClientWorld;
@@ -54,36 +58,35 @@ public class FireClientClient implements ClientModInitializer {
 //                )
 //        );
 
-        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) ->
-                dispatcher.register(ClientCommandManager.literal("fireclient")
-                        .then(ClientCommandManager.literal("config").executes(context -> {
-                            FireClient.LOGGER.info("Opening config screen");
-                            FireClient.openOnNextTick = Config.getConfig(null);
-                            return 1;
-                        }))
-                        .then(ClientCommandManager.literal("get_function").then(ClientCommandManager.argument("function", RegistryEntryArgumentType.registryEntry(CommandRegistryAccess.of(DynamicRegistryManager.of(Registries.REGISTRIES), FeatureSet.empty()), FireClient.functionRegistry.getKey())).executes(context -> {
-                            FireFunction fireFunction = (FireFunction) getRegistryEntry(context, "function", RegistryKey.ofRegistry(FireClient.functionRegistryIdentifier)).value();
-                            ItemStack stack = FireFunctionSerialiser.serialiseFunction(fireFunction);
-                            Utility.giveItem(stack);
-                            return 1;
-                        })))
-                        .then(ClientCommandManager.literal("help").executes(context -> {
-                            Utility.sendStyledMessage("FireClient help");
-                            Utility.sendStyledMessage("===============");
-                            Utility.sendStyledMessage("`/fireclient config` to access the config");
-                            Utility.sendStyledMessage("`/fireclient get_function <function>` to get a template for a client function");
-                            Utility.sendStyledMessage("`/fireclient help` to show this message");
-                            return 1;
-                        }))
-                                .then(ClientCommandManager.literal("functions").executes(context -> {
-                                    FireClient.openOnNextTick = new FunctionsScreen();
-                                    return 1;
-                                }))
-//                        .then(ClientCommandManager.literal("screen_editor").executes(context -> {
-//                            FireClient.openOnNextTick = new ScreenEditor();
-//                            return 1;
-//                        }))
-                )
+        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
+                    dispatcher.register(ClientCommandManager.literal("fireclient")
+                            .then(ClientCommandManager.literal("config").executes(context -> {
+                                FireClient.LOGGER.info("Opening config screen");
+                                FireClient.openOnNextTick = Config.getConfig(null);
+                                return 1;
+                            }))
+                            .then(ClientCommandManager.literal("get_function").then(ClientCommandManager.argument("function", RegistryEntryArgumentType.registryEntry(CommandRegistryAccess.of(DynamicRegistryManager.of(Registries.REGISTRIES), FeatureSet.empty()), FireClient.functionRegistry.getKey())).executes(context -> {
+                                FireFunction fireFunction = (FireFunction) getRegistryEntry(context, "function", RegistryKey.ofRegistry(FireClient.functionRegistryIdentifier)).value();
+                                ItemStack stack = FireFunctionSerialiser.serialiseFunction(fireFunction);
+                                Utility.giveItem(stack);
+                                return 1;
+                            })))
+                            .then(ClientCommandManager.literal("help").executes(context -> {
+                                Utility.sendStyledMessage("FireClient help");
+                                Utility.sendStyledMessage("===============");
+                                Utility.sendStyledMessage("`/fireclient config` to access the config");
+                                Utility.sendStyledMessage("`/fireclient get_function <function>` to get a template for a client function");
+                                Utility.sendStyledMessage("`/fireclient help` to show this message");
+                                return 1;
+                            }))
+                            .then(ClientCommandManager.literal("functions").executes(context -> {
+                                FireClient.openOnNextTick = new FunctionsScreen();
+                                return 1;
+                            }))
+                    );
+
+                    registerAliases(dispatcher);
+                }
         );
 
         ClientTickEvents.START_CLIENT_TICK.register(client -> {
@@ -166,5 +169,36 @@ public class FireClientClient implements ClientModInitializer {
         while (openFunctionsScreen.wasPressed()) {
             MinecraftClient.getInstance().setScreen(new FunctionsScreen());
         }
+    }
+
+    private static void registerAliases(CommandDispatcher<FabricClientCommandSource> dispatcher) {
+        // Spelling
+        registerAlias(dispatcher, "colours", "colors");
+
+        // Funnies
+        registerAlias(dispatcher, "bigvote", "boost");
+        registerAlias(dispatcher, "smallboost", "vote");
+
+        // Nodes
+        registerNodeAlias(dispatcher, "node1");
+        registerNodeAlias(dispatcher, "node2");
+        registerNodeAlias(dispatcher, "node3");
+        registerNodeAlias(dispatcher, "node4");
+        registerNodeAlias(dispatcher, "node5");
+        registerNodeAlias(dispatcher, "node6");
+        registerNodeAlias(dispatcher, "node7");
+        registerNodeAlias(dispatcher, "beta");
+        registerNodeAlias(dispatcher, "event");
+    }
+
+    private static void registerAlias(CommandDispatcher<FabricClientCommandSource> dispatcher, String alias, String command) {
+        dispatcher.register(ClientCommandManager.literal(alias).executes(context -> {
+            CommandQueue.queueCommand(command);
+            return 1;
+        }));
+    }
+
+    private static void registerNodeAlias(CommandDispatcher<FabricClientCommandSource> dispatcher, String node) {
+        registerAlias(dispatcher, node, "server "+node);
     }
 }
