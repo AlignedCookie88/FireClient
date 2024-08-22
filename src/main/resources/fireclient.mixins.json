@@ -15,6 +15,7 @@
     "GameMenuScreenMixin",
     "GameRendererMixin",
     "InGameHudMixin",
+    "MultiplayerScreenMixin",
     "OptionsScreenMixin",
     "PlayerListHudMixin",
     "SignBlockEntityMixin"
