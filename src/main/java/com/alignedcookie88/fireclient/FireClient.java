@@ -50,8 +50,8 @@ public class FireClient implements ModInitializer {
     @Override
     public void onInitialize() {
 
-        if (System.getProperty("os.name").toLowerCase().startsWith("mac os x"))
-            throw new UserIsBadWithFinancialDecisionsException("The user bought an overpriced piece of rubbish from Apple Computers Inc");
+        //if (System.getProperty("os.name").toLowerCase().startsWith("mac os x"))
+        //    throw new UserIsBadWithFinancialDecisionsException("The user bought an overpriced piece of rubbish from Apple Computers Inc");
 
         // CodeClient
         codeClientIntegration = FabricLoader.getInstance().isModLoaded("codeclient");
