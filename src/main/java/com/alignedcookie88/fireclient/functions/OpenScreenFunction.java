@@ -38,7 +38,7 @@ public class OpenScreenFunction implements FireFunction {
         Integer height = (Integer) providedArguments[1];
         String name = (String) providedArguments[2];
         CustomScreen screen = new CustomScreen(Text.literal(name), width, height, new Identifier("fireclient", "textures/gui/default_screen_bg.png"));
-        MinecraftClient.getInstance().setScreen(screen);
+        //MinecraftClient.getInstance().setScreen(screen);
     }
 
     @Override

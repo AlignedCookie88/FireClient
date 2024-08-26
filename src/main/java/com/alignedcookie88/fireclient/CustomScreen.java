@@ -1,17 +1,27 @@
 package com.alignedcookie88.fireclient;
 
 import net.kyori.adventure.text.Component;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextWidget;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.item.ItemStack;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.slot.Slot;
+import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.apache.commons.compress.utils.Lists;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -26,6 +36,54 @@ public class CustomScreen extends Screen {
     private final List<Element> children = com.google.common.collect.Lists.newArrayList();
     private final List<Selectable> selectables = com.google.common.collect.Lists.newArrayList();
 
+    private ScreenHandler screenHandler = null;
+    private HandledScreen<?> handledScreen = null;
+    private List<CustomScreenSlot> slots = new ArrayList<>();
+
+    private record CustomScreenSlot(Slot slot, int x, int y, boolean interactable, boolean background, ScreenHandler handler, HandledScreen<?> handledScreen, MinecraftClient client) {
+
+        private boolean hovering(int mouseX, int mouseY) {
+            return mouseX >= x && mouseY >= y && mouseX < x+16 && mouseY < y+16;
+        }
+
+        public void render(DrawContext context, int mouseX, int mouseY, float delta, TextRenderer textRenderer) {
+
+            ItemStack stack = slot.getStack();
+
+            if (background)
+                context.drawTexture(new Identifier("fireclient", "textures/gui/slot.png"), x-1, y-1, 0, 0, 18, 18, 18, 18);
+
+            if (stack.isEmpty())
+                return;
+
+            context.drawItem(stack, x, y);
+
+            context.drawItemInSlot(textRenderer, stack, x, y);
+
+            if (hovering(mouseX, mouseY))
+                context.drawItemTooltip(textRenderer, stack, mouseX, mouseY);
+
+        }
+
+        public boolean mouseClicked(int mouseX, int mouseY, int button) {
+            if (!hovering(mouseX, mouseY))
+                return false;
+
+            if (!interactable)
+                return false;
+
+            FireClient.LOGGER.info("Clicked.");
+            clickSlot(button, SlotActionType.PICKUP);
+
+            return true;
+        }
+
+        private void clickSlot(int button, SlotActionType actionType) {
+            client.interactionManager.clickSlot(this.handler.syncId, slot.id, button, actionType, client.player);
+        }
+
+    }
+
 
     public CustomScreen(Text title, Integer width, Integer height, Identifier screenBg) {
         super(title);
@@ -35,6 +93,27 @@ public class CustomScreen extends Screen {
         this.screenBg = screenBg;
 
         State.screen = this;
+        getScreenHandlerFromCurrentScreenIfAvailable();
+
+        // Manually open it to not de-activate the other screen
+        MinecraftClient client = MinecraftClient.getInstance();
+        client.currentScreen = this;
+        onDisplayed();
+        client.mouse.unlockCursor();
+        KeyBinding.unpressAll();
+        init(client, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight());
+    }
+
+    public void getScreenHandlerFromCurrentScreenIfAvailable() {
+        Screen screen = MinecraftClient.getInstance().currentScreen;
+        if (screen == null)
+            return;
+
+        if (screen instanceof HandledScreen<?> handledScreen) {
+            screenHandler = handledScreen.getScreenHandler();
+            this.handledScreen = handledScreen;
+            FireClient.LOGGER.info("Got screen handler!");
+        }
     }
 
     @Override
@@ -48,6 +127,10 @@ public class CustomScreen extends Screen {
         while(var5.hasNext()) {
             Drawable drawable = (Drawable)var5.next();
             drawable.render(context, mouseX, mouseY, delta);
+        }
+
+        for (CustomScreenSlot slot : slots) {
+            slot.render(context, mouseX, mouseY, delta, textRenderer);
         }
     }
 
@@ -118,5 +201,33 @@ public class CustomScreen extends Screen {
         Text text1 = Utility.componentToText(text);
         int width = this.textRenderer.getWidth(text1);
         this.addDrawableChild(new TextWidget(lx, ly, width, 10, text1, this.textRenderer));
+    }
+
+    public void addSlot(int id, int x, int y, boolean interactable, boolean background) {
+        if (screenHandler == null) {
+            Utility.sendStyledMessage("You must open a menu, then open a custom screen to use slots.");
+            return;
+        }
+
+        Slot slot = screenHandler.getSlot(id);
+        if (slot == null) {
+            Utility.sendStyledMessage("That slot is out of range. Maybe make a bigger menu.");
+            return;
+        }
+
+        slots.add(new CustomScreenSlot(slot, localifyX(x), localifyY(y), interactable, background, screenHandler, handledScreen, client));
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (super.mouseClicked(mouseX, mouseY, button))
+            return true;
+
+        for (CustomScreenSlot slot : slots) {
+            if (slot.mouseClicked((int) mouseX, (int) mouseY, button))
+                return true;
+        }
+
+        return true;
     }
 }
