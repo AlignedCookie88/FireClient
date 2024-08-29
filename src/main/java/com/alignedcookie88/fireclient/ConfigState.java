@@ -24,6 +24,9 @@ public class ConfigState {
     public float screenSafeArea = 1.0F;
 
 
+    public boolean apiEnabled = true;
+
+
 
     public static ConfigState getDefault() {
         return new ConfigState();

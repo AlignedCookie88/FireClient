@@ -7,6 +7,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.toast.SystemToast;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.text.Text;
@@ -149,5 +150,13 @@ public class Utility {
     public static boolean isCreative() {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         return player != null && player.isCreative();
+    }
+
+    public static void sendToast(Text title, Text description) {
+        MinecraftClient.getInstance().getToastManager().add(new SystemToast(SystemToast.Type.PERIODIC_NOTIFICATION, title, description));
+    }
+
+    public static void sendToast(Text message) {
+        sendToast(Text.literal("FireClient"), message);
     }
 }

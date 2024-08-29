@@ -1,5 +1,6 @@
 package com.alignedcookie88.fireclient;
 
+import com.alignedcookie88.fireclient.api.FireClientApi;
 import com.google.gson.Gson;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
@@ -27,6 +28,7 @@ public class Config {
 
         createGeneralCategory(builder);
         createVisualCategory(builder);
+        createApiCategory(builder);
 
         return builder.build();
     }
@@ -145,6 +147,22 @@ public class Config {
                 .setDefaultValue(ConfigState.getDefault().showModeInTab)
                 .setTooltip(Text.literal("If FireClient should show player modes in tab."))
                 .setSaveConsumer(newValue -> state.showModeInTab = newValue)
+                .build());
+    }
+
+    public static void createApiCategory(ConfigBuilder builder) {
+        ConfigCategory api = builder.getOrCreateCategory(Text.literal("API"));
+        ConfigEntryBuilder entryBuilder = builder.entryBuilder();
+
+        api.addEntry(entryBuilder.startBooleanToggle(Text.literal("API Enabled"), state.apiEnabled)
+                .setDefaultValue(ConfigState.getDefault().apiEnabled)
+                .setTooltip(Text.literal("Whether the FireClient API Should be enabled."))
+                .setSaveConsumer(newValue -> {
+                    state.apiEnabled = newValue;
+                    if (newValue)
+                        FireClientApi.start();
+                    else FireClientApi.stop();
+                })
                 .build());
     }
 }

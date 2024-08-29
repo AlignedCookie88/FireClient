@@ -1,5 +1,6 @@
 package com.alignedcookie88.fireclient;
 
+import com.alignedcookie88.fireclient.api.FireClientApi;
 import com.alignedcookie88.fireclient.commandrunner.CommandRunnerResponse;
 import com.alignedcookie88.fireclient.commandrunner.CommandRunners;
 import com.alignedcookie88.fireclient.functions.*;
@@ -58,6 +59,10 @@ public class FireClient implements ModInitializer {
 
         // Load config
         Config.loadConfig();
+
+        // Start API
+        FireClientApi.setup();
+        FireClientApi.start();
 
         // Reset state (required for some config options to work properly)
         State.reset();
@@ -246,6 +251,8 @@ public class FireClient implements ModInitializer {
         }
 
         CommandRunners.LOCATE.tick();
+
+        FireClientApi.process(); // Process all messages
     }
 
     public static void addCommandRunnerResponse(CommandRunnerResponse response) {
@@ -296,5 +303,9 @@ public class FireClient implements ModInitializer {
 
     public static boolean isCodeClientIntegrationEnabled() {
         return codeClientIntegration;
+    }
+
+    public static Logger createLogger(String serviceName) {
+        return LoggerFactory.getLogger("FireClient|"+serviceName);
     }
 }

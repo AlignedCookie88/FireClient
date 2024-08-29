@@ -62,6 +62,9 @@ dependencies {
     // imgui-mc
 //    modImplementation files("libs/imguimc-${project.imguimc_version}.jar")
     modImplementation "xyz.breadloaf.imguimc:imguimc:${project.imguimc_version}"
+
+    // Api
+    implementation include("org.java-websocket:Java-WebSocket:1.5.3")
 }
 
 processResources {
