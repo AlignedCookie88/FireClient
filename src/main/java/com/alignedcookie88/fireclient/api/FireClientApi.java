@@ -113,6 +113,8 @@ public class FireClientApi {
             throw new RuntimeException(e);
         }
 
+        apiConnections.clear();
+
         LOGGER.info("Done!");
 
         running = false;

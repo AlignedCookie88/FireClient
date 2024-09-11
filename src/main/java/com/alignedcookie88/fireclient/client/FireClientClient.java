@@ -1,6 +1,8 @@
 package com.alignedcookie88.fireclient.client;
 
 import com.alignedcookie88.fireclient.*;
+import com.alignedcookie88.fireclient.api.ApiConnection;
+import com.alignedcookie88.fireclient.api.FireClientApi;
 import com.alignedcookie88.fireclient.commandrunner.CommandRunners;
 import com.alignedcookie88.fireclient.functions_screen.FunctionsScreen;
 import com.mojang.brigadier.CommandDispatcher;
@@ -29,8 +31,15 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.resource.featuretoggle.FeatureSet;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.HoverEvent;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import org.lwjgl.glfw.GLFW;
+
+import java.util.Objects;
+import java.util.function.BinaryOperator;
+import java.util.function.Consumer;
 
 public class FireClientClient implements ClientModInitializer {
     public static final Dynamic3CommandExceptionType INVALID_TYPE_EXCEPTION = new Dynamic3CommandExceptionType((element, type, expectedType) -> {
@@ -83,6 +92,52 @@ public class FireClientClient implements ClientModInitializer {
                                 FireClient.openOnNextTick = new FunctionsScreen();
                                 return 1;
                             }))
+                            .then(ClientCommandManager.literal("api")
+                                    .then(ClientCommandManager.literal("query").executes(context -> {
+                                        if (Config.state.apiEnabled) {
+                                            context.getSource().sendFeedback(Text.literal("There are "+ FireClientApi.apiConnections.size() +" program(s) connected. Run /fireclient api connections for more info."));
+                                        } else {
+                                            context.getSource().sendFeedback(Text.literal("The API is disabled."));
+                                        }
+                                        return 1;
+                                    }))
+                                    .then(ClientCommandManager.literal("connections").executes(context -> {
+                                        if (!Config.state.apiEnabled) {
+                                            context.getSource().sendError(Text.literal("The API is disabled."));
+                                            return 1;
+                                        }
+
+                                        Utility.sendMessage("Connected programs:");
+                                        for (ApiConnection connection : FireClientApi.apiConnections) {
+                                            Utility.sendMessage(Text.literal("- "+connection.applicationName).styled(style -> style.withHoverEvent(new HoverEvent(
+                                                    HoverEvent.Action.SHOW_TEXT,
+                                                    Text.literal("ID: ").append(
+                                                            Text.literal(connection.connectionId.toString()).formatted(Formatting.GRAY)
+                                                    ).append(
+                                                            Text.literal("\nConnection Type: ").append(
+                                                                    Text.literal(connection.getTypeName()).formatted(Formatting.GRAY)
+                                                            )
+                                                    )
+                                            ))).styled(style -> style.withClickEvent(new ClickEvent(
+                                                    ClickEvent.Action.SUGGEST_COMMAND,
+                                                    "/fireclient api run_action "+connection.connectionId.toString()+" "
+                                            ))));
+                                        }
+                                        if (FireClientApi.apiConnections.isEmpty())
+                                            Utility.sendMessage(Text.literal("There are no programs connected.").formatted(Formatting.GRAY));
+
+                                        return 1;
+                                    }))
+                                    .then(ClientCommandManager.literal("run_action").then(ClientCommandManager.argument("id", StringArgumentType.string())
+                                            .then(ClientCommandManager.literal("disconnect").executes(context -> {
+                                                runOnApiConnection(context, connection -> {
+                                                    connection.close();
+                                                    context.getSource().sendFeedback(Text.literal("Disconnected the program."));
+                                                });
+                                                return 1;
+                                            }))
+                                    ))
+                            )
                     );
 
                     registerAliases(dispatcher);
@@ -138,6 +193,23 @@ public class FireClientClient implements ClientModInitializer {
                 GLFW.GLFW_KEY_HOME, // The keycode of the key
                 "category.fireclient.keys" // The translation key of the keybinding's category.
         ));
+    }
+
+    private static void runOnApiConnection(CommandContext<FabricClientCommandSource> context, Consumer<ApiConnection> consumer) {
+        if (!Config.state.apiEnabled) {
+            context.getSource().sendError(Text.literal("The API is disabled."));
+            return;
+        }
+
+        String id = StringArgumentType.getString(context, "id");
+        for (ApiConnection connection : FireClientApi.apiConnections) {
+            if (Objects.equals(connection.connectionId.toString(), id)) {
+                consumer.accept(connection);
+                return;
+            }
+        }
+
+        context.getSource().sendError(Text.literal("No such API connection."));
     }
 
     public static <T> RegistryEntry.Reference<T> getRegistryEntry(CommandContext<FabricClientCommandSource> context, String name, RegistryKey<Registry<T>> registryRef) throws CommandSyntaxException {
