@@ -164,5 +164,11 @@ public class Config {
                     else FireClientApi.stop();
                 })
                 .build());
+
+        api.addEntry(entryBuilder.startBooleanToggle(Text.literal("API Auth Enabled"), state.apiAuthEnabled)
+                .setDefaultValue(ConfigState.getDefault().apiAuthEnabled)
+                .setTooltip(Text.literal("Whether the FireClient API should accept auth requests. This allows websites and programs to safely and securely check what Minecraft account is in use when connected to the FireClient API. NO DATA THAT WOULD ALLOW THE APPLICATION TO LOGIN AS YOU IS SHARED."))
+                .setSaveConsumer(newValue -> state.apiAuthEnabled = newValue)
+                .build());
     }
 }

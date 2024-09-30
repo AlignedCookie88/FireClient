@@ -26,6 +26,8 @@ public class ConfigState {
 
     public boolean apiEnabled = true;
 
+    public boolean apiAuthEnabled = true;
+
 
 
     public static ConfigState getDefault() {

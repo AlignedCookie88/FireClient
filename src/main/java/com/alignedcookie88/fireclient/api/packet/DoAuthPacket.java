@@ -1,9 +1,11 @@
 package com.alignedcookie88.fireclient.api.packet;
 
+import com.alignedcookie88.fireclient.Config;
 import com.alignedcookie88.fireclient.FireClient;
 import com.alignedcookie88.fireclient.Utility;
 import com.alignedcookie88.fireclient.api.ApiConnection;
 import com.alignedcookie88.fireclient.api.FireClientApiException;
+import com.alignedcookie88.fireclient.api.FireClientApiUserFaultException;
 import com.alignedcookie88.fireclient.util.JsonObjectBuilder;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.exceptions.AuthenticationException;
@@ -17,14 +19,10 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 
 import javax.crypto.SecretKey;
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.util.Base64;
-import java.util.UUID;
 
 public class DoAuthPacket extends ApiIncomingPacket {
     @Override
@@ -36,6 +34,10 @@ public class DoAuthPacket extends ApiIncomingPacket {
 
     @Override
     public void receive(ApiJsonReader data, ApiConnection connection) {
+
+        if (!Config.state.apiAuthEnabled)
+            throw new AuthDisabledException("The user has disabled API authentication in the config.");
+
         String public_key_str = data.getString("publicKey");
 
         LOGGER.info("Public key: {}", public_key_str);
@@ -107,5 +109,13 @@ public class DoAuthPacket extends ApiIncomingPacket {
                         .withString("secretKey", Base64.getEncoder().encodeToString(encryptedSecretKey))
                         .withString("username", profile.getName())
                 .build());
+    }
+
+    private static class AuthDisabledException extends FireClientApiUserFaultException {
+
+        public AuthDisabledException(String message) {
+            super(message);
+        }
+
     }
 }

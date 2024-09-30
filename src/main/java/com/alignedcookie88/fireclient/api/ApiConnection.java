@@ -88,10 +88,11 @@ public abstract class ApiConnection {
                         .withString("For more info", "see game log")
                         .build())
                 .build());
-        Utility.sendToast(
-                Text.literal("FireClient API Error"),
-                Text.literal("An application (%s) sent an invalid API request.".formatted(applicationName))
-        );
+        if (!(e instanceof FireClientApiUserFaultException))
+            Utility.sendToast(
+                    Text.literal("FireClient API Error"),
+                    Text.literal("An application (%s) sent an invalid API request.".formatted(applicationName))
+            );
     }
 
     /**
