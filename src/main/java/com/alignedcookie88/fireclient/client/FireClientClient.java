@@ -5,6 +5,7 @@ import com.alignedcookie88.fireclient.api.ApiConnection;
 import com.alignedcookie88.fireclient.api.FireClientApi;
 import com.alignedcookie88.fireclient.commandrunner.CommandRunners;
 import com.alignedcookie88.fireclient.functions_screen.FunctionsScreen;
+import com.alignedcookie88.fireclient.task.tasks.UploadPackTask;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -141,6 +142,8 @@ public class FireClientClient implements ClientModInitializer {
                     );
 
                     registerAliases(dispatcher);
+
+                    UploadPackTask.registerCommand(dispatcher);
                 }
         );
 

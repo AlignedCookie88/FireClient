@@ -12,6 +12,7 @@ The config can be accessed with `/fireclient config` or Mod Menu.
 - Reverting chat tags to the old style
 - Removing VIP tags from messages and `/whois`
 - Showing plot IDs and names in the tab list (separately toggleable)
+- Uploading packs from the resourcepack folder to a webserver for use as a plot resourcepack - `/uploadpack`
 
 ### Plot actions
 - Freezing the camera

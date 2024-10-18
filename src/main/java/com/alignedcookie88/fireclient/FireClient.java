@@ -5,6 +5,7 @@ import com.alignedcookie88.fireclient.commandrunner.CommandRunnerResponse;
 import com.alignedcookie88.fireclient.commandrunner.CommandRunners;
 import com.alignedcookie88.fireclient.functions.*;
 import com.alignedcookie88.fireclient.integration.CodeClientIntegration;
+import com.alignedcookie88.fireclient.task.TaskManager;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.loader.api.FabricLoader;
@@ -253,6 +254,8 @@ public class FireClient implements ModInitializer {
         CommandRunners.LOCATE.tick();
 
         FireClientApi.process(); // Process all messages
+
+        TaskManager.tick(); // Tick the tasks
     }
 
     public static void addCommandRunnerResponse(CommandRunnerResponse response) {
