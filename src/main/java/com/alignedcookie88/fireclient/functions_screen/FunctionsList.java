@@ -21,7 +21,6 @@ public class FunctionsList extends EntryListWidget<FunctionsList.FunctionEntry> 
 
     public FunctionsList(MinecraftClient client, int width, int height, int y, int itemHeight, TextRenderer textRenderer) {
         super(client, width, height, y, itemHeight);
-        setRenderBackground(false);
         this.textRenderer = textRenderer;
         this.selected2 = null;
     }
@@ -60,7 +59,7 @@ public class FunctionsList extends EntryListWidget<FunctionsList.FunctionEntry> 
         @Override
         public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             // Draw background
-            UIUtility.drawNineSlicedTexture(context, new Identifier("fireclient", "textures/gui/default_screen_bg.png"), x, y, x+entryWidth, y+entryHeight);
+            UIUtility.drawNineSlicedTexture(context, Identifier.of("fireclient", "textures/gui/default_screen_bg.png"), x, y, x+entryWidth, y+entryHeight);
             // Draw name
             int argument_count = function.getExpectedArguments().size();
             MutableText text = Text.literal(function.getName()).append(" - ").append(Integer.toString(argument_count));

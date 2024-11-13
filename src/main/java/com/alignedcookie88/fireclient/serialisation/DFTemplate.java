@@ -49,17 +49,19 @@ public class DFTemplate {
     }
 
     public ItemStack serialiseToItemStack(@NotNull Item itemType, Text name) {
-        ItemStack stack = new ItemStack(itemType);
-        if (name != null) stack.setCustomName(name);
+//        ItemStack stack = new ItemStack(itemType);
+//        if (name != null) stack.setCustomName(name);
+//
+//        if (name == null) name = Text.literal("Template");
+//        CodeTemplateData data = new CodeTemplateData(name.getString(), serialise(), "FireClient");
+//        Gson gson = new Gson();
+//        String sdata = gson.toJson(data);
+//
+//        NbtCompound nbt = stack.getOrCreateSubNbt("PublicBukkitValues");
+//        nbt.putString("hypercube:codetemplatedata", sdata);
+//
+//        return stack;
 
-        if (name == null) name = Text.literal("Template");
-        CodeTemplateData data = new CodeTemplateData(name.getString(), serialise(), "FireClient");
-        Gson gson = new Gson();
-        String sdata = gson.toJson(data);
-
-        NbtCompound nbt = stack.getOrCreateSubNbt("PublicBukkitValues");
-        nbt.putString("hypercube:codetemplatedata", sdata);
-
-        return stack;
+        return new ItemStack(itemType); // TODO: Reimplement with 1.21.1 compatibility
     }
 }

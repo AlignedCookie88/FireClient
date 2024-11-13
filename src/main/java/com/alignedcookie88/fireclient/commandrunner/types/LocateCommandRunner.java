@@ -164,6 +164,6 @@ public class LocateCommandRunner extends CommandRunner {
         String mode = getPlayerMode(username);
         if (mode == null) return null;
 
-        return new Identifier("fireclient", "textures/mode/"+mode+".png");
+        return Identifier.of("fireclient", "textures/mode/"+mode+".png");
     }
 }

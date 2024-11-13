@@ -27,7 +27,7 @@ public class ScreenEditor extends ImGuiScreen {
 
     Integer sheight;
 
-    Identifier screenBg = new Identifier("fireclient", "textures/gui/default_screen_bg.png");
+    Identifier screenBg = Identifier.of("fireclient", "textures/gui/default_screen_bg.png");
     private List<Drawable> drawables = Lists.newArrayList();
     private final List<Element> children = com.google.common.collect.Lists.newArrayList();
     private final List<Selectable> selectables = com.google.common.collect.Lists.newArrayList();

@@ -22,7 +22,7 @@ public abstract class OptionsScreenMixin {
 
     @Shadow protected abstract ButtonWidget createButton(Text message, Supplier<Screen> screenSupplier);
 
-    @Redirect(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/GridWidget$Adder;add(Lnet/minecraft/client/gui/widget/Widget;)Lnet/minecraft/client/gui/widget/Widget;", ordinal = 11))
+    @Redirect(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/GridWidget$Adder;add(Lnet/minecraft/client/gui/widget/Widget;)Lnet/minecraft/client/gui/widget/Widget;", ordinal = 9))
     public <T extends Widget> T init(GridWidget.Adder instance, T widget) {
 
         T added = instance.add(widget);

@@ -51,7 +51,7 @@ public class CustomScreen extends Screen {
             ItemStack stack = slot.getStack();
 
             if (background)
-                context.drawTexture(new Identifier("fireclient", "textures/gui/slot.png"), x-1, y-1, 0, 0, 18, 18, 18, 18);
+                context.drawTexture(Identifier.of("fireclient", "textures/gui/slot.png"), x-1, y-1, 0, 0, 18, 18, 18, 18);
 
             if (stack.isEmpty())
                 return;

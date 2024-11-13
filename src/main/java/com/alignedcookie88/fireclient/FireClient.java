@@ -39,7 +39,7 @@ public class FireClient implements ModInitializer {
 
     public static String version = FabricLoader.getInstance().getModContainer("fireclient").get().getMetadata().getVersion().getFriendlyString();
 
-    public static Identifier functionRegistryIdentifier = new Identifier("fireclient", "functions");
+    public static Identifier functionRegistryIdentifier = Identifier.of("fireclient", "functions");
 
     public static Screen openOnNextTick = null;
 
@@ -88,7 +88,7 @@ public class FireClient implements ModInitializer {
     }
 
     private static void registerFunction(FireFunction function) {
-        Registry.register(functionRegistry, new Identifier("fireclient", function.getID()), function);
+        Registry.register(functionRegistry, Identifier.of("fireclient", function.getID()), function);
     }
 
     public static <T extends PacketListener> boolean handlePacket(Packet<T> packet) {
@@ -198,7 +198,7 @@ public class FireClient implements ModInitializer {
     }
 
     public static boolean handleActionBarUpdate(OverlayMessageS2CPacket packet) {
-        String data = packet.getMessage().getString();
+        String data = packet.text().getString();
         if (data.startsWith(".fireclient ")) {
             queueCommand(data.replaceFirst("\\.fireclient ", ""));
             return true;
@@ -215,7 +215,7 @@ public class FireClient implements ModInitializer {
 
     public static void handleCommand(String command) {
         String functionId = command.split(" ")[0];
-        FireFunction function = functionRegistry.get(new Identifier(functionId));
+        FireFunction function = functionRegistry.get(Identifier.of(functionId));
         String args;
         if (command.length() == functionId.length()) {
             args = "";

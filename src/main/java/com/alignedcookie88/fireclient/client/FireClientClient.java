@@ -75,12 +75,12 @@ public class FireClientClient implements ClientModInitializer {
                                 FireClient.openOnNextTick = Config.getConfig(null);
                                 return 1;
                             }))
-                            .then(ClientCommandManager.literal("get_function").then(ClientCommandManager.argument("function", RegistryEntryArgumentType.registryEntry(CommandRegistryAccess.of(DynamicRegistryManager.of(Registries.REGISTRIES), FeatureSet.empty()), FireClient.functionRegistry.getKey())).executes(context -> {
-                                FireFunction fireFunction = (FireFunction) getRegistryEntry(context, "function", RegistryKey.ofRegistry(FireClient.functionRegistryIdentifier)).value();
-                                ItemStack stack = FireFunctionSerialiser.serialiseFunction(fireFunction);
-                                Utility.giveItem(stack);
-                                return 1;
-                            })))
+//                            .then(ClientCommandManager.literal("get_function").then(ClientCommandManager.argument("function", RegistryEntryArgumentType.registryEntry(CommandRegistryAccess.of(DynamicRegistryManager.of(Registries.REGISTRIES), FeatureSet.empty()), FireClient.functionRegistry.getKey())).executes(context -> {
+//                                FireFunction fireFunction = (FireFunction) getRegistryEntry(context, "function", RegistryKey.ofRegistry(FireClient.functionRegistryIdentifier)).value();
+//                                ItemStack stack = FireFunctionSerialiser.serialiseFunction(fireFunction);
+//                                Utility.giveItem(stack);
+//                                return 1;
+//                            }))) TODO: Reimplement this with 1.21.1 compatibility
                             .then(ClientCommandManager.literal("help").executes(context -> {
                                 Utility.sendStyledMessage("FireClient help");
                                 Utility.sendStyledMessage("===============");

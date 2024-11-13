@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.6-SNAPSHOT'
+    id 'fabric-loom' version '1.8-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -39,29 +39,29 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
     // Auth in dev environment - follow steps at https://github.com/DJtheRedstoner/DevAuth to setup
-    modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:1.2.0")
+    modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:1.2.1")
 
     // minimessage (woo)
-    modImplementation include("net.kyori:adventure-platform-fabric:5.12.0")
+    modImplementation include("net.kyori:adventure-platform-fabric:5.14.1")
     modImplementation include("net.kyori:adventure-text-serializer-gson:4.17.0")
 
     // funnies
     modImplementation include('org.python:jython-standalone:2.7.4b2')
 
     // Cloth config
-    modApi("me.shedaniel.cloth:cloth-config-fabric:13.0.121") {
+    modApi("me.shedaniel.cloth:cloth-config-fabric:15.0.140") {
         exclude(group: "net.fabricmc.fabric-api")
     }
 
     // Mod Menu
-    modApi "com.terraformersmc:modmenu:9.2.0-beta.2"
+    modApi "com.terraformersmc:modmenu:11.0.3"
 
     // CodeClient
-    modCompileOnly "maven.modrinth:codeclient:1.6.5"
+    modCompileOnly "maven.modrinth:codeclient:1.6.5" // TODO: 1.21.1
 
     // imgui-mc
 //    modImplementation files("libs/imguimc-${project.imguimc_version}.jar")
-    modImplementation "xyz.breadloaf.imguimc:imguimc:${project.imguimc_version}"
+    modImplementation "xyz.breadloaf.imguimc:imgui-mc:${project.imguimc_version}"
 
     // Api
     implementation include("org.java-websocket:Java-WebSocket:1.5.3")
@@ -80,7 +80,7 @@ processResources {
     }
 }
 
-def targetJavaVersion = 17
+def targetJavaVersion = 21
 tasks.withType(JavaCompile).configureEach {
     // ensure that the encoding is set to UTF-8, no matter what the system default is
     // this fixes some edge cases with special characters not displaying correctly
