@@ -7,11 +7,13 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.text.Text;
-import org.python.antlr.ast.Str;
+
+import java.util.Arrays;
 
 public class Utility {
     /**
@@ -158,5 +160,36 @@ public class Utility {
 
     public static void sendToast(Text message) {
         sendToast(Text.literal("FireClient"), message);
+    }
+
+
+    public static boolean isPlayingDiamondFire() {
+        if (MinecraftClient.getInstance().world == null)
+            return false;
+
+        if (MinecraftClient.getInstance().isInSingleplayer())
+            return false;
+
+        ServerInfo currentServer = MinecraftClient.getInstance().getCurrentServerEntry();
+
+        if (currentServer == null)
+            return false;
+
+        String[] dfAddresses = {
+                "mcdiamondfire.com",
+                "play.mcdiamondfire.com",
+                "node1.mcdiamondfire.com",
+                "node2.mcdiamondfire.com",
+                "node3.mcdiamondfire.com",
+                "node4.mcdiamondfire.com",
+                "node5.mcdiamondfire.com",
+                "node6.mcdiamondfire.com",
+                "node7.mcdiamondfire.com",
+                "beta.mcdiamondfire.com",
+                "dev.mcdiamondfire.com",
+                "dev2.mcdiamondfire.com"
+        };
+
+        return Arrays.stream(dfAddresses).toList().contains(currentServer.address);
     }
 }

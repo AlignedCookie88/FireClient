@@ -8,7 +8,6 @@ import com.alignedcookie88.fireclient.functions_screen.FunctionsScreen;
 import com.alignedcookie88.fireclient.task.tasks.UploadPackTask;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.Dynamic3CommandExceptionType;
@@ -19,7 +18,6 @@ import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientCommandSource;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.world.ClientWorld;
@@ -39,7 +37,6 @@ import net.minecraft.util.Formatting;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.Objects;
-import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 
 public class FireClientClient implements ClientModInitializer {
@@ -70,6 +67,7 @@ public class FireClientClient implements ClientModInitializer {
 
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
                     dispatcher.register(ClientCommandManager.literal("fireclient")
+                            .requires(source -> Utility.isPlayingDiamondFire())
                             .then(ClientCommandManager.literal("config").executes(context -> {
                                 FireClient.LOGGER.info("Opening config screen");
                                 FireClient.openOnNextTick = Config.getConfig(null);
@@ -226,6 +224,11 @@ public class FireClientClient implements ClientModInitializer {
     }
 
     private static void handleKeys() {
+
+
+        if (!Utility.isPlayingDiamondFire()) // All keybinds below here won't work outside of DF.
+            return;
+
         while (customAbility1.wasPressed()) {
             if (State.ability1Fn != null) {
                 Utility.runPlotCommand(State.ability1Fn);
@@ -267,7 +270,7 @@ public class FireClientClient implements ClientModInitializer {
     }
 
     private static void registerAlias(CommandDispatcher<FabricClientCommandSource> dispatcher, String alias, String command) {
-        dispatcher.register(ClientCommandManager.literal(alias).executes(context -> {
+        dispatcher.register(ClientCommandManager.literal(alias).requires(source -> Utility.isPlayingDiamondFire()).executes(context -> {
             CommandQueue.queueCommand(command);
             return 1;
         }));
