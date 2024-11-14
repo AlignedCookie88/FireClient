@@ -57,7 +57,7 @@ dependencies {
     modApi "com.terraformersmc:modmenu:11.0.3"
 
     // CodeClient
-    modCompileOnly "maven.modrinth:codeclient:1.6.5" // TODO: 1.21.1
+    modCompileOnly "maven.modrinth:codeclient:1.6.5"
 
     // imgui-mc
 //    modImplementation files("libs/imguimc-${project.imguimc_version}.jar")
