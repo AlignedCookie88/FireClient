@@ -1,6 +1,8 @@
 package com.alignedcookie88.fireclient.serialisation;
 
 import com.google.gson.Gson;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -49,19 +51,25 @@ public class DFTemplate {
     }
 
     public ItemStack serialiseToItemStack(@NotNull Item itemType, Text name) {
-//        ItemStack stack = new ItemStack(itemType);
-//        if (name != null) stack.setCustomName(name);
-//
-//        if (name == null) name = Text.literal("Template");
-//        CodeTemplateData data = new CodeTemplateData(name.getString(), serialise(), "FireClient");
-//        Gson gson = new Gson();
-//        String sdata = gson.toJson(data);
-//
-//        NbtCompound nbt = stack.getOrCreateSubNbt("PublicBukkitValues");
-//        nbt.putString("hypercube:codetemplatedata", sdata);
-//
-//        return stack;
+        ItemStack stack = new ItemStack(itemType);
+        if (name != null) stack.apply(DataComponentTypes.CUSTOM_NAME, name, com -> com);
 
-        return new ItemStack(itemType); // TODO: Reimplement with 1.21.1 compatibility
+
+        if (name == null) name = Text.literal("Template");
+
+        CodeTemplateData data = new CodeTemplateData(name.getString(), serialise(), "FireClient");
+        Gson gson = new Gson();
+        String sdata = gson.toJson(data);
+
+
+        NbtCompound publicBukkitValues = new NbtCompound();
+        publicBukkitValues.putString("hypercube:codetemplatedata", sdata);
+
+        NbtCompound customDataTag = new NbtCompound();
+        customDataTag.put("PublicBukkitValues", publicBukkitValues);
+
+        stack.apply(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(customDataTag), com -> com);
+
+        return stack;
     }
 }
