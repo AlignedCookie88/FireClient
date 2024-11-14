@@ -75,12 +75,6 @@ public class FireClientClient implements ClientModInitializer {
                                 FireClient.openOnNextTick = Config.getConfig(null);
                                 return 1;
                             }))
-//                            .then(ClientCommandManager.literal("get_function").then(ClientCommandManager.argument("function", RegistryEntryArgumentType.registryEntry(CommandRegistryAccess.of(DynamicRegistryManager.of(Registries.REGISTRIES), FeatureSet.empty()), FireClient.functionRegistry.getKey())).executes(context -> {
-//                                FireFunction fireFunction = (FireFunction) getRegistryEntry(context, "function", RegistryKey.ofRegistry(FireClient.functionRegistryIdentifier)).value();
-//                                ItemStack stack = FireFunctionSerialiser.serialiseFunction(fireFunction);
-//                                Utility.giveItem(stack);
-//                                return 1;
-//                            }))) TODO: Reimplement this with 1.21.1 compatibility
                             .then(ClientCommandManager.literal("help").executes(context -> {
                                 Utility.sendStyledMessage("FireClient help");
                                 Utility.sendStyledMessage("===============");
@@ -213,16 +207,6 @@ public class FireClientClient implements ClientModInitializer {
         }
 
         context.getSource().sendError(Text.literal("No such API connection."));
-    }
-
-    public static <T> RegistryEntry.Reference<T> getRegistryEntry(CommandContext<FabricClientCommandSource> context, String name, RegistryKey<Registry<T>> registryRef) throws CommandSyntaxException {
-        RegistryEntry.Reference<T> reference = (RegistryEntry.Reference)context.getArgument(name, RegistryEntry.Reference.class);
-        RegistryKey<?> registryKey = reference.registryKey();
-        if (registryKey.isOf(registryRef)) {
-            return reference;
-        } else {
-            throw INVALID_TYPE_EXCEPTION.create(registryKey.getValue(), registryKey.getRegistry(), registryRef.getValue());
-        }
     }
 
     private static void handleKeys() {
