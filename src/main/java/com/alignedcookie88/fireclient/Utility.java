@@ -11,6 +11,9 @@ import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
+import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.text.Text;
 
 import java.util.Arrays;
@@ -85,14 +88,18 @@ public class Utility {
 
     public static Text componentToText(Component component) {
         String json = JSONComponentSerializer.json().serialize(component);
-        return new Text.Serializer().deserialize(JsonParser.parseString(json), null, null);
+        return new Text.Serializer(getRegistryWrapper()).deserialize(JsonParser.parseString(json), null, null);
     }
 
     public static Component textToComponent(Text text) {
         if (text.toString().isEmpty())
             return Component.empty();
-        JsonElement elem = new Text.Serializer().serialize(text, null, null);
+        JsonElement elem = new Text.Serializer(getRegistryWrapper()).serialize(text, null, null);
         return JSONComponentSerializer.json().deserialize(elem.toString());
+    }
+
+    public static RegistryWrapper.WrapperLookup getRegistryWrapper() {
+        return MinecraftClient.getInstance().world.getRegistryManager();
     }
 
     /**

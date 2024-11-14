@@ -70,7 +70,7 @@ public class FunctionInfoScreen extends Screen {
         int pane_width = x2-x1;
         int pane_height = y2-y1;
 
-        UIUtility.drawNineSlicedTexture(context, new Identifier("fireclient", "textures/gui/default_screen_bg.png"), x1, y1, x2, y2);
+        UIUtility.drawNineSlicedTexture(context, Identifier.of("fireclient", "textures/gui/default_screen_bg.png"), x1, y1, x2, y2);
 
         Iterator var5 = this.drawables.iterator();
 

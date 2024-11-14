@@ -31,11 +31,11 @@ public class ChatScreenMixin extends Screen {
     }
 
     @Inject(method = "sendMessage", at = @At("HEAD"), cancellable = true)
-    public void sendMessage(String chatText, boolean addToHistory, CallbackInfoReturnable<Boolean> cir) {
+    public void sendMessage(String chatText, boolean addToHistory, CallbackInfo ci) {
         if (State.plotCommandsForChat && !(chatText.startsWith("/") || chatText.startsWith("@"))) {
             CommandQueue.queuePlotCommand(chatText);
             MinecraftClient.getInstance().setScreen(null);
-            cir.cancel();
+            ci.cancel();
             return;
         }
 
