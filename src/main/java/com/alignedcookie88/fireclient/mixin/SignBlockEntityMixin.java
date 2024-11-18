@@ -28,7 +28,7 @@ public class SignBlockEntityMixin {
                     if (Objects.equals(function.getID(), functionId)) {
                         SignText newSignText = original
                                 .withMessage(0, Text.literal("CLIENT ACTION"))
-                                .withMessage(1, Text.literal(function.getName().replace(" ", "")));
+                                .withMessage(1, Text.literal(function.getSignName()));
                         frontText = newSignText;
                         cir.setReturnValue(newSignText);
                     }

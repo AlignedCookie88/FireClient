@@ -36,4 +36,9 @@ public class RemovePostProcessorFunction implements FireFunction {
     public String getWikiLink() {
         return "https://github.com/AlignedCookie88/FireClient/wiki/Post%E2%80%90Processing-Shaders";
     }
+
+    @Override
+    public String getSignName() {
+        return "RemPostShader";
+    }
 }

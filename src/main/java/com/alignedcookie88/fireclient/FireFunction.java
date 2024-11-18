@@ -25,4 +25,8 @@ public interface FireFunction {
     default String getWikiLink() {
         return null;
     }
+
+    default String getSignName() {
+        return getName().replace(" ", "");
+    }
 }
