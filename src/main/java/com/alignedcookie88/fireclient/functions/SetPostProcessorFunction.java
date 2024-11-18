@@ -37,4 +37,9 @@ public class SetPostProcessorFunction implements FireFunction {
     public String getDescription() {
         return "Sets the post-processing effect.";
     }
+
+    @Override
+    public String getWikiLink() {
+        return "https://github.com/AlignedCookie88/FireClient/wiki/Post%E2%80%90Processing-Shaders";
+    }
 }

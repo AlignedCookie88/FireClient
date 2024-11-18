@@ -52,4 +52,9 @@ public class SetPostProcessorUniformFunction implements FireFunction {
     public String getDescription() {
         return "Sets a post-processing uniform.";
     }
+
+    @Override
+    public String getWikiLink() {
+        return "https://github.com/AlignedCookie88/FireClient/wiki/Post%E2%80%90Processing-Shaders";
+    }
 }

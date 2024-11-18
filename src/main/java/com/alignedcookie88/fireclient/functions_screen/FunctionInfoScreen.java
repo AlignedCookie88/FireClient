@@ -6,6 +6,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
+import net.minecraft.client.gui.screen.ConfirmLinkScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
@@ -57,6 +58,13 @@ public class FunctionInfoScreen extends Screen {
             Utility.giveItem(FireFunctionSerialiser.serialiseFunction(function));
             MinecraftClient.getInstance().setScreen(null);
         }).dimensions(x1+6+((pane_width-8)/2), y2-24, ((pane_width-8)/2)-2, 20).build());
+
+        String wiki = function.getWikiLink();
+        if (wiki != null) {
+            addDrawableChild(ButtonWidget.builder(Text.literal("Open Wiki Article"), button -> {
+                ConfirmLinkScreen.open(this, wiki, true);
+            }).dimensions(x1, y2+10, pane_width, 20).build());
+        }
     }
 
     @Override

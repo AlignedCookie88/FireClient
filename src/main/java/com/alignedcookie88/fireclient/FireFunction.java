@@ -21,4 +21,8 @@ public interface FireFunction {
     default boolean hidden() {
         return false;
     }
+
+    default String getWikiLink() {
+        return null;
+    }
 }
