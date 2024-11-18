@@ -15,6 +15,7 @@
     "GameMenuScreenMixin",
     "GameRendererMixin",
     "InGameHudMixin",
+    "JsonEffectShaderProgramMixin",
     "MultiplayerScreenMixin",
     "OptionsScreenMixin",
     "PlayerListHudMixin",

@@ -1,0 +1,19 @@
+{
+    "targets": [
+        "swap"
+    ],
+    "passes": [
+        {
+            "name": "fireclient:pixelate",
+            "intarget": "minecraft:main",
+            "outtarget": "swap",
+            "uniforms": [
+            ]
+        },
+        {
+            "name": "minecraft:blit",
+            "intarget": "swap",
+            "outtarget": "minecraft:main"
+        }
+    ]
+}
