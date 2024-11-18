@@ -84,6 +84,8 @@ public class FireClient implements ModInitializer {
         registerFunction(new ScreenAddTextFunction());
         registerFunction(new UsePlotCommandsForChatFunction());
         registerFunction(new ScreenAddSlot());
+        registerFunction(new SetPostProcessorFunction());
+        registerFunction(new RemovePostProcessorFunction());
 
     }
 
