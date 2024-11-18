@@ -39,7 +39,7 @@ public class ChatScreenMixin extends Screen {
             return;
         }
 
-        String[] reset_messages = new String[] {"/spawn", "/s", "/leave"};
+        String[] reset_messages = new String[] {"/spawn", "/s", "/leave", "/dev", "/build", "/code", "/mode dev", "/mode build"};
         if (Arrays.stream(reset_messages).anyMatch(chatText::equalsIgnoreCase)) {
             State.reset();
         } else if (chatText.startsWith("/join ")) {
