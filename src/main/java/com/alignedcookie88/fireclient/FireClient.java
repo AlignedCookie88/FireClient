@@ -127,7 +127,7 @@ public class FireClient implements ModInitializer {
                         field.set(packet, newData);
                     } catch (IllegalAccessException e) {
                         //throw new RuntimeException(e);
-                        LOGGER.error("Failed to set field {} on packet {}", field.getName(), name, e);
+                        //LOGGER.error("Failed to set field {} on packet {}", field.getName(), name, e);
                     }
                 }
             }
