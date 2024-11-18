@@ -14,9 +14,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.network.listener.PacketListener;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.s2c.play.ChatMessageS2CPacket;
 import net.minecraft.network.packet.s2c.play.OverlayMessageS2CPacket;
-import net.minecraft.network.packet.s2c.play.ProfilelessChatMessageS2CPacket;
 import net.minecraft.registry.*;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -86,6 +84,7 @@ public class FireClient implements ModInitializer {
         registerFunction(new ScreenAddSlot());
         registerFunction(new SetPostProcessorFunction());
         registerFunction(new RemovePostProcessorFunction());
+        registerFunction(new SetPostProcessorUniformFunction());
 
     }
 
