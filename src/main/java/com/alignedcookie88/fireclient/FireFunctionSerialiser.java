@@ -6,13 +6,18 @@ import com.alignedcookie88.fireclient.serialisation.DFTemplate;
 import com.alignedcookie88.fireclient.serialisation.blocks.FunctionBlock;
 import com.alignedcookie88.fireclient.serialisation.blocks.PlayerActionBlock;
 import com.alignedcookie88.fireclient.serialisation.variables.FunctionParameterVariable;
+import com.alignedcookie88.fireclient.serialisation.variables.ItemVariable;
 import com.alignedcookie88.fireclient.serialisation.variables.StringVariable;
 import com.alignedcookie88.fireclient.serialisation.variables.Variable;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.LoreComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+
+import java.util.List;
 
 public class FireFunctionSerialiser {
 
@@ -71,8 +76,55 @@ public class FireFunctionSerialiser {
         return string;
     }
 
+    private static ItemStack createIconStack(FireFunction function) {
+        ItemStack stack = new ItemStack(Items.CAMPFIRE);
+
+        // Item name
+        stack.set(
+                DataComponentTypes.CUSTOM_NAME,
+                Utility.miniMessage("<!italic><dark_gray>[<gradient:#ff5a00:#ffa500>FireClient<dark_gray>] <white>"+function.getName())
+        );
+
+        // Item lore
+        LoreComponent lore = new LoreComponent(List.of())
+                .with(Text.empty()) // Buffer line
+                .with(Text.literal(function.getDescription()).formatted(Formatting.GRAY).styled(style -> style.withItalic(false))) // Description
+                .with(Text.empty()) // Buffer line
+                .with(Text.literal("Chest Parameters (FireClient Type Corrected)").styled(style -> style.withFormatting(Formatting.WHITE).withItalic(false).withUnderline(true))); // Chest params headers
+
+        // Chest params
+        for (FireArgument argument : function.getExpectedArguments()) {
+            lore = lore.with(
+                    argument.getName().copy().append(
+                            Text.literal(" - ").formatted(Formatting.DARK_GRAY)
+                    ).append(
+                            Text.literal(argument.getID()).formatted(Formatting.GRAY)
+                    ).styled(style -> style.withItalic(false))
+            );
+        }
+
+        // Buffer lines
+        lore = lore.with(Text.empty())
+                .with(Text.empty())
+                .with(Text.empty())
+                .with(Text.empty())
+                .with(Text.empty())
+                .with(Text.empty());
+
+        stack.set(DataComponentTypes.LORE, lore);
+
+        return stack;
+    }
+
     private static void addArguments(FunctionBlock functionBlock, FireFunction function) {
-        int slot = 0;
+        functionBlock.push_argument(new DFArgument(
+                0,
+                new ItemVariable(
+                        createIconStack(function)
+                )
+        ));
+
+        int slot = 1;
         for (FireArgument argument : function.getExpectedArguments()) {
             functionBlock.push_argument(
                     new DFArgument(slot,

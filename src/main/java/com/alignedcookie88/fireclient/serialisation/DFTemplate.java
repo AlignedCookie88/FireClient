@@ -1,5 +1,6 @@
 package com.alignedcookie88.fireclient.serialisation;
 
+import com.alignedcookie88.fireclient.FireClient;
 import com.google.gson.Gson;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;

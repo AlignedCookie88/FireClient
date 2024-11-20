@@ -199,4 +199,9 @@ public class Utility {
 
         return Arrays.stream(dfAddresses).toList().contains(currentServer.address);
     }
+
+
+    public static Text miniMessage(String miniMessage) {
+        return componentToText(MiniMessage.miniMessage().deserialize(miniMessage));
+    }
 }
