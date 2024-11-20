@@ -18,7 +18,6 @@ The config can be accessed with `/fireclient config` or Mod Menu.
 - Freezing the camera
 - Custom GUIs
 - Three custom keybinds that can be bound to plot commands
-- (**DISABLED BY DEFAULT**) Running python on the client (required permission from players)
 
 ## Required mods
 

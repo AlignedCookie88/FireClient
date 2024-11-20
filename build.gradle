@@ -45,9 +45,6 @@ dependencies {
     modImplementation include("net.kyori:adventure-platform-fabric:5.14.1")
     modImplementation include("net.kyori:adventure-text-serializer-gson:4.17.0")
 
-    // funnies
-    modImplementation include('org.python:jython-standalone:2.7.4b2')
-
     // Cloth config
     modApi("me.shedaniel.cloth:cloth-config-fabric:15.0.140") {
         exclude(group: "net.fabricmc.fabric-api")

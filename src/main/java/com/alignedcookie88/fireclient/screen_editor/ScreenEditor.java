@@ -14,7 +14,6 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.apache.commons.compress.utils.Lists;
-import org.python.antlr.ast.Str;
 import xyz.breadloaf.imguimc.screen.ImGuiScreen;
 import xyz.breadloaf.imguimc.screen.ImGuiWindow;
 import xyz.breadloaf.imguimc.theme.ImGuiDarkTheme;

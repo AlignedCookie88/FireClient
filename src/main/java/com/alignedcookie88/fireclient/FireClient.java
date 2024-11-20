@@ -73,7 +73,6 @@ public class FireClient implements ModInitializer {
         registerFunction(new OpenScreenFunction());
         registerFunction(new ScreenAddButtonFunction());
         registerFunction(new ReportVersionFunction());
-        registerFunction(new ExecutePythonFunction());
         registerFunction(new SetAbilityFunction());
         registerFunction(new HudAddTextFunction());
         registerFunction(new RemoveHudElementFunction());
