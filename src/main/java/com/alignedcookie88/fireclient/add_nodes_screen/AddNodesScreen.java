@@ -3,6 +3,7 @@ package com.alignedcookie88.fireclient.add_nodes_screen;
 import com.alignedcookie88.fireclient.FireClient;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
@@ -97,8 +98,8 @@ public class AddNodesScreen extends Screen {
         }, x, y, Items.STRUCTURE_BLOCK);
 
         y += y_change;
-        addButton("Staff Nodes", button -> {
-            MinecraftClient.getInstance().setScreen(new AddStaffNodesScreen(parent));
+        addButton("Other & Staff Nodes", button -> {
+            MinecraftClient.getInstance().setScreen(new AddOtherNodesScreen(parent));
         }, x, y, Items.BLAZE_POWDER);
     }
 
@@ -127,6 +128,32 @@ public class AddNodesScreen extends Screen {
     }
 
     protected void addNode(String display, String id) {
+        addNode(display, id, null);
+    }
+
+    protected void addNode(String display, String id, String version) {
+        addNode(display, id, version, version != null);
+    }
+
+    protected void addNode(String display, String id, String version, boolean viafabric_show_confirmation) {
+
+        if (viafabric_show_confirmation) {
+            MinecraftClient.getInstance().setScreen(new ConfirmScreen(
+                    accepted -> {
+                        if (accepted) {
+                            addNode(display, id, version, false);
+                        } else {
+                            close();
+                        }
+                    },
+                    Text.literal("Node uses Minecraft "+version),
+                    Text.literal("The node you are adding uses Minecraft version %s.\nYou will need to set the version for the server to %s using either ViaFabric or ViaFabricPlus to join the node.".formatted(version, version)),
+                    Text.literal("I'll do that"),
+                    Text.literal("Nevermind")
+            ));
+            return;
+        }
+
         ServerList serverList = parent.getServerList();
 
         String ip = "%s.mcdiamondfire.com".formatted(id);

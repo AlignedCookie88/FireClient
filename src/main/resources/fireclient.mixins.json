@@ -12,6 +12,7 @@
     "ChatScreenMixin",
     "ClientConnectionMixin",
     "ClientPlayerEntityMixin",
+    "ConnectScreenMixin",
     "EntityMixin",
     "EntityRendererMixin",
     "GameMenuScreenMixin",
@@ -20,6 +21,7 @@
     "JsonEffectShaderProgramMixin",
     "ModelPredicateProviderRegistryMixin",
     "MultiplayerScreenMixin",
+    "MultiplayerServerListPingerMixin",
     "OptionsScreenMixin",
     "PlayerListHudMixin",
     "SignBlockEntityMixin"

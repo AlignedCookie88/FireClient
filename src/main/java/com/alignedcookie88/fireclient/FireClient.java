@@ -41,6 +41,8 @@ public class FireClient implements ModInitializer {
 
     public static Screen openOnNextTick = null;
 
+    public static String joinCommand = null;
+
     private static boolean codeClientIntegration = false;
 
     private static List<CommandRunnerResponse> commandRunnerResponses = new ArrayList<>();

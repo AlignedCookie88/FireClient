@@ -16,7 +16,9 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientWorldEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
@@ -155,6 +157,10 @@ public class FireClientClient implements ClientModInitializer {
                 FireClient.changedWorld();
                 lastWorld = MinecraftClient.getInstance().world;
             }
+
+            if (FireClient.joinCommand != null)
+                MinecraftClient.getInstance().getNetworkHandler().sendCommand(FireClient.joinCommand);
+            FireClient.joinCommand = null;
         });
 
 
