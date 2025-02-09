@@ -24,8 +24,8 @@ public class Utility {
      * @param message The message to send.
      */
     public static void sendStyledMessage(String message) {
-        Text prefix = componentToText(MiniMessage.miniMessage().deserialize("<dark_grey>[<gradient:#FF5A00:#FFA500>FireClient<dark_grey>]:<reset> "));
-        sendMessage(prefix.copy().append(Text.literal(message)));
+        Text msg = componentToText(MiniMessage.miniMessage().deserialize("<dark_grey>[<gradient:#FF5A00:#FFA500>FireClient<dark_grey>]:<reset> "+message));
+        sendMessage(msg);
     }
 
     /**

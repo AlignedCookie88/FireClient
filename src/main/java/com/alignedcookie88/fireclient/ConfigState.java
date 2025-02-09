@@ -27,6 +27,14 @@ public class ConfigState {
     public boolean apiAuthEnabled = true;
 
 
+    public boolean dfToolingApiEnabled = true;
+
+    public boolean dfToolingAdminFeatures = false;
+
+
+    public boolean dfToolingApiAgreement = false;
+
+
 
     public static ConfigState getDefault() {
         return new ConfigState();

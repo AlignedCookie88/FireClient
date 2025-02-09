@@ -5,39 +5,34 @@ import com.alignedcookie88.fireclient.api.ApiConnection;
 import com.alignedcookie88.fireclient.api.FireClientApi;
 import com.alignedcookie88.fireclient.commandrunner.CommandRunners;
 import com.alignedcookie88.fireclient.functions_screen.FunctionsScreen;
+import com.alignedcookie88.fireclient.task.TaskManager;
+import com.alignedcookie88.fireclient.task.tasks.DFToolingApiTask;
 import com.alignedcookie88.fireclient.task.tasks.UploadPackTask;
+import com.alignedcookie88.fireclient.task.tasks.WaitForConfirmationTask;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.Dynamic3CommandExceptionType;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientWorldEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.command.argument.RegistryEntryArgumentType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.HoverEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.lwjgl.glfw.GLFW;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -133,11 +128,83 @@ public class FireClientClient implements ClientModInitializer {
                                             }))
                                     ))
                             )
+                            .then(ClientCommandManager.literal("confirm").executes(context -> {
+                                if (WaitForConfirmationTask.isToConfirm())
+                                    WaitForConfirmationTask.confirm();
+                                else Utility.sendStyledMessage("There is nothing to confirm.");
+                                return 0;
+                            }))
                     );
 
                     registerAliases(dispatcher);
 
                     UploadPackTask.registerCommand(dispatcher);
+
+                    if (Config.state.dfToolingAdminFeatures) {
+                        dispatcher.register(ClientCommandManager.literal("dftooling_admin")
+                                .then(
+                                        ClientCommandManager.literal("actiondump").then(
+                                                ClientCommandManager.literal("delete").then(
+                                                        ClientCommandManager.argument("patch", StringArgumentType.word()).executes(context -> {
+                                                            String patch = StringArgumentType.getString(context, "patch");
+                                                            TaskManager.startTaskFromCommand(context, new DFToolingApiTask(
+                                                                    new DFToolingApiTask.Request(
+                                                                            DFToolingApiTask.ACTIONDUMP_ADMIN_DELETE,
+                                                                            DFToolingApiTask.argsBuilder()
+                                                                                    .add("patch", patch)
+                                                                                    .build()
+                                                                    ),
+                                                                    result -> Utility.sendMessage(result.getStatusMessage())
+                                                            ));
+                                                            return 0;
+                                                        })
+                                                )
+                                        ).then(
+                                                ClientCommandManager.literal("upload").then(
+                                                        ClientCommandManager.argument("patch", StringArgumentType.word()).then(
+                                                                ClientCommandManager.argument("latest", BoolArgumentType.bool()).then(
+                                                                        ClientCommandManager.argument("beta", BoolArgumentType.bool()).executes(context -> {
+                                                                            String patch = StringArgumentType.getString(context, "patch");
+                                                                            boolean latest = BoolArgumentType.getBool(context, "latest");
+                                                                            boolean beta = BoolArgumentType.getBool(context, "beta");
+
+                                                                            File actiondumpFile = FabricLoader.getInstance().getGameDir().resolve("actiondump.json").toFile();
+                                                                            if (!actiondumpFile.isFile()) {
+                                                                                context.getSource().sendError(Text.literal("There is no actiondump.json file in the game directory."));
+                                                                                return 0;
+                                                                            }
+
+                                                                            TaskManager.startTaskFromCommand(context, new DFToolingApiTask(
+                                                                                    new DFToolingApiTask.Request(
+                                                                                            DFToolingApiTask.ACTIONDUMP_ADMIN_UPLOAD,
+                                                                                            DFToolingApiTask.argsBuilder()
+                                                                                                    .add("patch", patch)
+                                                                                                    .add("latest", Boolean.toString(latest))
+                                                                                                    .add("beta", Boolean.toString(beta))
+                                                                                                    .build(),
+                                                                                            stream -> {
+                                                                                                FileInputStream inputStream = new FileInputStream(actiondumpFile);
+                                                                                                while (true) {
+                                                                                                    byte[] data = inputStream.readNBytes(1024);
+                                                                                                    if (data.length == 0)
+                                                                                                        break;
+                                                                                                    stream.write(data);
+                                                                                                }
+                                                                                                inputStream.close();
+                                                                                            }
+                                                                                    ),
+                                                                                    result -> Utility.sendMessage(result.getStatusMessage())
+                                                                            ));
+
+                                                                            return 0;
+                                                                        })
+                                                                )
+                                                        )
+                                                )
+                                        )
+                                )
+                        );
+                    }
                 }
         );
 

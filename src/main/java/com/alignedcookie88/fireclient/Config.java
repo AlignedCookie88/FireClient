@@ -8,6 +8,8 @@ import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.TitleScreen;
+import net.minecraft.network.DisconnectionInfo;
 import net.minecraft.text.Text;
 
 import java.io.*;
@@ -29,6 +31,7 @@ public class Config {
         createGeneralCategory(builder);
         createVisualCategory(builder);
         createApiCategory(builder);
+        createDfToolingApiCategory(builder);
 
         return builder.build();
     }
@@ -164,5 +167,41 @@ public class Config {
                 .setTooltip(Text.literal("Whether the FireClient API should accept auth requests. This allows websites and programs to safely and securely check what Minecraft account is in use when connected to the FireClient API. NO DATA THAT WOULD ALLOW THE APPLICATION TO LOGIN AS YOU IS SHARED."))
                 .setSaveConsumer(newValue -> state.apiAuthEnabled = newValue)
                 .build());
+    }
+
+    public static void createDfToolingApiCategory(ConfigBuilder builder) {
+        ConfigCategory api = builder.getOrCreateCategory(Text.literal("DFTooling API"));
+        ConfigEntryBuilder entryBuilder = builder.entryBuilder();
+
+        api.addEntry(entryBuilder.startBooleanToggle(Text.literal("DFTooling API Enabled"), state.dfToolingApiEnabled)
+                .setDefaultValue(ConfigState.getDefault().dfToolingApiEnabled)
+                .setTooltip(Text.literal("Whether the DFTooling API should be enabled. The DFTooling API provides features like /uploadpack."))
+                .setSaveConsumer(newValue -> state.dfToolingApiEnabled = newValue)
+                .build());
+
+        api.addEntry(entryBuilder.startBooleanToggle(Text.literal("DFTooling Admin Features"), state.dfToolingAdminFeatures)
+                .setDefaultValue(ConfigState.getDefault().dfToolingAdminFeatures)
+                .setTooltip(Text.literal("Whether the DFTooling Admin Features (/dftooling_admin) should be enabled. Please note the commands won't work unless you have been granted permission."))
+                .setSaveConsumer(newValue -> {
+                    if (MinecraftClient.getInstance().world != null && newValue != state.dfToolingApiEnabled) {
+                        FireClient.openOnNextTick = new Screen(Text.empty()) {
+                            @Override
+                            protected void init() {
+                                MinecraftClient.getInstance().world.disconnect();
+                                MinecraftClient.getInstance().disconnect();
+                                MinecraftClient.getInstance().setScreen(new TitleScreen());
+                            }
+                        };
+                    }
+                    state.dfToolingAdminFeatures = newValue;
+                })
+                .build());
+
+        if (state.dfToolingApiAgreement)
+            api.addEntry(entryBuilder.startBooleanToggle(Text.literal("DFTooling API Agreement"), true)
+                    .setDefaultValue(true)
+                    .setTooltip(Text.literal("Disabling this option will cause you to have to confirm you agree to the DFTooling API's logging agreement next time you use it."))
+                    .setSaveConsumer(newValue -> state.dfToolingApiAgreement = newValue)
+                    .build());
     }
 }

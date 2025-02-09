@@ -1,5 +1,6 @@
 package com.alignedcookie88.fireclient.task;
 
+import com.alignedcookie88.fireclient.FireClient;
 import com.mojang.brigadier.context.CommandContext;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.text.Text;
@@ -33,7 +34,12 @@ public class TaskManager {
      */
     public static void tick() {
         if (isTaskActive()) {
-            currentTask.tick();
+            try {
+                currentTask.tick();
+            } catch (RuntimeException e) {
+                FireClient.LOGGER.error("Runtime exception in task, ending!", e);
+                currentTask = null;
+            }
         }
     }
 

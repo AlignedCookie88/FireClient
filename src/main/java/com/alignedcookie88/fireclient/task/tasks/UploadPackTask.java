@@ -4,19 +4,11 @@ import com.alignedcookie88.fireclient.FireClient;
 import com.alignedcookie88.fireclient.Utility;
 import com.alignedcookie88.fireclient.task.Task;
 import com.alignedcookie88.fireclient.task.TaskManager;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.brigadier.suggestion.SuggestionProvider;
-import com.mojang.brigadier.suggestion.Suggestions;
-import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.HoverEvent;
 import net.minecraft.text.MutableText;
@@ -25,16 +17,11 @@ import net.minecraft.util.Formatting;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -50,15 +37,6 @@ public class UploadPackTask extends Task {
 
     private State state;
 
-
-    public static final URL uploadUrl;
-    static {
-        try {
-            uploadUrl = new URL("https://dftooling-github-bot.alignedcookie88.com/upload_pack");
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
 
     public UploadPackTask(File pack) {
@@ -99,33 +77,14 @@ public class UploadPackTask extends Task {
                 state = State.SEND_HTTP;
                 yield TickResult.taskIncomplete();
             }
-            case SEND_HTTP -> TickResult.waitForBackgroundJob(() -> {
-                try {
-                    Utility.sendMessage(Text.literal("Uploading..."));
-                    FireClient.LOGGER.info("Uploading pack to server at {}...", uploadUrl);
+            case SEND_HTTP -> {
+                Utility.sendMessage(Text.literal("Uploading..."));
 
-                    // Setup
-                    HttpURLConnection connection = (HttpURLConnection) uploadUrl.openConnection();
-                    connection.setRequestMethod("POST");
-                    connection.setInstanceFollowRedirects(true);
-                    connection.setConnectTimeout(25000);
-                    connection.setReadTimeout(25000);
-                    connection.setDoOutput(true);
-                    connection.setRequestProperty("UploaderName", MinecraftClient.getInstance().getGameProfile().getName());
-                    OutputStream stream = connection.getOutputStream();
+                yield TickResult.waitForTask(new DFToolingApiTask(new DFToolingApiTask.Request(DFToolingApiTask.PACKS_UPLOAD, new HashMap<>(), stream -> {
                     stream.write(pack_bytes);
-                    stream.flush();
-                    stream.close();
-
-                    // Handle
-                    int response = connection.getResponseCode();
-                    if (response > 199 && response < 300) {
-                        InputStream resultStream = connection.getInputStream();
-                        byte[] resultData = resultStream.readAllBytes();
-                        resultStream.close();
-                        String resultString = new String(resultData, StandardCharsets.UTF_8);
-                        JsonObject object = JsonParser.parseString(resultString).getAsJsonObject();
-                        String downloadUrl = object.get("uri").getAsString();
+                }), result -> {
+                    if (result.success()) {
+                        String downloadUrl = result.getJson().getAsJsonObject().get("url").getAsString();
                         MutableText uploadMsg = Text.literal("The pack has been uploaded! URL: ").append(
                                 Text.literal(downloadUrl).formatted(Formatting.AQUA).formatted(Formatting.UNDERLINE)
                         ).append(
@@ -137,14 +96,11 @@ public class UploadPackTask extends Task {
                         );
                         Utility.sendMessage(uploadMsg);
                     } else {
-                        Utility.sendMessage(Text.literal("There was an error uploading the pack."));
+                        Utility.sendMessage(result.getStatusMessage());
                     }
-                } catch (Throwable throwable) {
-                    Utility.sendMessage(Text.literal("An unexpected error occurred whilst uploading the pack. See the game log for more details."));
-                    FireClient.LOGGER.error("An error occurred whilst upload the resource pack.", throwable);
-                }
-                this.state = State.COMPLETED;
-            });
+                    this.state = State.COMPLETED;
+                }));
+            }
             case COMPLETED -> {
 
                 if (tempFile != null) {
