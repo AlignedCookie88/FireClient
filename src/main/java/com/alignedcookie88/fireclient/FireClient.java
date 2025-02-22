@@ -5,9 +5,11 @@ import com.alignedcookie88.fireclient.commandrunner.CommandRunnerResponse;
 import com.alignedcookie88.fireclient.commandrunner.CommandRunners;
 import com.alignedcookie88.fireclient.functions.*;
 import com.alignedcookie88.fireclient.integration.CodeClientIntegration;
+import com.alignedcookie88.fireclient.resources.ResourceReloadListener;
 import com.alignedcookie88.fireclient.task.TaskManager;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.loader.api.FabricLoader;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.minecraft.client.MinecraftClient;
@@ -16,6 +18,7 @@ import net.minecraft.network.listener.PacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.OverlayMessageS2CPacket;
 import net.minecraft.registry.*;
+import net.minecraft.resource.ResourceType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
@@ -86,6 +89,9 @@ public class FireClient implements ModInitializer {
         registerFunction(new SetPostProcessorFunction());
         registerFunction(new RemovePostProcessorFunction());
         registerFunction(new SetPostProcessorUniformFunction());
+
+        // Resource pack stuff
+        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new ResourceReloadListener());
 
     }
 
