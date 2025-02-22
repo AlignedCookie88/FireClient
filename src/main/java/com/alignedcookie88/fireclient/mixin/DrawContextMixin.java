@@ -3,9 +3,11 @@ package com.alignedcookie88.fireclient.mixin;
 import com.alignedcookie88.fireclient.resources.TagDisplayData;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,8 +22,12 @@ public abstract class DrawContextMixin {
 
     @Shadow public abstract int drawText(TextRenderer textRenderer, Text text, int x, int y, int color, boolean shadow);
 
-    @Inject(method = "drawItemInSlot(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V", at = @At("TAIL"))
+    @Shadow @Final private MatrixStack matrices;
+
+    @Inject(method = "drawItemInSlot(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;push()V"))
     public void renderDecorations(TextRenderer textRenderer, ItemStack stack, int x, int y, String countOverride, CallbackInfo ci) {
+        matrices.push();
+        matrices.translate(0.0, 0.0, 200.0);
         List<Text> badge_lines = new ArrayList<>();
         int line_width = 0;
         MutableText current_line = Text.empty();
@@ -44,5 +50,6 @@ public abstract class DrawContextMixin {
             drawText(textRenderer, line, x-1, y-1+by, 0xFFFFFF, true);
             by += 11;
         }
+        matrices.pop();
     }
 }
