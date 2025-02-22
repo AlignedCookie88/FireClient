@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -25,7 +26,7 @@ public class ItemStackMixin {
 
     @Inject(method = "getTooltip", at = @At("RETURN"), cancellable = true)
     public void getTooltip(Item.TooltipContext context, PlayerEntity player, TooltipType type, CallbackInfoReturnable<List<Text>> cir) {
-        List<Text> returnValue = cir.getReturnValue();
+        List<Text> returnValue = new ArrayList<>(cir.getReturnValue());
 
         if (InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), InputUtil.GLFW_KEY_LEFT_CONTROL)) {
             returnValue.add(Text.empty());
