@@ -52,13 +52,16 @@ public class FireClient implements ModInitializer {
 
 
 
-    public static final String VERSION = FabricLoader.getInstance().getModContainer("fireclient").get().getMetadata().getVersion().getFriendlyString();
-    public static final String USER_AGENT = "FireClient/"+VERSION;
+    public static String VERSION;
+    public static String USER_AGENT;
 
 
     public static Registry<FireFunction> functionRegistry = FabricRegistryBuilder.createSimple(FireFunction.class, functionRegistryIdentifier).buildAndRegister();
     @Override
     public void onInitialize() {
+
+        VERSION = FabricLoader.getInstance().getModContainer("fireclient").get().getMetadata().getVersion().getFriendlyString();
+        USER_AGENT = "FireClient/"+VERSION;
 
         //if (System.getProperty("os.name").toLowerCase().startsWith("mac os x"))
         //    throw new UserIsBadWithFinancialDecisionsException("The user bought an overpriced piece of rubbish from Apple Computers Inc");

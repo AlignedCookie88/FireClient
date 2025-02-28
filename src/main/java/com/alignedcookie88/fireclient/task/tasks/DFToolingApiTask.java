@@ -13,6 +13,7 @@ import net.minecraft.network.encryption.NetworkEncryptionUtils;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -241,11 +242,13 @@ public class DFToolingApiTask extends RunAsynchronouslyTask {
 
                 int code = connection.getResponseCode();
 
+                int retryAfter = Utility.parseIntOrDefault(connection.getHeaderField("Retry-After"), -1);
+
                 InputStream stream = code >= 200 && code < 300 ? connection.getInputStream() : connection.getErrorStream();
                 byte[] data = stream.readAllBytes();
                 stream.close();
 
-                return new Result(code, data);
+                return new Result(code, data, retryAfter);
 
             } catch (Exception ignored) {
 
@@ -260,10 +263,10 @@ public class DFToolingApiTask extends RunAsynchronouslyTask {
 
     }
 
-    public record Result(int status, byte[] data) {
+    public record Result(int status, byte[] data, int retryAfter) {
 
         public Result(int status) {
-            this(status, new byte[] {});
+            this(status, new byte[] {}, -1);
         }
 
         public boolean isAuthInvalid() {
@@ -272,6 +275,12 @@ public class DFToolingApiTask extends RunAsynchronouslyTask {
 
         public boolean success() {
             return status >= 200 && status < 300;
+        }
+
+        private String formatRetryAfter() {
+            if (retryAfter == -1)
+                return "[Unknown]";
+            return Utility.formatWaitTime(retryAfter);
         }
 
         public MutableText getStatusMessage() {
@@ -284,8 +293,13 @@ public class DFToolingApiTask extends RunAsynchronouslyTask {
                 case 400 -> Text.literal("The sent data was invalid. Did you enter everything correctly?");
                 case 401 -> Text.literal("The authentication was invalid.");
                 case 403 -> Text.literal("You are not authorised to do this.");
+                case 410 -> Text.literal("The action you are trying to complete is no longer possible due to backend API changes. Please ensure you are on the latest version of FireClient.");
                 case 413 -> Text.literal("The data exceeds the size limit.");
-                case 503 -> Text.literal("The DFTooling API is currently unavailable.");
+                case 415 -> Text.literal("The data you sent is not of a type that the server expected, or it may be unreadable to the server. Please make sure the data is valid and readable.");
+                case 429 -> Text.literal("You are doing this too quickly. Please try again in "+formatRetryAfter()+".");
+                case 502 -> Text.literal("The DFTooling API is currently unavailable.");
+                case 503 -> Text.literal("The DFTooling API is currently unavailable or overloaded.");
+                case 504 -> Text.literal("The DFTooling API is currently unavailable, overloaded or very broken.");
 
                 default -> Text.literal("Unexpected status %s. Click this message for more info.".formatted(status))
                         .styled(style -> style.withClickEvent(
@@ -295,6 +309,14 @@ public class DFToolingApiTask extends RunAsynchronouslyTask {
                                 )
                         ));
             };
+        }
+
+        public MutableText getStatusMessageResourcePack() {
+            MutableText msg = getStatusMessage();
+            if (status == 415) {
+                return msg.append(Text.literal(" (Note: If you are using packsquash to protect your resource pack, it may be causing the DFTooling API to be unable to verify that the file is indeed a resource pack!)").formatted(Formatting.GRAY, Formatting.ITALIC));
+            }
+            return msg;
         }
 
         public JsonElement getJson() {

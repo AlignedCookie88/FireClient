@@ -15,7 +15,9 @@ import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.text.Text;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 
+import java.time.Duration;
 import java.util.Arrays;
 
 public class Utility {
@@ -203,5 +205,20 @@ public class Utility {
 
     public static Text miniMessage(String miniMessage) {
         return componentToText(MiniMessage.miniMessage().deserialize(miniMessage));
+    }
+
+    public static int parseIntOrDefault(String s, int d) {
+        if (s == null)
+            return d;
+
+        try {
+            return Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            return d;
+        }
+    }
+
+    public static String formatWaitTime(int time) {
+        return DurationFormatUtils.formatDuration((long) time * 1000, "H:mm:ss", false);
     }
 }
