@@ -51,6 +51,11 @@ public class FireClient implements ModInitializer {
     private static List<CommandRunnerResponse> commandRunnerResponses = new ArrayList<>();
 
 
+
+    public static final String VERSION = FabricLoader.getInstance().getModContainer("fireclient").get().getMetadata().getVersion().getFriendlyString();
+    public static final String USER_AGENT = "FireClient/"+VERSION;
+
+
     public static Registry<FireFunction> functionRegistry = FabricRegistryBuilder.createSimple(FireFunction.class, functionRegistryIdentifier).buildAndRegister();
     @Override
     public void onInitialize() {

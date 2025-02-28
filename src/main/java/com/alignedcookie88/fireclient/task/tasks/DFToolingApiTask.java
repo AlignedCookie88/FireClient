@@ -226,6 +226,7 @@ public class DFToolingApiTask extends RunAsynchronouslyTask {
 
                 HttpURLConnection connection = (HttpURLConnection) uploadUrl.openConnection();
                 connection.setRequestMethod(endpoint.method);
+                connection.setRequestProperty("User-Agent", FireClient.USER_AGENT);
                 connection.setInstanceFollowRedirects(true);
                 connection.setConnectTimeout(25000);
                 connection.setReadTimeout(25000);
