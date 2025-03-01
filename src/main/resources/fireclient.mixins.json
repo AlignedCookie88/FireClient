@@ -7,6 +7,7 @@
     "ItemStackMixin"
   ],
   "client": [
+    "AbstractSignEditScreenMixin",
     "CameraAccessor",
     "ChatHudMixin",
     "ChatScreenMixin",
