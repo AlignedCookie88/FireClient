@@ -20,15 +20,15 @@ import java.util.List;
 
 public class FunctionInfoScreen extends Screen {
 
-    private List<Drawable> drawables = Lists.newArrayList();
+    private final List<Drawable> drawables = Lists.newArrayList();
     private final List<Element> children = com.google.common.collect.Lists.newArrayList();
     private final List<Selectable> selectables = com.google.common.collect.Lists.newArrayList();
 
-    FireFunction function;
+    final FireFunction function;
 
     int sheight;
 
-    List<Text> argText = new ArrayList<>();
+    final List<Text> argText = new ArrayList<>();
 
     protected FunctionInfoScreen(FireFunction function) {
         super(Text.literal("Function Info - " + function.getName()));
@@ -50,9 +50,7 @@ public class FunctionInfoScreen extends Screen {
         int pane_width = x2-x1;
         int pane_height = y2-y1;
 
-        addDrawableChild(ButtonWidget.builder(Text.literal("Back"), button -> {
-            MinecraftClient.getInstance().setScreen(new FunctionsScreen());
-        }).dimensions(x1+4, y2-24, ((pane_width-8)/2)-1, 20).build());
+        addDrawableChild(ButtonWidget.builder(Text.literal("Back"), button -> MinecraftClient.getInstance().setScreen(new FunctionsScreen())).dimensions(x1+4, y2-24, ((pane_width-8)/2)-1, 20).build());
 
         addDrawableChild(ButtonWidget.builder(Text.literal("Get Function"), button -> {
             Utility.giveItem(FireFunctionSerialiser.serialiseFunction(function));
@@ -61,9 +59,7 @@ public class FunctionInfoScreen extends Screen {
 
         String wiki = function.getWikiLink();
         if (wiki != null) {
-            addDrawableChild(ButtonWidget.builder(Text.literal("Open Wiki Article"), button -> {
-                ConfirmLinkScreen.open(this, wiki, true);
-            }).dimensions(x1, y2+10, pane_width, 20).build());
+            addDrawableChild(ButtonWidget.builder(Text.literal("Open Wiki Article"), button -> ConfirmLinkScreen.open(this, wiki, true)).dimensions(x1, y2+10, pane_width, 20).build());
         }
     }
 
@@ -80,10 +76,7 @@ public class FunctionInfoScreen extends Screen {
 
         UIUtility.drawNineSlicedTexture(context, Identifier.of("fireclient", "textures/gui/default_screen_bg.png"), x1, y1, x2, y2);
 
-        Iterator var5 = this.drawables.iterator();
-
-        while(var5.hasNext()) {
-            Drawable drawable = (Drawable)var5.next();
+        for (Drawable drawable : this.drawables) {
             drawable.render(context, mouseX, mouseY, delta);
         }
 
@@ -103,7 +96,7 @@ public class FunctionInfoScreen extends Screen {
 
     protected <T extends Element & Drawable & Selectable> T addDrawableChild(T drawableElement) {
         super.addDrawableChild(drawableElement);
-        this.drawables.add((Drawable)drawableElement);
+        this.drawables.add(drawableElement);
         return this.addSelectableChild(drawableElement);
     }
 
@@ -116,7 +109,7 @@ public class FunctionInfoScreen extends Screen {
     protected <T extends Element & Selectable> T addSelectableChild(T child) {
         super.addSelectableChild(child);
         this.children.add(child);
-        this.selectables.add((Selectable)child);
+        this.selectables.add(child);
         return child;
     }
 

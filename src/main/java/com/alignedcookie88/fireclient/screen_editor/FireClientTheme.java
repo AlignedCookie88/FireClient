@@ -1,7 +1,6 @@
 package com.alignedcookie88.fireclient.screen_editor;
 
 import imgui.ImGui;
-import imgui.flag.ImGuiCol;
 import xyz.breadloaf.imguimc.interfaces.Theme;
 
 public class FireClientTheme implements Theme {

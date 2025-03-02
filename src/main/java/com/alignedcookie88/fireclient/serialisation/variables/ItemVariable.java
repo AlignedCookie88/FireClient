@@ -8,7 +8,7 @@ import net.minecraft.nbt.StringNbtReader;
 
 public class ItemVariable implements DFVariable {
 
-    public String item;
+    public final String item;
 
     public ItemVariable(String item) {
         this.item = item;

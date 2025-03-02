@@ -2,7 +2,6 @@ package com.alignedcookie88.fireclient.mixin;
 
 import com.alignedcookie88.fireclient.FireClient;
 import com.alignedcookie88.fireclient.FireFunction;
-import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.block.entity.SignText;

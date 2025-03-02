@@ -4,9 +4,9 @@ import com.alignedcookie88.fireclient.serialisation.DFVariable;
 
 public class Variable implements DFVariable {
 
-    public String name;
+    public final String name;
 
-    public String scope;
+    public final String scope;
 
     public Variable(String name, String scope) {
         this.name = name;

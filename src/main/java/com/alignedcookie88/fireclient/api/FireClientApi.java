@@ -13,11 +13,11 @@ import java.util.List;
 
 public class FireClientApi {
 
-    public static List<ApiConnection> apiConnections = new ArrayList<>();
+    public static final List<ApiConnection> apiConnections = new ArrayList<>();
 
-    public static Logger LOGGER = FireClient.createLogger("API");
+    public static final Logger LOGGER = FireClient.createLogger("API");
 
-    public static List<Message> messages = new ArrayList<>();
+    public static final List<Message> messages = new ArrayList<>();
 
     private static volatile boolean processing = false;
 

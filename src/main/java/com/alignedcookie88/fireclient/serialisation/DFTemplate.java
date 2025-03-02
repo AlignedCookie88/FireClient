@@ -1,6 +1,5 @@
 package com.alignedcookie88.fireclient.serialisation;
 
-import com.alignedcookie88.fireclient.FireClient;
 import com.google.gson.Gson;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
@@ -19,7 +18,7 @@ import java.util.List;
 import java.util.zip.GZIPOutputStream;
 
 public class DFTemplate {
-    public List<DFBlock> blocks;
+    public final List<DFBlock> blocks;
 
     public DFTemplate() {
         blocks = new ArrayList<>();

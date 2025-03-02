@@ -4,6 +4,6 @@ import com.alignedcookie88.fireclient.commandrunner.types.LocateCommandRunner;
 
 public class CommandRunners {
 
-    public static LocateCommandRunner LOCATE = new LocateCommandRunner();
+    public static final LocateCommandRunner LOCATE = new LocateCommandRunner();
 
 }

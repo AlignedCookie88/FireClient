@@ -13,9 +13,9 @@ public class SetVariableBlock implements DFBlock {
 
     public String block = "set_var";
 
-    public String action;
+    public final String action;
 
-    public HashMap<String, List<DFArgument>> args = new HashMap<>();
+    public final HashMap<String, List<DFArgument>> args = new HashMap<>();
 
     public SetVariableBlock(String name) {
         action = name;

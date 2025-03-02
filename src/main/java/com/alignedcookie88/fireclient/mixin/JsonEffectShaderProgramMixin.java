@@ -1,6 +1,5 @@
 package com.alignedcookie88.fireclient.mixin;
 
-import com.alignedcookie88.fireclient.FireClient;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.gl.JsonEffectShaderProgram;

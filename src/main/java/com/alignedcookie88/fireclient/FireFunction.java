@@ -1,8 +1,5 @@
 package com.alignedcookie88.fireclient;
 
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-
 import java.util.List;
 
 public interface FireFunction {

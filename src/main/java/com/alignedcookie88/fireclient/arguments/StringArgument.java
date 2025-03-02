@@ -6,14 +6,14 @@ import net.minecraft.util.Formatting;
 
 public class StringArgument implements FireArgument {
 
-    String id;
+    final String id;
 
     public StringArgument(String id) {
         this.id = id;
     }
     @Override
     public Object parse(String raw) {
-        return (Object) raw;
+        return raw;
     }
 
     @Override

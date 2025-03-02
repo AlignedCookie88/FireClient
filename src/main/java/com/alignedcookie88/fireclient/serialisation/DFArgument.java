@@ -1,9 +1,9 @@
 package com.alignedcookie88.fireclient.serialisation;
 
 public class DFArgument {
-    public Integer slot;
+    public final Integer slot;
 
-    public DFVariableWrapper item;
+    public final DFVariableWrapper item;
 
     public DFArgument(Integer slot, DFVariable variable) {
         this.slot = slot;

@@ -14,7 +14,7 @@ import java.util.List;
 
 public class MiniMessageArgument implements FireArgument {
 
-    String id;
+    final String id;
 
     public MiniMessageArgument(String id) {
         this.id = id;
@@ -22,7 +22,7 @@ public class MiniMessageArgument implements FireArgument {
 
     @Override
     public Object parse(String raw) {
-        return (Object) MiniMessage.miniMessage().deserialize(raw);
+        return MiniMessage.miniMessage().deserialize(raw);
     }
 
     @Override

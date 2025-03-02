@@ -1,6 +1,5 @@
 package com.alignedcookie88.fireclient.hud;
 
-import com.alignedcookie88.fireclient.FireClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
@@ -8,9 +7,9 @@ import net.minecraft.util.math.MathHelper;
 
 public class BarHudElement extends PositionalHudElement {
 
-    int width;
+    final int width;
     float progress;
-    int colour;
+    final int colour;
 
     int last_lerp;
 

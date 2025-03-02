@@ -5,13 +5,13 @@ import dev.dfonline.codeclient.CodeClient;
 public class CodeClientIntegration {
 
     public static void tick() {
-        if (CodeClient.location != null && CodeClient.location.name() != "play") {
+        if (CodeClient.location != null && !CodeClient.location.name().equals("play")) {
             State.reset();
         }
     }
 
     public static boolean onPlot() {
-        return CodeClient.location.name() != "spawn";
+        return !CodeClient.location.name().equals("spawn");
     }
 
 }

@@ -13,9 +13,9 @@ public class FunctionBlock implements DFBlock {
 
     public String block = "func";
 
-    public String data;
+    public final String data;
 
-    public HashMap<String, List<DFArgument>> args = new HashMap<>();
+    public final HashMap<String, List<DFArgument>> args = new HashMap<>();
 
     public FunctionBlock(String name) {
         data = name;

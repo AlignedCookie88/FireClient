@@ -80,9 +80,7 @@ public class UploadPackTask extends Task {
             case SEND_HTTP -> {
                 Utility.sendMessage(Text.literal("Uploading..."));
 
-                yield TickResult.waitForTask(new DFToolingApiTask(new DFToolingApiTask.Request(DFToolingApiTask.PACKS_UPLOAD, new HashMap<>(), stream -> {
-                    stream.write(pack_bytes);
-                }), result -> {
+                yield TickResult.waitForTask(new DFToolingApiTask(new DFToolingApiTask.Request(DFToolingApiTask.PACKS_UPLOAD, new HashMap<>(), stream -> stream.write(pack_bytes)), result -> {
                     if (result.success()) {
                         String downloadUrl = result.getJson().getAsJsonObject().get("url").getAsString();
                         MutableText uploadMsg = Text.literal("The pack has been uploaded! URL: ").append(

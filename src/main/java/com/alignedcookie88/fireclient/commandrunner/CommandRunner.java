@@ -2,13 +2,12 @@ package com.alignedcookie88.fireclient.commandrunner;
 
 import com.alignedcookie88.fireclient.CommandQueue;
 import com.alignedcookie88.fireclient.FireClient;
-import net.minecraft.client.MinecraftClient;
 
 public abstract class CommandRunner {
 
-    private CommandRunnerResponse response;
+    private final CommandRunnerResponse response;
 
-    private String command;
+    private final String command;
 
     public CommandRunner(String[] regex, String command) {
 

@@ -32,15 +32,15 @@ import java.util.regex.Pattern;
 
 public class FireClient implements ModInitializer {
 
-    public static List<String> commandQueue = new ArrayList<>();
+    public static final List<String> commandQueue = new ArrayList<>();
 
     public static volatile boolean isProcessingCommands = false;
 
-    public static Logger LOGGER = LoggerFactory.getLogger("FireClient");
+    public static final Logger LOGGER = LoggerFactory.getLogger("FireClient");
 
-    public static String version = FabricLoader.getInstance().getModContainer("fireclient").get().getMetadata().getVersion().getFriendlyString();
+    public static final String version = FabricLoader.getInstance().getModContainer("fireclient").get().getMetadata().getVersion().getFriendlyString();
 
-    public static Identifier functionRegistryIdentifier = Identifier.of("fireclient", "functions");
+    public static final Identifier functionRegistryIdentifier = Identifier.of("fireclient", "functions");
 
     public static Screen openOnNextTick = null;
 
@@ -48,7 +48,7 @@ public class FireClient implements ModInitializer {
 
     private static boolean codeClientIntegration = false;
 
-    private static List<CommandRunnerResponse> commandRunnerResponses = new ArrayList<>();
+    private static final List<CommandRunnerResponse> commandRunnerResponses = new ArrayList<>();
 
 
 
@@ -56,15 +56,12 @@ public class FireClient implements ModInitializer {
     public static String USER_AGENT;
 
 
-    public static Registry<FireFunction> functionRegistry = FabricRegistryBuilder.createSimple(FireFunction.class, functionRegistryIdentifier).buildAndRegister();
+    public static final Registry<FireFunction> functionRegistry = FabricRegistryBuilder.createSimple(FireFunction.class, functionRegistryIdentifier).buildAndRegister();
     @Override
     public void onInitialize() {
 
         VERSION = FabricLoader.getInstance().getModContainer("fireclient").get().getMetadata().getVersion().getFriendlyString();
         USER_AGENT = "FireClient/"+VERSION;
-
-        //if (System.getProperty("os.name").toLowerCase().startsWith("mac os x"))
-        //    throw new UserIsBadWithFinancialDecisionsException("The user bought an overpriced piece of rubbish from Apple Computers Inc");
 
         // CodeClient
         codeClientIntegration = FabricLoader.getInstance().isModLoaded("codeclient");
@@ -129,7 +126,7 @@ public class FireClient implements ModInitializer {
         for (Field field : fields) {
             if (field.getType() == Text.class) { // TEXT DATA
                 field.setAccessible(true);
-                Text data = null;
+                Text data;
                 try {
                     data = (Text) field.get(packet);
                 } catch (IllegalAccessException e) {

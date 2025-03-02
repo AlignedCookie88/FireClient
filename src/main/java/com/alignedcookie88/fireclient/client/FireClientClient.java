@@ -37,9 +37,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 public class FireClientClient implements ClientModInitializer {
-    public static final Dynamic3CommandExceptionType INVALID_TYPE_EXCEPTION = new Dynamic3CommandExceptionType((element, type, expectedType) -> {
-        return Text.stringifiedTranslatable("argument.resource.invalid_type", new Object[]{element, type, expectedType});
-    });
+    public static final Dynamic3CommandExceptionType INVALID_TYPE_EXCEPTION = new Dynamic3CommandExceptionType((element, type, expectedType) -> Text.stringifiedTranslatable("argument.resource.invalid_type", new Object[]{element, type, expectedType}));
 
     private static KeyBinding customAbility1;
     private static KeyBinding customAbility2;
@@ -208,13 +206,9 @@ public class FireClientClient implements ClientModInitializer {
                 }
         );
 
-        ClientTickEvents.START_CLIENT_TICK.register(client -> {
-            FireClient.tick();
-        });
+        ClientTickEvents.START_CLIENT_TICK.register(client -> FireClient.tick());
 
-        ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            handleKeys();
-        });
+        ClientTickEvents.END_CLIENT_TICK.register(client -> handleKeys());
 
         ClientTickEvents.START_WORLD_TICK.register(world -> {
             CommandQueue.tick(); // For some reason CommandQueue must tick here

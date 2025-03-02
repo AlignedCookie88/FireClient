@@ -21,7 +21,7 @@ import java.util.List;
 
 public class FireFunctionSerialiser {
 
-    public static String ARG_DENOTION = "\uF8F8";
+    public static final String ARG_DENOTION = "\uF8F8";
 
     public static ItemStack serialiseFunction(FireFunction function) {
         DFTemplate template = new DFTemplate();
@@ -67,13 +67,13 @@ public class FireFunctionSerialiser {
     }
 
     private static String getArgumentString(FireFunction function) {
-        String string = ".fireclient "+FireClient.functionRegistry.getId(function).asString();
+        StringBuilder string = new StringBuilder(".fireclient " + FireClient.functionRegistry.getId(function).asString());
 
         for (FireArgument argument : function.getExpectedArguments()) {
-            string = string + " " + ARG_DENOTION + "%var(" + argument.getID() + ")" + ARG_DENOTION;
+            string.append(" ").append(ARG_DENOTION).append("%var(").append(argument.getID()).append(")").append(ARG_DENOTION);
         }
 
-        return string;
+        return string.toString();
     }
 
     private static ItemStack createIconStack(FireFunction function) {

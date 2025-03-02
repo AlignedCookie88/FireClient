@@ -5,7 +5,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 public class FloatArgument implements FireArgument {
-    String id;
+    final String id;
 
     public FloatArgument(String id) {
         this.id = id;

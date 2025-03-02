@@ -2,13 +2,13 @@ package com.alignedcookie88.fireclient.serialisation;
 
 public class CodeTemplateData {
 
-    public String name;
+    public final String name;
 
-    public String code;
+    public final String code;
 
-    public String author;
+    public final String author;
 
-    public Integer version;
+    public final Integer version;
 
     public CodeTemplateData(String name, String code, String author) {
         this.name = name;

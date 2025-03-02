@@ -13,9 +13,9 @@ public class PlayerActionBlock implements DFBlock {
 
     public String block = "player_action";
 
-    public String action;
+    public final String action;
 
-    public HashMap<String, List<DFArgument>> args = new HashMap<>();
+    public final HashMap<String, List<DFArgument>> args = new HashMap<>();
 
     public PlayerActionBlock(String name) {
         action = name;

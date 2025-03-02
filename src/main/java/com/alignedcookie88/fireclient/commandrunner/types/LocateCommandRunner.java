@@ -1,10 +1,7 @@
 package com.alignedcookie88.fireclient.commandrunner.types;
 
-import com.alignedcookie88.fireclient.CommandQueue;
-import com.alignedcookie88.fireclient.Utility;
 import com.alignedcookie88.fireclient.commandrunner.CommandRunner;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.Identifier;
 
 import java.awt.*;

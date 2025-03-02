@@ -1,7 +1,6 @@
 package com.alignedcookie88.fireclient;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
 
 import java.util.ArrayList;
 import java.util.List;

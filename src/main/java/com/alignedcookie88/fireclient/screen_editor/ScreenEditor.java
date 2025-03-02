@@ -5,18 +5,15 @@ import com.alignedcookie88.fireclient.UIUtility;
 import com.alignedcookie88.fireclient.Utility;
 import imgui.ImGui;
 import imgui.type.ImInt;
-import net.kyori.adventure.text.Component;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
-import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.apache.commons.compress.utils.Lists;
 import xyz.breadloaf.imguimc.screen.ImGuiScreen;
 import xyz.breadloaf.imguimc.screen.ImGuiWindow;
-import xyz.breadloaf.imguimc.theme.ImGuiDarkTheme;
 
 import java.util.*;
 
@@ -26,12 +23,12 @@ public class ScreenEditor extends ImGuiScreen {
 
     Integer sheight;
 
-    Identifier screenBg = Identifier.of("fireclient", "textures/gui/default_screen_bg.png");
-    private List<Drawable> drawables = Lists.newArrayList();
+    final Identifier screenBg = Identifier.of("fireclient", "textures/gui/default_screen_bg.png");
+    private final List<Drawable> drawables = Lists.newArrayList();
     private final List<Element> children = com.google.common.collect.Lists.newArrayList();
     private final List<Selectable> selectables = com.google.common.collect.Lists.newArrayList();
 
-    ImInt selectedWidget = new ImInt(0);
+    final ImInt selectedWidget = new ImInt(0);
 
     String nextAction = null;
 
@@ -60,9 +57,7 @@ public class ScreenEditor extends ImGuiScreen {
                             ImGui.inputInt("Height", height, 2, 20);
                             sheight = clamp(height.get(), 10, 500);
 
-                            clickableButton(Text.literal("Get template"), () -> {
-                                Utility.sendStyledMessage("Clicked!");
-                            });
+                            clickableButton(Text.literal("Get template"), () -> Utility.sendStyledMessage("Clicked!"));
                         },
                         false
                 ),
@@ -79,9 +74,7 @@ public class ScreenEditor extends ImGuiScreen {
                             );
                             ImGui.newLine();
                             ImGui.sameLine();
-                            clickableButton(Text.literal("Add"), () -> {
-                                nextAction = "addWindow";
-                            });
+                            clickableButton(Text.literal("Add"), () -> nextAction = "addWindow");
                             clickableButton(Text.literal("Delete"), () -> {
 
                             });
@@ -98,11 +91,9 @@ public class ScreenEditor extends ImGuiScreen {
         pushWindow(new ImGuiWindow(
                 new FireClientTheme(),
                 Text.literal("Add widget"),
-                () -> {
-                    clickableButton(Text.literal("Add Button"), () -> {
+                () -> clickableButton(Text.literal("Add Button"), () -> {
 
-                    });
-                },
+                }),
                 true
         ));
     }
@@ -136,17 +127,14 @@ public class ScreenEditor extends ImGuiScreen {
 
         UIUtility.drawNineSlicedTexture(context, screenBg, (width/2) - (swidth/2), (height/2) - (sheight/2), (width/2) + (swidth/2), (height/2) + (sheight/2));
 
-        Iterator var5 = this.drawables.iterator();
-
-        while(var5.hasNext()) {
-            Drawable drawable = (Drawable)var5.next();
+        for (Drawable drawable : this.drawables) {
             drawable.render(context, mouseX, mouseY, delta);
         }
     }
 
     protected <T extends Element & Drawable & Selectable> T addDrawableChild(T drawableElement) {
         super.addDrawableChild(drawableElement);
-        this.drawables.add((Drawable)drawableElement);
+        this.drawables.add(drawableElement);
         return this.addSelectableChild(drawableElement);
     }
 
@@ -159,7 +147,7 @@ public class ScreenEditor extends ImGuiScreen {
     protected <T extends Element & Selectable> T addSelectableChild(T child) {
         super.addSelectableChild(child);
         this.children.add(child);
-        this.selectables.add((Selectable)child);
+        this.selectables.add(child);
         return child;
     }
 

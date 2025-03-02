@@ -33,7 +33,7 @@ public class AddNodesScreen extends Screen {
     protected final List<Icon> icons = new ArrayList<>();
 
 
-    protected MultiplayerScreen parent;
+    protected final MultiplayerScreen parent;
 
     public AddNodesScreen(MultiplayerScreen parent) {
         super(Text.literal("Add Nodes"));
@@ -93,14 +93,10 @@ public class AddNodesScreen extends Screen {
         addNumericalButton(7, x, y, Items.PINK_TERRACOTTA);
 
         y += y_change;
-        addButton("Add Node Beta - Project", button -> {
-            addNode("Node Beta - Project", "beta");
-        }, x, y, Items.STRUCTURE_BLOCK);
+        addButton("Add Node Beta - Project", button -> addNode("Node Beta - Project", "beta"), x, y, Items.STRUCTURE_BLOCK);
 
         y += y_change;
-        addButton("Other & Staff Nodes", button -> {
-            MinecraftClient.getInstance().setScreen(new AddOtherNodesScreen(parent));
-        }, x, y, Items.BLAZE_POWDER);
+        addButton("Other & Staff Nodes", button -> MinecraftClient.getInstance().setScreen(new AddOtherNodesScreen(parent)), x, y, Items.BLAZE_POWDER);
     }
 
     protected void addNumericalButton(int number, int x, int y, Item icon) {

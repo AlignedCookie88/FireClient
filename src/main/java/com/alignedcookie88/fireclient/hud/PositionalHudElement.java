@@ -1,19 +1,18 @@
 package com.alignedcookie88.fireclient.hud;
 
 import com.alignedcookie88.fireclient.Config;
-import com.alignedcookie88.fireclient.FireClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 
 public abstract class PositionalHudElement implements HudElement {
 
-    String id;
+    final String id;
 
-    float x;
-    float y;
+    final float x;
+    final float y;
 
-    int xo;
-    int yo;
+    final int xo;
+    final int yo;
 
     protected PositionalHudElement(String id, float x, float y, int xo, int yo) {
         this.id = id;

@@ -5,7 +5,6 @@ import com.alignedcookie88.fireclient.FireArgument;
 import com.alignedcookie88.fireclient.FireFunction;
 import com.alignedcookie88.fireclient.arguments.IntegerArgument;
 import com.alignedcookie88.fireclient.arguments.StringArgument;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 

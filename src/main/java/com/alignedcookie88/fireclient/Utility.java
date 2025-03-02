@@ -11,13 +11,10 @@ import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.text.Text;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
-import java.time.Duration;
 import java.util.Arrays;
 
 public class Utility {

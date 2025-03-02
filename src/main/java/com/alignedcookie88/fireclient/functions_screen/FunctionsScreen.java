@@ -42,9 +42,7 @@ public class FunctionsScreen extends Screen {
         addDrawableChild(a);
 
 
-        b = ButtonWidget.builder(Text.literal("Info"), button -> {
-            MinecraftClient.getInstance().setScreen(new FunctionInfoScreen(list.selected()));
-        }).dimensions((width/2)+2, height-23, 123, 20).build();
+        b = ButtonWidget.builder(Text.literal("Info"), button -> MinecraftClient.getInstance().setScreen(new FunctionInfoScreen(list.selected()))).dimensions((width/2)+2, height-23, 123, 20).build();
         b.active = false;
         addDrawableChild(b);
     }

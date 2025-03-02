@@ -1,8 +1,6 @@
 package com.alignedcookie88.fireclient.api.packet;
 
-import com.alignedcookie88.fireclient.Utility;
 import com.alignedcookie88.fireclient.api.ApiConnection;
-import net.minecraft.text.Text;
 
 public class IdentifyPacket extends ApiIncomingPacket {
     @Override

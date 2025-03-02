@@ -6,7 +6,7 @@ import net.minecraft.text.Text;
 
 public class TextHudElement extends PositionalHudElement {
 
-    Text text;
+    final Text text;
 
     public TextHudElement(String id, float x, float y, int xo, int yo, Text text) {
         super(id, x, y, xo, yo);

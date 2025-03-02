@@ -4,13 +4,13 @@ import com.alignedcookie88.fireclient.serialisation.DFVariable;
 
 public class FunctionParameterVariable implements DFVariable {
 
-    public String name;
+    public final String name;
 
-    public String type;
+    public final String type;
 
-    public boolean plural;
+    public final boolean plural;
 
-    public boolean optional;
+    public final boolean optional;
 
     public FunctionParameterVariable(String name, String type, boolean plural, boolean optional) {
         this.name = name;

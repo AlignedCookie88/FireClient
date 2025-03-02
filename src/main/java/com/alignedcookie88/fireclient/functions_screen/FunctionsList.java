@@ -11,11 +11,10 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.Nullable;
 
 public class FunctionsList extends EntryListWidget<FunctionsList.FunctionEntry> {
 
-    TextRenderer textRenderer;
+    final TextRenderer textRenderer;
 
     FunctionEntry selected2;
 
@@ -44,11 +43,11 @@ public class FunctionsList extends EntryListWidget<FunctionsList.FunctionEntry> 
 
     public static class FunctionEntry extends EntryListWidget.Entry<FunctionEntry> {
 
-        FireFunction function;
+        final FireFunction function;
 
-        TextRenderer textRenderer;
+        final TextRenderer textRenderer;
 
-        FunctionsList parent;
+        final FunctionsList parent;
 
         private FunctionEntry(FireFunction function, TextRenderer textRenderer, FunctionsList parent) {
             this.function = function;

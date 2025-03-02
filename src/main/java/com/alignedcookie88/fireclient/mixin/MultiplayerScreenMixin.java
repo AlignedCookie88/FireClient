@@ -20,9 +20,7 @@ public class MultiplayerScreenMixin extends Screen {
 
     @Inject(method = "init", at = @At("HEAD"))
     public void init(CallbackInfo ci) {
-        addDrawableChild(ButtonWidget.builder(Text.literal("Add Nodes"), button -> {
-            MinecraftClient.getInstance().setScreen(new AddNodesScreen((MultiplayerScreen) (Screen) this));
-        }).dimensions(3, 3, 75, 20).build());
+        addDrawableChild(ButtonWidget.builder(Text.literal("Add Nodes"), button -> MinecraftClient.getInstance().setScreen(new AddNodesScreen((MultiplayerScreen) (Screen) this))).dimensions(3, 3, 75, 20).build());
     }
 
 }

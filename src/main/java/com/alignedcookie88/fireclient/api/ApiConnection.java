@@ -3,7 +3,6 @@ package com.alignedcookie88.fireclient.api;
 import com.alignedcookie88.fireclient.Utility;
 import com.alignedcookie88.fireclient.util.JsonObjectBuilder;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import net.minecraft.text.Text;
 
 import java.util.UUID;

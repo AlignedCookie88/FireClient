@@ -8,7 +8,6 @@ import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextWidget;
@@ -27,18 +26,18 @@ import java.util.List;
 
 public class CustomScreen extends Screen {
 
-    Integer swidth;
+    final Integer swidth;
 
-    Integer sheight;
+    final Integer sheight;
 
-    Identifier screenBg;
-    private List<Drawable> drawables = Lists.newArrayList();
+    final Identifier screenBg;
+    private final List<Drawable> drawables = Lists.newArrayList();
     private final List<Element> children = com.google.common.collect.Lists.newArrayList();
     private final List<Selectable> selectables = com.google.common.collect.Lists.newArrayList();
 
     private ScreenHandler screenHandler = null;
     private HandledScreen<?> handledScreen = null;
-    private List<CustomScreenSlot> slots = new ArrayList<>();
+    private final List<CustomScreenSlot> slots = new ArrayList<>();
 
     private record CustomScreenSlot(Slot slot, int x, int y, boolean interactable, boolean background, ScreenHandler handler, HandledScreen<?> handledScreen, MinecraftClient client) {
 
@@ -122,10 +121,7 @@ public class CustomScreen extends Screen {
 
         UIUtility.drawNineSlicedTexture(context, screenBg, (width/2) - (swidth/2), (height/2) - (sheight/2), (width/2) + (swidth/2), (height/2) + (sheight/2));
 
-        Iterator var5 = this.drawables.iterator();
-
-        while(var5.hasNext()) {
-            Drawable drawable = (Drawable)var5.next();
+        for (Drawable drawable : this.drawables) {
             drawable.render(context, mouseX, mouseY, delta);
         }
 
@@ -136,7 +132,7 @@ public class CustomScreen extends Screen {
 
     protected <T extends Element & Drawable & Selectable> T addDrawableChild(T drawableElement) {
         super.addDrawableChild(drawableElement);
-        this.drawables.add((Drawable)drawableElement);
+        this.drawables.add(drawableElement);
         return this.addSelectableChild(drawableElement);
     }
 
@@ -149,7 +145,7 @@ public class CustomScreen extends Screen {
     protected <T extends Element & Selectable> T addSelectableChild(T child) {
         super.addSelectableChild(child);
         this.children.add(child);
-        this.selectables.add((Selectable)child);
+        this.selectables.add(child);
         return child;
     }
 
@@ -190,9 +186,7 @@ public class CustomScreen extends Screen {
     public void addButton(Component text, int x, int y, int bwidth, int bheight, String click_command) {
         int lx = localifyX(x);
         int ly = localifyY(y);
-        this.addDrawableChild(ButtonWidget.builder(Utility.componentToText(text), (button) -> {
-            Utility.runPlotCommand(click_command);
-        }).dimensions(lx, ly, bwidth, bheight).build());
+        this.addDrawableChild(ButtonWidget.builder(Utility.componentToText(text), (button) -> Utility.runPlotCommand(click_command)).dimensions(lx, ly, bwidth, bheight).build());
     }
 
     public void addText(Component text, int x, int y) {

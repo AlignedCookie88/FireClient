@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FireFunctionParser {
-    public static String ARG_DENOTION = "\uF8F8";
+    public static final String ARG_DENOTION = "\uF8F8";
     public void parseAndExecute(FireFunction function, String rawArgs) {
         List<String> stringArgs = parseStringArgs(rawArgs);
         List<Object> objectArgs = parseObjectArgs(stringArgs, function);
@@ -18,19 +18,19 @@ public class FireFunctionParser {
 
     private List<String> parseStringArgs(String rawArgs) {
         List<String> stringArgs = new ArrayList<>();
-        String currentArgument = "";
+        StringBuilder currentArgument = new StringBuilder();
         boolean parsingArgument = false;
 
         for (Character charr : rawArgs.toCharArray()) {
             if (charr.toString().equals(ARG_DENOTION)) {
                 if (parsingArgument) {
-                    stringArgs.add(currentArgument);
+                    stringArgs.add(currentArgument.toString());
                 } else {
-                    currentArgument = "";
+                    currentArgument = new StringBuilder();
                 }
                 parsingArgument = !parsingArgument;
             } else if (parsingArgument) {
-                currentArgument = currentArgument + charr;
+                currentArgument.append(charr);
             }
         }
 
