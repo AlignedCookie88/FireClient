@@ -96,7 +96,7 @@ public class UploadPackTask extends Task {
                         );
                         Utility.sendMessage(uploadMsg);
                     } else {
-                        Utility.sendMessage(result.getStatusMessage());
+                        Utility.sendMessage(result.getStatusMessageResourcePack());
                     }
                     this.state = State.COMPLETED;
                 }));
