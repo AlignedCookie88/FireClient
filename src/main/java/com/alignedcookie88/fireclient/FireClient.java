@@ -94,6 +94,7 @@ public class FireClient implements ModInitializer {
         registerFunction(new SetPostProcessorFunction());
         registerFunction(new RemovePostProcessorFunction());
         registerFunction(new SetPostProcessorUniformFunction());
+        registerFunction(new RebindCommandFunction());
 
         // Resource pack stuff
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new ResourceReloadListener());

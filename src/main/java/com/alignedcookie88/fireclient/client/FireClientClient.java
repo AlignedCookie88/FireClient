@@ -4,6 +4,7 @@ import com.alignedcookie88.fireclient.*;
 import com.alignedcookie88.fireclient.api.ApiConnection;
 import com.alignedcookie88.fireclient.api.FireClientApi;
 import com.alignedcookie88.fireclient.commandrunner.CommandRunners;
+import com.alignedcookie88.fireclient.functions.RebindCommandFunction;
 import com.alignedcookie88.fireclient.functions_screen.FunctionsScreen;
 import com.alignedcookie88.fireclient.task.TaskManager;
 import com.alignedcookie88.fireclient.task.tasks.DFToolingApiTask;
@@ -135,6 +136,8 @@ public class FireClientClient implements ClientModInitializer {
                     );
 
                     registerAliases(dispatcher);
+
+                    registerRebindableCommands(dispatcher);
 
                     UploadPackTask.registerCommand(dispatcher);
 
@@ -322,6 +325,7 @@ public class FireClientClient implements ClientModInitializer {
 
     private static void registerAlias(CommandDispatcher<FabricClientCommandSource> dispatcher, String alias, String command) {
         dispatcher.register(ClientCommandManager.literal(alias).requires(source -> Utility.isPlayingDiamondFire()).executes(context -> {
+            CommandQueue.accountForClientCommand();
             CommandQueue.queueCommand(command);
             return 1;
         }));
@@ -329,5 +333,42 @@ public class FireClientClient implements ClientModInitializer {
 
     private static void registerNodeAlias(CommandDispatcher<FabricClientCommandSource> dispatcher, String node) {
         registerAlias(dispatcher, node, "server "+node);
+    }
+
+    private static void registerRebindableCommands(CommandDispatcher<FabricClientCommandSource> dispatcher) {
+
+        registerRebindableCommand(dispatcher, "reset");
+        registerRebindableCommand(dispatcher, "reset", "rs");
+
+        registerRebindableCommand(dispatcher, "resetcompact");
+        registerRebindableCommand(dispatcher, "resetcompact", "rc");
+
+        registerRebindableCommand(dispatcher, "fly");
+
+        registerRebindableCommand(dispatcher, "cancel");
+
+        registerRebindableCommand(dispatcher, "discord");
+
+        registerRebindableCommand(dispatcher, "nightvis");
+
+    }
+
+    private static void registerRebindableCommand(CommandDispatcher<FabricClientCommandSource> dispatcher, String command) {
+        registerRebindableCommand(dispatcher, command, command);
+    }
+
+    private static void registerRebindableCommand(CommandDispatcher<FabricClientCommandSource> dispatcher, String command, String alias) {
+        RebindCommandFunction.commands.put(alias, command);
+        dispatcher.register(ClientCommandManager.literal(alias).requires(source -> Utility.isPlayingDiamondFire()).executes(context -> {
+            CommandQueue.accountForClientCommand();
+            String plot_command = State.reboundCommands.get(command);
+            if (plot_command != null) {
+                CommandQueue.queuePlotCommand(plot_command);
+            } else {
+                // Use the no-client version of the function, so it doesn't get in a loop of constantly calling this handler, and instead just sends the packet.
+                CommandQueue.queueCommandNoClient(command);
+            }
+            return 1;
+        }));
     }
 }

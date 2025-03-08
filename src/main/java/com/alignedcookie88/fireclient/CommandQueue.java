@@ -1,6 +1,7 @@
 package com.alignedcookie88.fireclient;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.network.packet.c2s.play.CommandExecutionC2SPacket;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,11 @@ public class CommandQueue {
             for (String command : commands) {
                 if (spam < 150) { // Leave clearance
                     FireClient.LOGGER.info("Running command: {}", command);
-                    MinecraftClient.getInstance().player.networkHandler.sendChatCommand(command);
+                    if (command.startsWith("#noclient")) {
+                        MinecraftClient.getInstance().player.networkHandler.sendPacket(new CommandExecutionC2SPacket(command.replaceFirst("#noclient", "")));
+                    } else {
+                        MinecraftClient.getInstance().player.networkHandler.sendChatCommand(command);
+                    }
                     spam += 20;
                     toRemove.add(current);
                 }
@@ -72,6 +77,10 @@ public class CommandQueue {
         commands.add(command);
     }
 
+    public static void queueCommandNoClient(String command) {
+        queueCommand("#noclient"+command);
+    }
+
     public static void queuePlotCommand(String plotCommand) {
         plotCommands.add(plotCommand);
     }
@@ -96,6 +105,13 @@ public class CommandQueue {
 
     public static boolean isSafeToChat() {
         return !(spam > 125);
+    }
+
+    /**
+     * Should be called in client command handlers, as they don't increase the spam timer.
+     */
+    public static void accountForClientCommand() {
+        spam -= 20;
     }
 
 }

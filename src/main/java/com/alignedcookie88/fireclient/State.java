@@ -9,6 +9,7 @@ import net.minecraft.util.Identifier;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class State {
@@ -29,6 +30,8 @@ public class State {
 
     public static PostEffectProcessor postProcessor = null;
 
+    public static HashMap<String, String> reboundCommands = new HashMap<>();
+
     public static void reset() {
         CommandQueue.clearPlotCommands();
 
@@ -41,6 +44,7 @@ public class State {
         setPostProcessor(null);
 
         hud = new ArrayList<>();
+        reboundCommands = new HashMap<>();
     }
 
     public static void setPostProcessor(Identifier id) {
