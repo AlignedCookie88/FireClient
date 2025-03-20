@@ -2,10 +2,7 @@ package com.alignedcookie88.fireclient.api;
 
 import com.alignedcookie88.fireclient.Config;
 import com.alignedcookie88.fireclient.FireClient;
-import com.alignedcookie88.fireclient.api.packet.ApiIncomingPacket;
-import com.alignedcookie88.fireclient.api.packet.DoAuthPacket;
-import com.alignedcookie88.fireclient.api.packet.IdentifyPacket;
-import com.alignedcookie88.fireclient.api.packet.ShowToastPacket;
+import com.alignedcookie88.fireclient.api.packet.*;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
@@ -32,6 +29,7 @@ public class FireClientApi {
         ApiIncomingPacket.register(new DoAuthPacket());
         ApiIncomingPacket.register(new IdentifyPacket());
         ApiIncomingPacket.register(new ShowToastPacket());
+        ApiIncomingPacket.register(new QueuePlotCommandsPacket());
     }
 
     /**

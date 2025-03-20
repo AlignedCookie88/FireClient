@@ -3,9 +3,11 @@ package com.alignedcookie88.fireclient.api.packet;
 import com.alignedcookie88.fireclient.api.ApiConnection;
 import com.alignedcookie88.fireclient.api.FireClientApi;
 import com.alignedcookie88.fireclient.api.FireClientApiException;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.java_websocket.exceptions.WebsocketNotConnectedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,8 @@ public abstract class ApiIncomingPacket {
                 }
             }
             throw new FireClientApiException("There is no packet type with id \"%s\".".formatted(type));
+        } catch (WebsocketNotConnectedException e) {
+            FireClientApi.LOGGER.error("API disconnected", e);
         } catch (Exception e) {
             FireClientApi.LOGGER.error("Exception whilst handling API packet from connection {}.", connection.connectionId, e);
             connection.sendError(e);
@@ -64,6 +68,10 @@ public abstract class ApiIncomingPacket {
 
         public ApiJsonReader getSubObject(String name) {
             return wrapExceptions(() -> new ApiJsonReader(jsonObject.get("name").getAsJsonObject()));
+        }
+
+        public JsonArray getArray(String name) {
+            return wrapExceptions(() -> jsonObject.get(name).getAsJsonArray());
         }
 
         public String getString(String name) {
