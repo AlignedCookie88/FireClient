@@ -196,6 +196,9 @@ public class Utility {
                 "dev2.mcdiamondfire.com"
         };
 
+        if (currentServer.address.endsWith(".diamondfire.games"))
+            return true;
+
         return Arrays.stream(dfAddresses).toList().contains(currentServer.address);
     }
 
