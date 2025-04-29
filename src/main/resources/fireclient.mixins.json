@@ -12,6 +12,7 @@
     "ChatHudMixin",
     "ChatScreenMixin",
     "ClientConnectionMixin",
+    "ClientLoginNetworkHandlerMixin",
     "ClientPlayerEntityMixin",
     "ConnectScreenMixin",
     "DrawContextMixin",

@@ -46,6 +46,8 @@ public class FireClient implements ModInitializer {
 
     public static String joinCommand = null;
 
+    public static boolean overrideDiamondFireDetection = false;
+
     private static boolean codeClientIntegration = false;
 
     private static final List<CommandRunnerResponse> commandRunnerResponses = new ArrayList<>();

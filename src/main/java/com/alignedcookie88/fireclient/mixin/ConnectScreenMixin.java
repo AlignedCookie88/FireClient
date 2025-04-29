@@ -31,6 +31,7 @@ public class ConnectScreenMixin {
             FireClient.joinCommand = null;
         }
         original.call(client, address, info, cookieStorage);
+        FireClient.overrideDiamondFireDetection = false;
     }
 
 }

@@ -176,6 +176,9 @@ public class Utility {
         if (MinecraftClient.getInstance().isInSingleplayer())
             return false;
 
+        if (FireClient.overrideDiamondFireDetection)
+            return true;
+
         ServerInfo currentServer = MinecraftClient.getInstance().getCurrentServerEntry();
 
         if (currentServer == null)
