@@ -1,6 +1,7 @@
 package com.alignedcookie88.fireclient.task.tasks;
 
 import com.alignedcookie88.fireclient.Config;
+import com.alignedcookie88.fireclient.DFToolingAPITermsAgreeScreen;
 import com.alignedcookie88.fireclient.FireClient;
 import com.alignedcookie88.fireclient.Utility;
 import com.google.gson.JsonElement;
@@ -74,21 +75,11 @@ public class DFToolingApiTask extends RunAsynchronouslyTask {
         });
     }
 
-    private boolean started_confirm_task = false;
-
     @Override
     protected TickResult onTick() {
         if (!Config.state.dfToolingApiAgreement) {
-            if (!started_confirm_task) {
-                started_confirm_task = true;
-                Utility.sendStyledMessage("The action you are completing requires the use of the DFTooling API. All requests to the DFTooling API are logged; your Minecraft Username and UUID may be publicly visible and associated with your request and the data included with it. To confirm that you wish to use the DFTooling API, run <gray>/fireclient confirm<white>, if in the future you wish to revoke your consent, you can do so in <gray>/fireclient config<white>. If you do not wish to use the DFTooling API, you can ignore this message.");
-                return TickResult.waitForTask(new WaitForConfirmationTask());
-            } else {
-                Config.state.dfToolingApiAgreement = WaitForConfirmationTask.wasConfirmed();
-                Config.saveConfig();
-                if (!Config.state.dfToolingApiAgreement)
-                    return TickResult.taskComplete();
-            }
+            FireClient.openOnNextTick = new DFToolingAPITermsAgreeScreen(this);
+            return TickResult.taskComplete();
         }
 
         return super.onTick();
