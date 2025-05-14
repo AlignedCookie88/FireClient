@@ -4,7 +4,7 @@ import com.alignedcookie88.fireclient.*;
 import com.alignedcookie88.fireclient.api.ApiConnection;
 import com.alignedcookie88.fireclient.api.FireClientApi;
 import com.alignedcookie88.fireclient.commandrunner.CommandRunners;
-import com.alignedcookie88.fireclient.functions.RebindCommandFunction;
+import com.alignedcookie88.fireclient.legacy_sdk.functions.RebindCommandFunction;
 import com.alignedcookie88.fireclient.functions_screen.FunctionsScreen;
 import com.alignedcookie88.fireclient.task.TaskManager;
 import com.alignedcookie88.fireclient.task.tasks.DFToolingApiTask;

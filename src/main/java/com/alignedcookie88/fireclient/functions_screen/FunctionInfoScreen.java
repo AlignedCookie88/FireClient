@@ -1,6 +1,9 @@
 package com.alignedcookie88.fireclient.functions_screen;
 
 import com.alignedcookie88.fireclient.*;
+import com.alignedcookie88.fireclient.legacy_sdk.FireArgument;
+import com.alignedcookie88.fireclient.legacy_sdk.FireFunction;
+import com.alignedcookie88.fireclient.legacy_sdk.FireFunctionSerialiser;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
@@ -15,7 +18,6 @@ import net.minecraft.util.Identifier;
 import org.apache.commons.compress.utils.Lists;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class FunctionInfoScreen extends Screen {

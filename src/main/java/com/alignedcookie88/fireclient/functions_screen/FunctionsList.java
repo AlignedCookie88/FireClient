@@ -1,6 +1,6 @@
 package com.alignedcookie88.fireclient.functions_screen;
 
-import com.alignedcookie88.fireclient.FireFunction;
+import com.alignedcookie88.fireclient.legacy_sdk.FireFunction;
 import com.alignedcookie88.fireclient.UIUtility;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;

@@ -1,8 +1,8 @@
 package com.alignedcookie88.fireclient.functions_screen;
 
 import com.alignedcookie88.fireclient.FireClient;
-import com.alignedcookie88.fireclient.FireFunction;
-import com.alignedcookie88.fireclient.FireFunctionSerialiser;
+import com.alignedcookie88.fireclient.legacy_sdk.FireFunction;
+import com.alignedcookie88.fireclient.legacy_sdk.FireFunctionSerialiser;
 import com.alignedcookie88.fireclient.Utility;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -27,7 +27,7 @@ public class FunctionsScreen extends Screen {
     protected void init() {
         list = new FunctionsList(MinecraftClient.getInstance(), width, height-50, 25, 35, textRenderer);
         addDrawableChild(list);
-        for (FireFunction function : FireClient.functionRegistry) {
+        for (FireFunction function : FireClient.legacyFunctionRegistry) {
             if (!function.hidden())
                 list.addFunction(function);
         }

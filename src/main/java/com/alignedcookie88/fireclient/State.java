@@ -14,6 +14,9 @@ import java.util.List;
 
 public class State {
 
+    public static int sdkVersion = 0;
+
+
     public static boolean canMove = true;
 
     public static CustomScreen screen = null;
@@ -34,6 +37,8 @@ public class State {
 
     public static void reset() {
         CommandQueue.clearPlotCommands();
+
+        sdkVersion = 0;
 
         canMove = true;
         screen = null;

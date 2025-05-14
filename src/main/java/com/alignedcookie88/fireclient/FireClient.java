@@ -3,9 +3,12 @@ package com.alignedcookie88.fireclient;
 import com.alignedcookie88.fireclient.api.FireClientApi;
 import com.alignedcookie88.fireclient.commandrunner.CommandRunnerResponse;
 import com.alignedcookie88.fireclient.commandrunner.CommandRunners;
-import com.alignedcookie88.fireclient.functions.*;
+import com.alignedcookie88.fireclient.legacy_sdk.functions.*;
 import com.alignedcookie88.fireclient.integration.CodeClientIntegration;
+import com.alignedcookie88.fireclient.legacy_sdk.FireFunction;
+import com.alignedcookie88.fireclient.legacy_sdk.FireFunctionParser;
 import com.alignedcookie88.fireclient.resources.ResourceReloadListener;
+import com.alignedcookie88.fireclient.sdk.FireClientSDK;
 import com.alignedcookie88.fireclient.task.TaskManager;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
@@ -32,15 +35,15 @@ import java.util.regex.Pattern;
 
 public class FireClient implements ModInitializer {
 
-    public static final List<String> commandQueue = new ArrayList<>();
+    public static final List<String> legacyCommandQueue = new ArrayList<>();
 
-    public static volatile boolean isProcessingCommands = false;
+    public static volatile boolean isProcessingLegacyCommands = false;
 
     public static final Logger LOGGER = LoggerFactory.getLogger("FireClient");
 
     public static final String version = FabricLoader.getInstance().getModContainer("fireclient").get().getMetadata().getVersion().getFriendlyString();
 
-    public static final Identifier functionRegistryIdentifier = Identifier.of("fireclient", "functions");
+    public static final Identifier legacyFunctionRegistryIdentifier = Identifier.of("fireclient", "legacy_functions");
 
     public static Screen openOnNextTick = null;
 
@@ -58,7 +61,7 @@ public class FireClient implements ModInitializer {
     public static String USER_AGENT;
 
 
-    public static final Registry<FireFunction> functionRegistry = FabricRegistryBuilder.createSimple(FireFunction.class, functionRegistryIdentifier).buildAndRegister();
+    public static final Registry<FireFunction> legacyFunctionRegistry = FabricRegistryBuilder.createSimple(FireFunction.class, legacyFunctionRegistryIdentifier).buildAndRegister();
     @Override
     public void onInitialize() {
 
@@ -78,33 +81,36 @@ public class FireClient implements ModInitializer {
         // Reset state (required for some config options to work properly)
         State.reset();
 
-        // Register functions
-        registerFunction(new DebugFunction());
-        registerFunction(new DisableMovementFunction());
-        registerFunction(new EnableMovementFunction());
-        registerFunction(new OpenScreenFunction());
-        registerFunction(new ScreenAddButtonFunction());
-        registerFunction(new ReportVersionFunction());
-        registerFunction(new SetAbilityFunction());
-        registerFunction(new HudAddTextFunction());
-        registerFunction(new RemoveHudElementFunction());
-        registerFunction(new HudAddBarFunction());
-        registerFunction(new HudSetBarProgressFunction());
-        registerFunction(new ScreenAddTextFunction());
-        registerFunction(new UsePlotCommandsForChatFunction());
-        registerFunction(new ScreenAddSlot());
-        registerFunction(new SetPostProcessorFunction());
-        registerFunction(new RemovePostProcessorFunction());
-        registerFunction(new SetPostProcessorUniformFunction());
-        registerFunction(new RebindCommandFunction());
+        // Setup SDK
+        FireClientSDK.init();
+
+        // Register legacy functions
+        registerLegacyFunction(new DebugFunction());
+        registerLegacyFunction(new DisableMovementFunction());
+        registerLegacyFunction(new EnableMovementFunction());
+        registerLegacyFunction(new OpenScreenFunction());
+        registerLegacyFunction(new ScreenAddButtonFunction());
+        registerLegacyFunction(new ReportVersionFunction());
+        registerLegacyFunction(new SetAbilityFunction());
+        registerLegacyFunction(new HudAddTextFunction());
+        registerLegacyFunction(new RemoveHudElementFunction());
+        registerLegacyFunction(new HudAddBarFunction());
+        registerLegacyFunction(new HudSetBarProgressFunction());
+        registerLegacyFunction(new ScreenAddTextFunction());
+        registerLegacyFunction(new UsePlotCommandsForChatFunction());
+        registerLegacyFunction(new ScreenAddSlot());
+        registerLegacyFunction(new SetPostProcessorFunction());
+        registerLegacyFunction(new RemovePostProcessorFunction());
+        registerLegacyFunction(new SetPostProcessorUniformFunction());
+        registerLegacyFunction(new RebindCommandFunction());
 
         // Resource pack stuff
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new ResourceReloadListener());
 
     }
 
-    private static void registerFunction(FireFunction function) {
-        Registry.register(functionRegistry, Identifier.of("fireclient", function.getID()), function);
+    private static void registerLegacyFunction(FireFunction function) {
+        Registry.register(legacyFunctionRegistry, Identifier.of("fireclient", function.getID()), function);
     }
 
     public static <T extends PacketListener> boolean handlePacket(Packet<T> packet) {
@@ -216,22 +222,29 @@ public class FireClient implements ModInitializer {
     public static boolean handleActionBarUpdate(OverlayMessageS2CPacket packet) {
         String data = packet.text().getString();
         if (data.startsWith(".fireclient ")) {
-            queueCommand(data.replaceFirst("\\.fireclient ", ""));
+            queueLegacyCommand(data.replaceFirst("\\.fireclient ", ""));
             return true;
         }
         return false;
     }
 
-    public static void queueCommand(String command) {
-        while (isProcessingCommands) {
+    public static void queueLegacyCommand(String command) {
+        while (isProcessingLegacyCommands) {
             Thread.onSpinWait();
         };
-        commandQueue.add(command);
+        legacyCommandQueue.add(command);
     }
 
-    public static void handleCommand(String command) {
+    public static void handleLegacyCommand(String command) {
+        if (State.sdkVersion != -1) { // Player has not been notified about legacy SDK usage in this case!
+            State.sdkVersion = -1;
+            Utility.sendStyledMessage("<red><bold>Warning!</bold> This plot is using the legacy (pre-1.5.0) FireClient SDK. This version of the SDK is no " +
+                    "longer supported and will be removed in the near future. If you are the plot developer, please run <italic>/fireclient sdk</italic> " +
+                    "while in dev mode to update to the newest version.");
+        }
+
         String functionId = command.split(" ")[0];
-        FireFunction function = functionRegistry.get(Identifier.of(functionId));
+        FireFunction function = legacyFunctionRegistry.get(Identifier.of(functionId));
         String args;
         if (command.length() == functionId.length()) {
             args = "";
@@ -243,19 +256,19 @@ public class FireClient implements ModInitializer {
     }
 
     public static void tick() {
-        isProcessingCommands = true;
-        for (String command : commandQueue) {
+        isProcessingLegacyCommands = true;
+        for (String command : legacyCommandQueue) {
             if (Config.state.logFunctionCalls)
                 LOGGER.info("Handling command {}", command);
             try {
-                handleCommand(command);
+                handleLegacyCommand(command);
             } catch (RuntimeException e) {
                 Utility.sendStyledMessage("There was an error parsing a command from the plot. Check the log for more details.");
                 LOGGER.error("Error parsing command.", e);
             }
         }
-        commandQueue.clear();
-        isProcessingCommands = false;
+        legacyCommandQueue.clear();
+        isProcessingLegacyCommands = false;
 
 
         if (openOnNextTick != null) {

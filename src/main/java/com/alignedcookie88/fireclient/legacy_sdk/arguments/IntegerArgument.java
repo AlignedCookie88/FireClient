@@ -1,0 +1,33 @@
+package com.alignedcookie88.fireclient.legacy_sdk.arguments;
+
+import com.alignedcookie88.fireclient.legacy_sdk.FireArgument;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
+
+public class IntegerArgument implements FireArgument {
+    final String id;
+
+    public IntegerArgument(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public Object parse(String raw) {
+        return Integer.valueOf(raw);
+    }
+
+    @Override
+    public String getID() {
+        return id;
+    }
+
+    @Override
+    public String getDFType() {
+        return "num";
+    }
+
+    @Override
+    public Text getName() {
+        return Text.literal("Integer").formatted(Formatting.DARK_RED);
+    }
+}

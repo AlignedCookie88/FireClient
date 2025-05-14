@@ -1,7 +1,7 @@
 package com.alignedcookie88.fireclient.mixin;
 
 import com.alignedcookie88.fireclient.FireClient;
-import com.alignedcookie88.fireclient.FireFunction;
+import com.alignedcookie88.fireclient.legacy_sdk.FireFunction;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.block.entity.SignText;
@@ -40,7 +40,7 @@ public class SignBlockEntityMixin {
                 if (isAlreadyKnown)
                     return;
 
-                for (FireFunction function : FireClient.functionRegistry) {
+                for (FireFunction function : FireClient.legacyFunctionRegistry) {
                     if (Objects.equals(function.getID(), functionId)) {
                         SignText newSignText = original
                                 .withMessage(0, Text.literal("CLIENT ACTION"))
