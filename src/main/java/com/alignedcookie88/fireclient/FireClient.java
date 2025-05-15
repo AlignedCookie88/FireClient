@@ -270,6 +270,7 @@ public class FireClient implements ModInitializer {
         legacyCommandQueue.clear();
         isProcessingLegacyCommands = false;
 
+        FireClientSDK.tick(); // Tick the SDK
 
         if (openOnNextTick != null) {
             MinecraftClient.getInstance().setScreen(openOnNextTick);
