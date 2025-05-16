@@ -31,7 +31,7 @@ public abstract class SDKFunction {
             );
         }
 
-        for (int i = 0; i < rawArgs.length; i++) {
+        for (int i = 0; i < providedArgs; i++) {
             expectedArgs[i].parse(rawArgs[i]);
         }
 

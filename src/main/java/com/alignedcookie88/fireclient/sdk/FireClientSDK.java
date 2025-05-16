@@ -1,6 +1,8 @@
 package com.alignedcookie88.fireclient.sdk;
 
 import com.alignedcookie88.fireclient.Utility;
+import com.alignedcookie88.fireclient.sdk.function.DisableMovementFunction;
+import com.alignedcookie88.fireclient.sdk.function.EnableMovementFunction;
 import com.alignedcookie88.fireclient.sdk.function.TestFunction;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.text.Text;
@@ -29,6 +31,8 @@ public class FireClientSDK {
 
         // Register functions
         registerFunction(new TestFunction());
+        registerFunction(new DisableMovementFunction());
+        registerFunction(new EnableMovementFunction());
 
         LOGGER.info("Done!");
     }
