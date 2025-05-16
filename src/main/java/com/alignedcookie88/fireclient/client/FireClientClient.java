@@ -3,9 +3,12 @@ package com.alignedcookie88.fireclient.client;
 import com.alignedcookie88.fireclient.*;
 import com.alignedcookie88.fireclient.api.ApiConnection;
 import com.alignedcookie88.fireclient.api.FireClientApi;
+import com.alignedcookie88.fireclient.codegen.Template;
 import com.alignedcookie88.fireclient.commandrunner.CommandRunners;
 import com.alignedcookie88.fireclient.legacy_sdk.functions.RebindCommandFunction;
 import com.alignedcookie88.fireclient.functions_screen.FunctionsScreen;
+import com.alignedcookie88.fireclient.sdk.FireClientSDK;
+import com.alignedcookie88.fireclient.sdk.SDKFunction;
 import com.alignedcookie88.fireclient.task.TaskManager;
 import com.alignedcookie88.fireclient.task.tasks.DFToolingApiTask;
 import com.alignedcookie88.fireclient.task.tasks.UploadPackTask;
@@ -26,6 +29,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.item.ItemStack;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.HoverEvent;
 import net.minecraft.text.Text;
@@ -133,6 +137,33 @@ public class FireClientClient implements ClientModInitializer {
                                 else Utility.sendStyledMessage("There is nothing to confirm.");
                                 return 0;
                             }))
+                            .then(ClientCommandManager.literal("sdk").then(
+                                    ClientCommandManager.literal("get_function").then(
+                                            ClientCommandManager.argument("id", StringArgumentType.word()).suggests(
+                                                    (commandContext, suggestionsBuilder) -> {
+
+                                                        for (String id : FireClientSDK.getFunctions())
+                                                            suggestionsBuilder.suggest(id);
+
+                                                        return suggestionsBuilder.buildFuture();
+                                                    }
+                                            ).executes(context -> {
+                                                String id = StringArgumentType.getString(context, "id");
+                                                SDKFunction function = FireClientSDK.getFunction(id);
+
+                                                if (function == null) {
+                                                    context.getSource().sendError(Text.literal("Invalid function ID."));
+                                                    return 0;
+                                                }
+
+                                                Template template = function.createTemplate();
+                                                ItemStack stack = template.toItem();
+                                                Utility.giveItem(stack);
+
+                                                return 0;
+                                            })
+                                    )
+                            ))
                     );
 
                     registerAliases(dispatcher);

@@ -3,14 +3,12 @@ package com.alignedcookie88.fireclient.sdk;
 import com.alignedcookie88.fireclient.Utility;
 import com.alignedcookie88.fireclient.sdk.function.TestFunction;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class FireClientSDK {
 
@@ -42,6 +40,22 @@ public class FireClientSDK {
     private static void registerFunction(@NotNull SDKFunction function) {
         LOGGER.info("Registering function {} ({})", function.getId(), function.getClass());
         functionMap.put(function.getId(), function);
+    }
+
+    /**
+     * Gets a function from its id
+     * @param id The ID of the function
+     * @return The SDKFunction object
+     */
+    public static SDKFunction getFunction(String id) {
+        return functionMap.get(id);
+    }
+
+    /**
+     * Gets a list of all functions registered
+     */
+    public static Set<String> getFunctions() {
+        return functionMap.keySet();
     }
 
 
@@ -82,6 +96,11 @@ public class FireClientSDK {
         }
         queued.clear();
         isExecutingQueue = false;
+    }
+
+
+    public static Text styleSDKFunctionName(Text name) {
+        return Utility.miniMessage("<gradient:#ff5a00:#ffa97a>\uD83D\uDD25 FireClient SDK:<reset> ").copy().append(name);
     }
 
 }

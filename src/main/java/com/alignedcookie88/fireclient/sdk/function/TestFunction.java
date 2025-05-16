@@ -4,6 +4,7 @@ import com.alignedcookie88.fireclient.sdk.FireClientSDK;
 import com.alignedcookie88.fireclient.sdk.SDKArgument;
 import com.alignedcookie88.fireclient.sdk.SDKFunction;
 import com.alignedcookie88.fireclient.sdk.argument.StringArgument;
+import net.minecraft.text.Text;
 
 public class TestFunction extends SDKFunction {
 
@@ -12,6 +13,11 @@ public class TestFunction extends SDKFunction {
     @Override
     public String getId() {
         return "test_function";
+    }
+
+    @Override
+    public Text getHumanName() {
+        return Text.literal("Test Function");
     }
 
     @Override
