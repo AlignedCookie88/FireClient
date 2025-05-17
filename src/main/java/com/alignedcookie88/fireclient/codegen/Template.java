@@ -17,9 +17,11 @@ import net.minecraft.text.Text;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.zip.GZIPOutputStream;
 
 public class Template {
@@ -40,6 +42,43 @@ public class Template {
 
     public static Template merge(Template... templates) {
         return merge(List.of(templates));
+    }
+
+    /**
+     * Merges multiple templates into a single until the max amount of blocks is reached, where it starts a new template.
+     * If a single template is larger than the maximum amount of blocks, it will have its own template and will NOT be split.
+     * @param templates A collection of templates to merge
+     * @param maxCodeBlocks The maximum amount of code blocks in a single merged template
+     * @param nameFunction Takes the current (merged) template index, and the total count, and returns a name for the item
+     * @return A collection of merged templates
+     */
+    public static Collection<Template> mergeWithMax(Collection<Template> templates, int maxCodeBlocks, BiFunction<Integer, Integer, Text> nameFunction) {
+        Collection<Template> merged = new ArrayList<>();
+
+        Collection<Template> thisMerge = new ArrayList<>();
+        int currentLength = 0;
+
+        for (Template template : templates) {
+            int length = template.getCodeBlockCount();
+            if (currentLength+length > maxCodeBlocks && !thisMerge.isEmpty()) {
+                merged.add(merge(thisMerge));
+                thisMerge.clear();
+            }
+            currentLength += length;
+            thisMerge.add(template);
+        }
+
+        if (!thisMerge.isEmpty()) {
+            merged.add(merge(thisMerge));
+        }
+
+        int i = 0;
+        for (Template template : merged) {
+            template.withName(nameFunction.apply(i, merged.size()));
+            i++;
+        }
+
+        return merged;
     }
 
     private Template bracket(String direction, boolean sticky) {
@@ -81,10 +120,20 @@ public class Template {
     }
 
 
+    public int getCodeBlockCount() {
+        int i = 0;
+        for (JsonElement el : blocks) {
+            JsonObject obj = el.getAsJsonObject();
+            if (!(obj.get("id").getAsString().equals("bracket") && obj.get("direct").getAsString().equals("open")))
+                i++;
+        }
+        return i;
+    }
+
+
     public JsonElement serialise() {
         JsonObject obj = new JsonObject();
         obj.add("blocks", blocks.deepCopy());
-        FireClient.LOGGER.info("T: {}", obj);
         return obj;
     }
 

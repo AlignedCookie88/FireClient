@@ -1,6 +1,9 @@
 package com.alignedcookie88.fireclient.sdk;
 
+import com.alignedcookie88.fireclient.FireClient;
 import com.alignedcookie88.fireclient.Utility;
+import com.alignedcookie88.fireclient.codegen.Template;
+import com.alignedcookie88.fireclient.integration.CodeClientIntegration;
 import com.alignedcookie88.fireclient.sdk.function.DisableMovementFunction;
 import com.alignedcookie88.fireclient.sdk.function.EnableMovementFunction;
 import com.alignedcookie88.fireclient.sdk.function.TestFunction;
@@ -100,6 +103,32 @@ public class FireClientSDK {
         }
         queued.clear();
         isExecutingQueue = false;
+    }
+
+
+    public static Collection<Template> getSDKBundle(int maxCodeBlocks) {
+        List<Template> templates = new ArrayList<>();
+
+        for (SDKFunction function : functionMap.values()) {
+            if (!function.isHidden())
+                templates.add(function.createTemplate());
+        }
+
+        return Template.mergeWithMax(templates, maxCodeBlocks, (current, max) -> styleSDKFunctionName(
+                Utility.miniMessage("Bundle <dark_gray>[<gray>%s</gray>/%s]"
+                        .formatted(current+1, max))
+        ));
+    }
+
+    public static Collection<Template> getSDKBundleAutoDetect() {
+        if (!FireClient.isCodeClientIntegrationEnabled()) {
+            throw new IllegalStateException("Can't autodetect plot size for SDK bundle without CodeClient installed!");
+        }
+        int size = CodeClientIntegration.getPlotCodeBlockLimit();
+        if (size == 0) {
+            return Collections.emptyList();
+        }
+        return getSDKBundle(size);
     }
 
 

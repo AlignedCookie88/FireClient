@@ -31,4 +31,9 @@ public class TestFunction extends SDKFunction {
                 ARG_DATA
         };
     }
+
+    @Override
+    public boolean isHidden() {
+        return true;
+    }
 }

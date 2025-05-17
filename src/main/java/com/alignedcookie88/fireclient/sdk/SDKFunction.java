@@ -50,6 +50,13 @@ public abstract class SDKFunction {
         return false;
     }
 
+    /**
+     * If this is true the function should be hidden from any UIs and be excluded from any bundles, however it should still be accessible with /fireclient sdk get_function.
+     */
+    public boolean isHidden() {
+        return false;
+    }
+
     public Template createTemplate() {
         Template template = new Template();
 
@@ -57,6 +64,7 @@ public abstract class SDKFunction {
         Text displayName = FireClientSDK.styleSDKFunctionName(getHumanName());
         icon.set(DataComponentTypes.ITEM_NAME, displayName);
         icon.set(DataComponentTypes.CUSTOM_NAME, displayName);
+        template.withName(displayName);
 
         StringBuilder argString = new StringBuilder();
         CodeBlock function = new FunctionBlock(".fireclient action/"+getId(), false)

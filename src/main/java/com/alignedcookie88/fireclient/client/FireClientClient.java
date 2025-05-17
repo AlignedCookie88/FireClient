@@ -15,6 +15,7 @@ import com.alignedcookie88.fireclient.task.tasks.UploadPackTask;
 import com.alignedcookie88.fireclient.task.tasks.WaitForConfirmationTask;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.Dynamic3CommandExceptionType;
@@ -38,6 +39,7 @@ import org.lwjgl.glfw.GLFW;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -162,6 +164,43 @@ public class FireClientClient implements ClientModInitializer {
 
                                                 return 0;
                                             })
+                                    )
+                            ).then(
+                                    ClientCommandManager.literal("get_bundle").then(
+                                            ClientCommandManager.argument("max_code_blocks", IntegerArgumentType.integer(1))
+                                                    .suggests((context, builder) -> builder
+                                                                    .suggest("25", Text.literal("Basic Plots"))
+                                                                    .suggest("50", Text.literal("Large Plots"))
+                                                                    .suggest("150", Text.literal("Massive & Mega Plots"))
+                                                                    .buildFuture()
+                                                            )
+                                                    .executes(context -> {
+                                                        int maxCodeBlocks = IntegerArgumentType.getInteger(context, "max_code_blocks");
+
+                                                        Collection<Template> templates = FireClientSDK.getSDKBundle(maxCodeBlocks);
+                                                        for (Template template : templates) {
+                                                            Utility.giveItem(template.toItem());
+                                                        }
+
+                                                        return 0;
+                                            })
+                                    ).then(
+                                            ClientCommandManager.literal("autodetect")
+                                                    .requires(source -> FireClient.isCodeClientIntegrationEnabled())
+                                                    .executes(context -> {
+                                                        Collection<Template> templates = FireClientSDK.getSDKBundleAutoDetect();
+
+                                                        if (templates.isEmpty()) {
+                                                            context.getSource().sendError(Text.literal("You must be in dev mode to autodetect the plot size."));
+                                                            return 0;
+                                                        }
+
+                                                        for (Template template : templates) {
+                                                            Utility.giveItem(template.toItem());
+                                                        }
+
+                                                        return 0;
+                                                    })
                                     )
                             ))
                     );
