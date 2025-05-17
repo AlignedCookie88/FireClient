@@ -18,6 +18,10 @@ public abstract class SDKFunction {
 
     public abstract Text getHumanName();
 
+    public String getSignName() {
+        return getHumanName().getString().replace(" ", "");
+    }
+
     public void execute(String argString) {
 
         String[] rawArgs = argString.split(SDKArgument.SPLITTER);
