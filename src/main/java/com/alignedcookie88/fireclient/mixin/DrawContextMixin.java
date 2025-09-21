@@ -3,11 +3,9 @@ package com.alignedcookie88.fireclient.mixin;
 import com.alignedcookie88.fireclient.resources.TagDisplayData;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix3x2fStack;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -49,7 +47,7 @@ public abstract class DrawContextMixin {
 
         int by = 0;
         for (Text line : badge_lines) {
-            drawText(textRenderer, line, x-1, y-1+by, 0xFFFFFF, true);
+            drawText(textRenderer, line, x-1, y-1+by, -1, true);
             by += 11;
         }
         matrices.popMatrix();
