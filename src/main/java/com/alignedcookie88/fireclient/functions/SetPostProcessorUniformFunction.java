@@ -44,7 +44,7 @@ public class SetPostProcessorUniformFunction implements FireFunction {
         }
 
         if (State.postProcessor != null) {
-            State.postProcessor.setUniforms(name, value);
+            //State.postProcessor.setUniforms(name, value);
         }
     }
 

@@ -7,6 +7,8 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix3x2fStack;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -20,14 +22,14 @@ import java.util.List;
 @Mixin(DrawContext.class)
 public abstract class DrawContextMixin {
 
-    @Shadow public abstract int drawText(TextRenderer textRenderer, Text text, int x, int y, int color, boolean shadow);
+    @Shadow public abstract void drawText(TextRenderer textRenderer, Text text, int x, int y, int color, boolean shadow);
 
-    @Shadow @Final private MatrixStack matrices;
+    @Shadow @Final private Matrix3x2fStack matrices;
 
-    @Inject(method = "drawItemInSlot(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;push()V"))
+    @Inject(method = "drawStackOverlay(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V", at = @At(value = "INVOKE", target = "Lorg/joml/Matrix3x2fStack;pushMatrix()Lorg/joml/Matrix3x2fStack;"))
     public void renderDecorations(TextRenderer textRenderer, ItemStack stack, int x, int y, String countOverride, CallbackInfo ci) {
-        matrices.push();
-        matrices.translate(0.0, 0.0, 200.0);
+        matrices.pushMatrix();
+        //matrices.translate(0.0, 0.0, 200.0);
         List<Text> badge_lines = new ArrayList<>();
         int line_width = 0;
         MutableText current_line = Text.empty();
@@ -50,6 +52,6 @@ public abstract class DrawContextMixin {
             drawText(textRenderer, line, x-1, y-1+by, 0xFFFFFF, true);
             by += 11;
         }
-        matrices.pop();
+        matrices.popMatrix();
     }
 }

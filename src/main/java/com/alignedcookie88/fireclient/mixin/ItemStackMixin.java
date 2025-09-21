@@ -35,7 +35,7 @@ public class ItemStackMixin {
             NbtComponent component = stack.get(DataComponentTypes.CUSTOM_DATA);
             if (component != null) {
                 NbtCompound compound = component.copyNbt();
-                NbtCompound pbv = compound.getCompound("PublicBukkitValues");
+                NbtCompound pbv = compound.getCompound("PublicBukkitValues").orElse(new NbtCompound());
                 Set<String> keys = pbv.getKeys();
                 for (String key : keys) {
                     if (key.startsWith("hypercube:")) {
@@ -44,7 +44,7 @@ public class ItemStackMixin {
                         returnValue.add(Text.literal(" "+name).formatted(Formatting.GRAY).append(
                                 Text.literal(": ").formatted(Formatting.DARK_GRAY)
                         ).append(
-                                Text.literal(elem.asString()).formatted(Formatting.WHITE)
+                                Text.literal(elem.asString().orElse("")).formatted(Formatting.WHITE)
                         ));
                     }
                 }

@@ -3,6 +3,7 @@ package com.alignedcookie88.fireclient;
 import net.kyori.adventure.text.Component;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
@@ -50,14 +51,14 @@ public class CustomScreen extends Screen {
             ItemStack stack = slot.getStack();
 
             if (background)
-                context.drawTexture(Identifier.of("fireclient", "textures/gui/slot.png"), x-1, y-1, 0, 0, 18, 18, 18, 18);
+                context.drawTexture(RenderPipelines.GUI_TEXTURED, Identifier.of("fireclient", "textures/gui/slot.png"), x-1, y-1, 0, 0, 18, 18, 18, 18);
 
             if (stack.isEmpty())
                 return;
 
             context.drawItem(stack, x, y);
 
-            context.drawItemInSlot(textRenderer, stack, x, y);
+            context.drawStackOverlay(textRenderer, stack, x, y);
 
             if (hovering(mouseX, mouseY))
                 context.drawItemTooltip(textRenderer, stack, mouseX, mouseY);

@@ -1,6 +1,7 @@
 package com.alignedcookie88.fireclient.hud;
 
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
@@ -58,7 +59,7 @@ public class BarHudElement extends PositionalHudElement {
 
         int rg_width = Math.min(tx_end-tx_start, ct_width);
 
-        context.drawTexture(texture, sc_x, y, sc_x2-sc_x + 1, 5, tx_start, 0, rg_width, 5, 182, 5);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, sc_x, y, sc_x2-sc_x + 1, 5, tx_start, 0, rg_width, 5, 182, 5);
     }
 
     public void setProgress(float progress) {

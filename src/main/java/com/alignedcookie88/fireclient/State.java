@@ -59,16 +59,16 @@ public class State {
 
         MinecraftClient client = MinecraftClient.getInstance();
 
-        try {
-            postProcessor = new PostEffectProcessor(client.getTextureManager(), client.getResourceManager(), client.getFramebuffer(), id);
-            postProcessor.setupDimensions(client.getWindow().getFramebufferWidth(), client.getWindow().getFramebufferHeight());
-        } catch (IOException var3) {
-            Utility.sendStyledMessage("Failed to load the post-processing shader, see the game log for more details.");
-            FireClient.LOGGER.warn("Failed to load post-processing shader: {}", id, var3);
-        } catch (JsonSyntaxException var4) {
-            Utility.sendStyledMessage("Failed to parse the post-processing shader, see the game log for more details.");
-            FireClient.LOGGER.warn("Failed to parse post-processing shader: {}", id, var4);
-        }
+//        try {
+//            postProcessor = new PostEffectProcessor(client.getTextureManager(), client.getResourceManager(), client.getFramebuffer(), id);
+//            postProcessor.setupDimensions(client.getWindow().getFramebufferWidth(), client.getWindow().getFramebufferHeight());
+//        } catch (IOException var3) {
+//            Utility.sendStyledMessage("Failed to load the post-processing shader, see the game log for more details.");
+//            FireClient.LOGGER.warn("Failed to load post-processing shader: {}", id, var3);
+//        } catch (JsonSyntaxException var4) {
+//            Utility.sendStyledMessage("Failed to parse the post-processing shader, see the game log for more details.");
+//            FireClient.LOGGER.warn("Failed to parse post-processing shader: {}", id, var4);
+//        }
 
     }
 }

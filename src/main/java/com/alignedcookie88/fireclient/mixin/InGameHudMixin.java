@@ -27,7 +27,7 @@ public class InGameHudMixin {
         TextRenderer textRenderer = ((InGameHud) (Object) this).getTextRenderer();
         for (HudElement element : State.hud) {
             try {
-                element.render(context, textRenderer, tickCounter.getTickDelta(false), context.getScaledWindowWidth(), context.getScaledWindowHeight());
+                element.render(context, textRenderer, tickCounter.getTickProgress(false), context.getScaledWindowWidth(), context.getScaledWindowHeight());
             } catch (Exception e) {
                 Utility.sendStyledMessage("There was an error rendering HUD element '%s', it has been removed. See the log for more info.".formatted(element.getID()));
                 FireClient.LOGGER.error("There was an error rendering HUD element '{}'. See below.", element.getID(), e);

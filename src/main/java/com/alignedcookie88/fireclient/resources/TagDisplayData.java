@@ -33,7 +33,7 @@ public class TagDisplayData {
         NbtComponent component = stack.get(DataComponentTypes.CUSTOM_DATA);
         if (component != null) {
             NbtCompound compound = component.copyNbt();
-            NbtCompound pbv = compound.getCompound("PublicBukkitValues");
+            NbtCompound pbv = compound.getCompound("PublicBukkitValues").orElse(new NbtCompound());
             Set<String> keys = pbv.getKeys();
             for (String key : keys) {
                 if (key.startsWith("hypercube:")) {

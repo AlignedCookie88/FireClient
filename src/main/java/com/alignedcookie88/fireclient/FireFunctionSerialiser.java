@@ -67,7 +67,7 @@ public class FireFunctionSerialiser {
     }
 
     private static String getArgumentString(FireFunction function) {
-        StringBuilder string = new StringBuilder(".fireclient " + FireClient.functionRegistry.getId(function).asString());
+        StringBuilder string = new StringBuilder(".fireclient " + FireClient.functionRegistry.getId(function).toString());
 
         for (FireArgument argument : function.getExpectedArguments()) {
             string.append(" ").append(ARG_DENOTION).append("%var(").append(argument.getID()).append(")").append(ARG_DENOTION);

@@ -3,6 +3,7 @@ package com.alignedcookie88.fireclient.mixin;
 import com.alignedcookie88.fireclient.Config;
 import com.alignedcookie88.fireclient.FireClient;
 import com.alignedcookie88.fireclient.commandrunner.CommandRunners;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.PlayerListHud;
 import net.minecraft.client.network.PlayerListEntry;
@@ -84,7 +85,7 @@ public class PlayerListHudMixin {
     private void renderModeIcon(DrawContext context, int width, int x, int y, PlayerListEntry entry) {
         Identifier modeIcon = CommandRunners.LOCATE.getPlayerModeIcon(entry.getProfile().getName());
         if (modeIcon != null) {
-            context.drawTexture(modeIcon, x + width - 22, y, 0, 0, 10, 8, 10, 8);
+            context.drawTexture(RenderPipelines.GUI_TEXTURED, modeIcon, x + width - 22, y, 0, 0, 10, 8, 10, 8);
         }
     }
 

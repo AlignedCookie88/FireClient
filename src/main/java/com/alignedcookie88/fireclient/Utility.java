@@ -1,10 +1,8 @@
 package com.alignedcookie88.fireclient;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import net.kyori.adventure.platform.modcommon.impl.client.MinecraftClientAudiencesImpl;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.ServerInfo;
@@ -86,15 +84,11 @@ public class Utility {
     }
 
     public static Text componentToText(Component component) {
-        String json = JSONComponentSerializer.json().serialize(component);
-        return new Text.Serializer(getRegistryWrapper()).deserialize(JsonParser.parseString(json), null, null);
+        return MinecraftClientAudiencesImpl.INSTANCE.asNative(component);
     }
 
     public static Component textToComponent(Text text) {
-        if (text.toString().isEmpty())
-            return Component.empty();
-        JsonElement elem = new Text.Serializer(getRegistryWrapper()).serialize(text, null, null);
-        return JSONComponentSerializer.json().deserialize(elem.toString());
+        return MinecraftClientAudiencesImpl.INSTANCE.asAdventure(text);
     }
 
     public static RegistryWrapper.WrapperLookup getRegistryWrapper() {

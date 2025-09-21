@@ -17,6 +17,8 @@ import net.minecraft.util.Formatting;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -89,8 +91,8 @@ public class UploadPackTask extends Task {
                                 Text.literal(" (Click to copy!)").formatted(Formatting.GRAY).formatted(Formatting.ITALIC)
                         );
                         uploadMsg.setStyle(uploadMsg.getStyle()
-                                .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, downloadUrl))
-                                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Click to copy!")))
+                                .withClickEvent(new ClickEvent.CopyToClipboard(downloadUrl))
+                                .withHoverEvent(new HoverEvent.ShowText(Text.literal("Click to copy!")))
                         );
                         Utility.sendMessage(uploadMsg);
                     } else {

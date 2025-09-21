@@ -98,8 +98,7 @@ public class FireClientClient implements ClientModInitializer {
 
                                         Utility.sendMessage("Connected programs:");
                                         for (ApiConnection connection : FireClientApi.apiConnections) {
-                                            Utility.sendMessage(Text.literal("- "+connection.applicationName).styled(style -> style.withHoverEvent(new HoverEvent(
-                                                    HoverEvent.Action.SHOW_TEXT,
+                                            Utility.sendMessage(Text.literal("- "+connection.applicationName).styled(style -> style.withHoverEvent(new HoverEvent.ShowText(
                                                     Text.literal("ID: ").append(
                                                             Text.literal(connection.connectionId.toString()).formatted(Formatting.GRAY)
                                                     ).append(
@@ -107,8 +106,7 @@ public class FireClientClient implements ClientModInitializer {
                                                                     Text.literal(connection.getTypeName()).formatted(Formatting.GRAY)
                                                             )
                                                     )
-                                            ))).styled(style -> style.withClickEvent(new ClickEvent(
-                                                    ClickEvent.Action.SUGGEST_COMMAND,
+                                            ))).styled(style -> style.withClickEvent(new ClickEvent.SuggestCommand(
                                                     "/fireclient api run_action "+connection.connectionId.toString()+" "
                                             ))));
                                         }
@@ -223,7 +221,7 @@ public class FireClientClient implements ClientModInitializer {
             }
 
             if (FireClient.joinCommand != null)
-                MinecraftClient.getInstance().getNetworkHandler().sendCommand(FireClient.joinCommand);
+                MinecraftClient.getInstance().getNetworkHandler().sendChatCommand(FireClient.joinCommand);
             FireClient.joinCommand = null;
         });
 

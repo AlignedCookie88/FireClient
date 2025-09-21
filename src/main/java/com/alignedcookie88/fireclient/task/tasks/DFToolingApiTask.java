@@ -22,10 +22,7 @@ import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
@@ -293,12 +290,17 @@ public class DFToolingApiTask extends RunAsynchronouslyTask {
                 case 504 -> Text.literal("The DFTooling API is currently unavailable, overloaded or very broken.");
 
                 default -> Text.literal("Unexpected status %s. Click this message for more info.".formatted(status))
-                        .styled(style -> style.withClickEvent(
-                                new ClickEvent(
-                                        ClickEvent.Action.OPEN_URL,
-                                        "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/" + status
-                                )
-                        ));
+                        .styled(style -> {
+                            try {
+                                return style.withClickEvent(
+                                        new ClickEvent.OpenUrl(
+                                                new URI("https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/" + status)
+                                        )
+                                );
+                            } catch (URISyntaxException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
             };
         }
 

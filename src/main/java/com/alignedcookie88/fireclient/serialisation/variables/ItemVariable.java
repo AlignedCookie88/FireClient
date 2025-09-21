@@ -4,6 +4,7 @@ import com.alignedcookie88.fireclient.Utility;
 import com.alignedcookie88.fireclient.serialisation.DFVariable;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.StringNbtReader;
 
 public class ItemVariable implements DFVariable {
@@ -15,12 +16,12 @@ public class ItemVariable implements DFVariable {
     }
 
     public ItemVariable(ItemStack stack) {
-        this(stack.encode(Utility.getRegistryWrapper()).asString());
+        this(ItemStack.CODEC.encodeStart(NbtOps.INSTANCE, stack).getOrThrow().asString().orElse(""));
     }
 
     public ItemStack getStack() {
         try {
-            return ItemStack.fromNbtOrEmpty(Utility.getRegistryWrapper(), StringNbtReader.parse(item));
+            return ItemStack.CODEC.decode(NbtOps.INSTANCE, StringNbtReader.readCompound(item)).getOrThrow().getFirst();
         } catch (CommandSyntaxException e) {
             return ItemStack.EMPTY;
         }

@@ -186,8 +186,8 @@ public class Config {
                         FireClient.openOnNextTick = new Screen(Text.empty()) {
                             @Override
                             protected void init() {
-                                MinecraftClient.getInstance().world.disconnect();
-                                MinecraftClient.getInstance().disconnect();
+                                MinecraftClient.getInstance().world.disconnect(null);
+                                MinecraftClient.getInstance().disconnectWithProgressScreen();
                                 MinecraftClient.getInstance().setScreen(new TitleScreen());
                             }
                         };

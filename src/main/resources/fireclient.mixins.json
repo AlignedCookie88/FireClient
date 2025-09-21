@@ -21,8 +21,6 @@
     "GameMenuScreenMixin",
     "GameRendererMixin",
     "InGameHudMixin",
-    "JsonEffectShaderProgramMixin",
-    "ModelPredicateProviderRegistryMixin",
     "MultiplayerScreenMixin",
     "MultiplayerServerListPingerMixin",
     "OptionsScreenMixin",
