@@ -1,5 +1,7 @@
 package com.alignedcookie88.fireclient.mixin;
 
+// this code does stuff
+
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.gl.JsonEffectShaderProgram;
